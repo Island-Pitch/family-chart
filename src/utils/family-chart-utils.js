@@ -6,12 +6,21 @@
 import * as d3 from "d3";
 
 /**
+ * Card width constant - defines the width of a person node
+ * All spacing is measured in units of this card width
+ */
+export const CARD_WIDTH = 80; // Width of a person node in pixels
+
+/**
  * Default chart spacing configuration
  * Used across all scenarios and components for consistent spacing
+ * Spacing values are in units where 1 unit = 1 card width (CARD_WIDTH pixels)
+ * The spacing value represents the gap between people, so center-to-center = CARD_WIDTH + (spacing × CARD_WIDTH)
+ * Example: spacing = 1 means gap = 80px, so center-to-center = 80 + 80 = 160px
  */
 export const DEFAULT_CHART_SPACING = {
-  cardXSpacing: 280, // Horizontal spacing between nodes (increased from 200 to prevent grandparent overlaps)
-  cardYSpacing: 180, // Vertical spacing between levels
+  cardXSpacing: 1, // Horizontal spacing: 1 unit = 1 card width gap between people
+  cardYSpacing: 1, // Vertical spacing: 1 unit = 1 card width gap between people
   transitionTime: 1000, // Animation transition time in milliseconds
   progenyDepth: 10, // Maximum depth to show descendants
 };
@@ -19,15 +28,27 @@ export const DEFAULT_CHART_SPACING = {
 /**
  * Configure chart with default spacing and settings
  * @param {Object} f3Chart - The f3 chart instance
- * @param {Object} options - Optional overrides for spacing
+ * @param {Object} options - Optional overrides for spacing (values in card-width units, where 1 unit = 1 card width gap)
  * @returns {Object} The configured chart instance
  */
 export function configureChartSpacing(f3Chart, options = {}) {
   const spacing = { ...DEFAULT_CHART_SPACING, ...options };
+  // Convert card-width units to pixels when setting on the chart
+  // spacing value represents the gap in card-width units
+  // center-to-center = one card width + gap = CARD_WIDTH + (spacing × CARD_WIDTH)
+  const xSpacing = CARD_WIDTH + (spacing.cardXSpacing * CARD_WIDTH);
+  const ySpacing = CARD_WIDTH + (spacing.cardYSpacing * CARD_WIDTH);
+  console.log('[configureChartSpacing] Setting spacing:', {
+    cardXSpacing: spacing.cardXSpacing,
+    cardYSpacing: spacing.cardYSpacing,
+    xSpacingPx: xSpacing,
+    ySpacingPx: ySpacing,
+    cardWidth: CARD_WIDTH
+  });
   return f3Chart
     .setTransitionTime(spacing.transitionTime)
-    .setCardXSpacing(spacing.cardXSpacing)
-    .setCardYSpacing(spacing.cardYSpacing);
+    .setCardXSpacing(xSpacing)
+    .setCardYSpacing(ySpacing);
 }
 
 /**
