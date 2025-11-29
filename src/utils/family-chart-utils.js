@@ -138,6 +138,7 @@ export function transformScenarioData(scenarioData) {
     const firstName = personData.first_name || personData["first name"] || '';
     const lastName = personData.last_name || personData["last name"] || '';
     const preferredName = personData.preferred_name || personData["preferred name"] || '';
+    const suffix = personData.suffix || personData["suffix"] || '';
     const fullName = personData.full_name || 
                      (firstName && lastName ? `${firstName} ${lastName}` : firstName || lastName || 'Unknown');
     
@@ -182,6 +183,7 @@ export function transformScenarioData(scenarioData) {
         first_name: firstName || fullName.split(/\s+/)[0] || 'Unknown',
         last_name: lastName || (fullName.split(/\s+/).length > 1 ? fullName.split(/\s+/).slice(1).join(' ') : ''),
         preferred_name: preferredName,
+        suffix: suffix,
         full_name: fullName,
         deceased: deceased,
         death_date: deathDate || null,
@@ -385,10 +387,18 @@ export function createCardRenderer(f3Chart) {
       
       gender = normalizeGender(gender);
       
-      const fullName = personData.full_name || personData.label ||
+      // Check for preferred_name first, then full_name/label, then fall back to first_name + last_name
+      let fullName = personData.preferred_name || personData['preferred name'] || 
+                      personData.full_name || personData.label ||
                       (personData['first name'] && personData['last name'] 
                         ? `${personData['first name']} ${personData['last name']}`.trim()
                         : personData['first name'] || personData['last name'] || 'Unknown');
+      
+      // Add suffix if present (e.g., "Jr.", "Sr.", "III")
+      const suffix = personData.suffix || personData['suffix'] || d.data?.suffix || d.data?.data?.suffix;
+      if (suffix && suffix.trim() !== '') {
+        fullName = `${fullName} ${suffix.trim()}`;
+      }
       
       const initials = personData.initials || generateInitials(fullName);
       const borderColor = getGenderBorderColor(gender);

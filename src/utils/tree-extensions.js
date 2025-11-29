@@ -21,6 +21,18 @@ export function extendSpousesForAncestryNodes(
     
     let spouses = d.data.rels.spouses || []
     if (d._ignore_spouses) spouses = spouses.filter(sp_id => !d._ignore_spouses.includes(sp_id))
+    
+    // CRITICAL: Filter spouses to only include those who are parents in the direct lineage
+    // Only show spouses who are also parents of nodes already in the tree (direct lineage)
+    spouses = spouses.filter(sp_id => {
+      // Check if this spouse is a parent of any node already in the tree
+      const isParentInTree = tree.some(node => {
+        const nodeParents = node.data?.rels?.parents || []
+        return nodeParents.includes(sp_id)
+      })
+      return isParentInTree
+    })
+    
     if (spouses.length > 0) {
       if (one_level_rels && d.depth > 0) continue
       const side = d.data.data.gender === "M" ? -1 : 1;  // female on right
@@ -33,61 +45,71 @@ export function extendSpousesForAncestryNodes(
         // Check if spouse is already in tree
         const existingSpouse = tree.find(t => t.data.id === sp_id)
         if (existingSpouse) {
-          // CRITICAL: Validate that this is actually a spouse, not a sibling or child
-          // Check that the found node's spouses array includes the current node, OR
-          // that the found node is in the current node's spouses array (already checked above)
-          const foundNodeSpouses = existingSpouse.data?.rels?.spouses || []
-          const foundNodeChildren = existingSpouse.data?.rels?.children || []
-          const foundNodeSiblings = existingSpouse.data?.rels?.siblings || []
-          const currentNodeId = d.data.id
+          // CRITICAL: If this spouse is already in the tree as an ancestry node (parent),
+          // we should NOT add it again as a spouse. Just link them as coparents if needed.
+          // This prevents duplicate nodes (e.g., Alfred Sr. appearing both as grandfather and as Elena's spouse)
+          // Check both is_ancestry flag and if it's in the parents hierarchy
+          const isAncestryNode = existingSpouse.is_ancestry === true
           
-          // CRITICAL: Check if this node is already a parent of the current node OR
-          // if it's already a parent of any of the current node's children
-          // If it's already a parent, we should link it as a spouse but NOT add it again
-          const currentNodeParents = d.data?.rels?.parents || []
-          const currentNodeChildren = d.data?.rels?.children || []
-          const isAlreadyParent = currentNodeParents.includes(sp_id)
-          // Check if this spouse is already a parent of any of Elena's children
-          const isParentOfChildren = currentNodeChildren.some(childId => {
+          // Check if sp_id is a parent of the current node
+          const isParentOfCurrentNode = d.data?.rels?.parents?.includes(sp_id)
+          
+          // Check if sp_id is a parent of any of the current node's children
+          const isParentOfChildren = (d.data?.rels?.children || []).some(childId => {
             const childNode = tree.find(t => t.data.id === childId)
             if (!childNode) return false
             const childParents = childNode.data?.rels?.parents || []
             return childParents.includes(sp_id)
           })
           
-          // Debug logging for alfred-sr
-          if (sp_id === 'alfred-sr' && d.data.id === 'elena') {
-            console.log(`[extendSpousesForAncestryNodes] DEBUG alfred-sr for elena:`, {
-              isAlreadyParent,
-              isParentOfChildren,
-              currentNodeChildren,
-              willSkip: isAlreadyParent || isParentOfChildren,
-              willAddToSpouseNodes: !(isAlreadyParent || isParentOfChildren) && isActuallySpouse && !isSibling && !isChild
-            })
+          // Check if sp_id is a parent of any descendant in the tree hierarchy
+          const isParentInHierarchy = (() => {
+            // Check if existingSpouse is a parent of d in the tree structure
+            if (d.parents && d.parents.some(p => p.data.id === sp_id)) {
+              return true
+            }
+            // Check if existingSpouse is a parent of any of d's children in the tree
+            if (d.children) {
+              return d.children.some(child => {
+                return child.parents && child.parents.some(p => p.data.id === sp_id)
+              })
+            }
+            return false
+          })()
+          
+          const isInParentsHierarchy = isParentOfCurrentNode || isParentOfChildren || isParentInHierarchy
+          
+          if (isAncestryNode || isInParentsHierarchy) {
+            // Already in tree as a parent - DO NOT link as coparent if they're already connected via parent-child relationship
+            // This prevents creating diagonal lines when they should be connected via vertical parent-child lines
+            console.log(`[extendSpousesForAncestryNodes] Skipping duplicate spouse ${sp_id} for ${d.data.id} - already in tree as ancestry/parent (isAncestry=${isAncestryNode}, isParentOfCurrent=${isParentOfCurrentNode}, isParentOfChildren=${isParentOfChildren}, isParentInHierarchy=${isParentInHierarchy})`)
+            // Only set coparent if they're NOT already connected via parent-child relationship
+            // If they're both parents of the same child, they'll be connected via the parent-child link, not coparent
+            const areBothParentsOfSameChild = isParentOfChildren || isParentInHierarchy
+            if (!areBothParentsOfSameChild && d.is_ancestry && !d.coparent) {
+              d.coparent = existingSpouse
+            }
+            if (!areBothParentsOfSameChild && !existingSpouse.coparent) {
+              existingSpouse.coparent = d
+            }
+            // DO NOT add to spouses array if they're already a parent - this prevents showing them as spouse/sibling
+            return // Skip - don't add to spouseNodes or newSpouses, and don't add to spouses array
           }
           
           // Verify this is actually a spouse relationship, not a sibling or child
+          const foundNodeSpouses = existingSpouse.data?.rels?.spouses || []
+          const foundNodeChildren = existingSpouse.data?.rels?.children || []
+          const foundNodeSiblings = existingSpouse.data?.rels?.siblings || []
+          const currentNodeId = d.data.id
+          
           const isActuallySpouse = foundNodeSpouses.includes(currentNodeId)
           const isSibling = foundNodeSiblings.includes(currentNodeId)
           const isChild = foundNodeChildren.includes(currentNodeId)
           
           // Only add if it's actually a spouse, not a sibling or child
-          // If it's already a parent (of current node or its children), we still link it as a spouse (coparent relationship)
           if (isActuallySpouse && !isSibling && !isChild) {
-            // If it's already a parent (of current node or its children), just link it as coparent, don't add to spouseNodes
-            // (it's already positioned correctly as a parent)
-            if (isAlreadyParent || isParentOfChildren) {
-              // Link as coparent but don't reposition - it's already in the tree as a parent
-              if (d.is_ancestry && !d.coparent) {
-                d.coparent = existingSpouse
-              }
-              if (existingSpouse.is_ancestry && !existingSpouse.coparent) {
-                existingSpouse.coparent = d
-              }
-            } else {
-              // Not a parent, so add to spouseNodes for positioning
-              spouseNodes.push(existingSpouse)
-            }
+            // Not a parent, so add to spouseNodes for positioning
+            spouseNodes.push(existingSpouse)
           } else {
             // This is NOT a spouse - it's a sibling or child, so don't add it
             console.warn(`[extendSpousesForAncestryNodes] Skipping ${sp_id} for ${d.data.id} - it's a ${isSibling ? 'sibling' : isChild ? 'child' : 'non-spouse'}, not a spouse`)
@@ -430,6 +452,67 @@ export function extendStepsiblingParentLinks(
 }
 
 /**
+ * Remove duplicate nodes from the tree
+ * If a person appears multiple times, keep the one in the main hierarchy (not added as spouse)
+ */
+export function removeDuplicateNodes(tree) {
+  const nodeMap = new Map() // Map of id -> array of nodes with that id
+  
+  // First pass: collect all nodes by id
+  tree.forEach((node, index) => {
+    const nodeId = node.data?.id
+    if (!nodeId) return
+    
+    if (!nodeMap.has(nodeId)) {
+      nodeMap.set(nodeId, [])
+    }
+    nodeMap.get(nodeId).push({ node, index })
+  })
+  
+  // Second pass: for each duplicate, keep the one NOT added as spouse, remove others
+  const nodesToRemove = []
+  
+  nodeMap.forEach((nodesWithId, nodeId) => {
+    if (nodesWithId.length <= 1) return // No duplicates
+    
+    // Find the node that's NOT added (in main hierarchy)
+    const mainNode = nodesWithId.find(({ node }) => !node.added)
+    const nodeToKeep = mainNode || nodesWithId[0] // Fallback to first if all are added
+    
+    // Mark all others for removal
+    nodesWithId.forEach(({ node, index }) => {
+      if (node !== nodeToKeep.node) {
+        nodesToRemove.push({ node, index, nodeId })
+        console.log(`[removeDuplicateNodes] Marking duplicate ${nodeId} at index ${index} for removal (added=${node.added}, keeping one at index ${nodeToKeep.index})`)
+      }
+    })
+  })
+  
+  // Third pass: remove duplicates (in reverse order to maintain indices)
+  nodesToRemove.sort((a, b) => b.index - a.index) // Sort descending by index
+  nodesToRemove.forEach(({ node, index, nodeId }) => {
+    // Remove from tree array
+    tree.splice(index, 1)
+    
+    // Also remove from any spouse arrays
+    tree.forEach(d => {
+      if (d.spouses) {
+        const spouseIndex = d.spouses.findIndex(s => s.data?.id === nodeId)
+        if (spouseIndex >= 0) {
+          d.spouses.splice(spouseIndex, 1)
+        }
+      }
+    })
+  })
+  
+  if (nodesToRemove.length > 0) {
+    console.log(`[removeDuplicateNodes] Removed ${nodesToRemove.length} duplicate nodes`)
+  }
+  
+  return tree
+}
+
+/**
  * Main extension function that applies all tree extensions
  * Call this after the tree is calculated but before it's used for rendering
  */
@@ -446,6 +529,9 @@ export function extendTree(
     node_separation,
     one_level_rels
   )
+  
+  // 2. Remove any duplicate nodes that were created
+  removeDuplicateNodes(treeResult.data)
   
   // Removed stepsibling parent links extension - using base behavior only
   
