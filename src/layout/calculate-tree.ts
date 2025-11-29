@@ -155,6 +155,7 @@ export default function calculateTree(data: Data, {
 
     return [...children, ...parents.slice(1)];
   }
+
   function nodePositioning(tree:TreeDatum[]) {
     tree.forEach(d => {
       d.y *= (d.is_ancestry ? -1 : 1)
@@ -175,6 +176,34 @@ export default function calculateTree(data: Data, {
           const side = d.data.data.gender === "M" ? -1 : 1;  // female on right
           d.x += spouses.length/2*node_separation*side;
           spouses.forEach((sp_id, i) => {
+            // CRITICAL: Check if spouse is already in tree before adding
+            // This prevents duplicates when a spouse is already shown as a parent/ancestor
+            const existingSpouse = tree.find(t => t.data.id === sp_id)
+            if (existingSpouse) {
+              // Check if this spouse is already a parent of the current node or its children
+              const isParentOfCurrentNode = d.data?.rels?.parents?.includes(sp_id)
+              const isParentOfChildren = (d.data?.rels?.children || []).some(childId => {
+                const childNode = tree.find(t => t.data.id === childId)
+                if (!childNode) return false
+                const childParents = childNode.data?.rels?.parents || []
+                return childParents.includes(sp_id)
+              })
+              const isParentInTree = d.parents && d.parents.some(p => p.data.id === sp_id)
+              
+              // If they're already a parent, don't add them as a spouse
+              if (isParentOfCurrentNode || isParentOfChildren || isParentInTree || existingSpouse.is_ancestry) {
+                console.log(`[setupSpouses] Skipping spouse ${sp_id} for ${d.data.id} - already a parent (isParentOfCurrent=${isParentOfCurrentNode}, isParentOfChildren=${isParentOfChildren}, isParentInTree=${isParentInTree}, isAncestry=${existingSpouse.is_ancestry})`)
+                return // Skip - don't add to spouses array
+              }
+              
+              // Spouse already in tree but not a parent - just link them, don't add duplicate
+              if (!d.spouses) d.spouses = []
+              if (!d.spouses.find(s => s.data.id === sp_id)) {
+                d.spouses.push(existingSpouse)
+              }
+              return // Skip adding duplicate
+            }
+            
             const spouse:TreeDatum = {
               data: data_stash.find(d0 => d0.id === sp_id) as Datum,
               added: true,

@@ -2,6 +2,7 @@ import * as d3 from "d3"
 import { TreeDatum } from "../types/treeData"
 import { Data, Datum } from "../types/data"
 import { CalculateTreeOptions } from "./calculate-tree"
+import { preventSiblingOverlaps } from "../utils/tree-calculation-helpers"
 
 export function sortChildrenWithSpouses(children: Datum[], datum: Datum, data: Data) {
   if (!datum.rels.children) return
@@ -48,94 +49,6 @@ export function calculateEnterAndExitPositions(d: TreeDatum, entering: boolean, 
   }
 }
 
-export function setupSiblings({
-  tree, data_stash, node_separation, sortChildrenFunction
-}: {
-  tree: TreeDatum[],
-  data_stash: Data,
-  node_separation: number,
-  sortChildrenFunction: CalculateTreeOptions['sortChildrenFunction']
-}) {
-  const main = tree.find(d => d.data.main)
-  if (!main) throw new Error('no main')
-  const p1 = main.data.rels.parents[0]
-  const p2 = main.data.rels.parents[1]
-
-  const siblings = findSiblings(main)
-  if (siblings.length > 0 && !main.parents) throw new Error('no parents')
-  const siblings_added = addSiblingsToTree(main)
-  positionSiblings(main)
-
-
-  function findSiblings(main: TreeDatum) {
-    return data_stash.filter(d => {
-      if (d.id === main.data.id) return false
-      if (p1 && d.rels.parents.includes(p1)) return true
-      if (p2 && d.rels.parents.includes(p2)) return true
-      return false
-    }) 
-  }
-
-
-  function addSiblingsToTree(main: TreeDatum) {
-    const siblings_added = []
-
-    for (let i = 0; i < siblings.length; i++) {
-      const sib: TreeDatum = {
-        data: siblings[i],
-        sibling: true,
-        x: 0.0,  // to be calculated in positionSiblings
-        y: main.y,
-        depth: main.depth-1,
-        parents: []
-      }
-
-      const p1 = main.parents!.find(d => d.data.id === sib.data.rels.parents[0])
-      const p2 = main.parents!.find(d => d.data.id === sib.data.rels.parents[1])
-      if (p1) sib.parents!.push(p1)
-      if (p2) sib.parents!.push(p2)
-      
-      tree.push(sib)
-      siblings_added.push(sib)
-    }
-
-    return siblings_added
-  }
-
-  function positionSiblings(main: TreeDatum) {
-    const sorted_siblings = [main, ...siblings_added]
-    if (sortChildrenFunction) sorted_siblings.sort((a, b) => sortChildrenFunction(a.data, b.data))  // first sort by custom function if provided
-
-    sorted_siblings.sort((a, b) => {
-      const a_p1 = main.parents!.find(d => d.data.id === a.data.rels.parents[0])
-      const a_p2 = main.parents!.find(d => d.data.id === a.data.rels.parents[1])
-      const b_p1 = main.parents!.find(d => d.data.id === b.data.rels.parents[0])
-      const b_p2 = main.parents!.find(d => d.data.id === b.data.rels.parents[1])
-
-      if (!a_p2 && b_p2) return -1
-      if (a_p2 && !b_p2) return 1
-      if (!a_p1 && b_p1) return 1
-      if (a_p1 && !b_p1) return -1
-      // If both have same parents or both missing same parent, maintain original order
-      return 0
-    })
-
-    const main_x = main.x
-    const spouses_x = (main.spouses || []).map(d => d.x)
-    const x_range = d3.extent([main_x, ...spouses_x])
-
-    const main_sorted_index = sorted_siblings.findIndex(d => d.data.id === main.data.id)
-    for (let i = 0; i < sorted_siblings.length; i++) {
-      if (i === main_sorted_index) continue
-      const sib = sorted_siblings[i]
-      if (i < main_sorted_index) {
-        sib.x = (x_range[0] ?? 0) - node_separation*(main_sorted_index - i)
-      } else {
-        sib.x = (x_range[1] ?? 0) + node_separation*(i - main_sorted_index)
-      }
-    }
-  }
-}
 
 export function handlePrivateCards({
   tree,
@@ -213,5 +126,115 @@ export function getMaxDepth(d_id: Datum['id'], data_stash: Data) {
       .filter(d => d)
       .map(id => data_stash.find(d => d.id === id))
       .filter(d => d && !d._new_rel_data && !d.to_add)
+  }
+}
+
+export function setupSiblings({
+  tree, data_stash, node_separation, sortChildrenFunction
+}: {
+  tree: TreeDatum[],
+  data_stash: Data,
+  node_separation: number,
+  sortChildrenFunction: CalculateTreeOptions['sortChildrenFunction']
+}) {
+  const main = tree.find(d => d.data.main)
+  if (!main) throw new Error('no main')
+  const p1 = main.data.rels.parents[0]
+  const p2 = main.data.rels.parents[1]
+
+  const siblings = findSiblings(main)
+  if (siblings.length > 0 && !main.parents) throw new Error('no parents')
+  const siblings_added = addSiblingsToTree(main)
+  positionSiblings(main)
+
+
+  function findSiblings(main: TreeDatum) {
+    return data_stash.filter(d => {
+      if (d.id === main.data.id) return false
+      if (p1 && d.rels.parents.includes(p1)) return true
+      if (p2 && d.rels.parents.includes(p2)) return true
+      return false
+    }) 
+  }
+
+
+  function addSiblingsToTree(main: TreeDatum) {
+    const siblings_added = []
+
+    for (let i = 0; i < siblings.length; i++) {
+      const sib: TreeDatum = {
+        data: siblings[i],
+        sibling: true,
+        x: 0.0,  // to be calculated in positionSiblings
+        y: main.y,
+        depth: main.depth-1,
+        parents: []
+      }
+
+      const p1 = main.parents!.find(d => d.data.id === sib.data.rels.parents[0])
+      const p2 = main.parents!.find(d => d.data.id === sib.data.rels.parents[1])
+      if (p1) sib.parents!.push(p1)
+      if (p2) sib.parents!.push(p2)
+      
+      tree.push(sib)
+      siblings_added.push(sib)  
+    }
+
+    return siblings_added
+  }
+
+  function positionSiblings(main: TreeDatum) {
+    const sorted_siblings = [main, ...siblings_added]
+    if (sortChildrenFunction) sorted_siblings.sort((a, b) => sortChildrenFunction(a.data, b.data))  // first sort by custom function if provided
+
+    sorted_siblings.sort((a, b) => {
+      const a_p1 = main.parents!.find(d => d.data.id === a.data.rels.parents[0])
+      const a_p2 = main.parents!.find(d => d.data.id === a.data.rels.parents[1])
+      const b_p1 = main.parents!.find(d => d.data.id === b.data.rels.parents[0])
+      const b_p2 = main.parents!.find(d => d.data.id === b.data.rels.parents[1])
+
+      if (!a_p2 && b_p2) return -1
+      if (a_p2 && !b_p2) return 1
+      if (!a_p1 && b_p1) return 1
+      if (a_p1 && !b_p1) return -1
+      // If both have same parents or both missing same parent, maintain original order
+      return 0
+    })
+
+    const main_x = main.x
+    const spouses_x = (main.spouses || []).map(d => d.x)
+    const x_range = d3.extent([main_x, ...spouses_x])
+
+    const main_sorted_index = sorted_siblings.findIndex(d => d.data.id === main.data.id)
+    
+    // Check if there are multiple sibling groups (siblings with different parent pairs)
+    // If so, use the overlap prevention function from utils to position all siblings on the same side
+    const parentPairGroups = new Map()
+    sorted_siblings.forEach((sib, idx) => {
+      if (idx === main_sorted_index) return
+      const parentIds = sib.data?.rels?.parents || []
+      if (parentIds.length === 0) return
+      const pairKey = [...parentIds].sort().join('-')
+      if (!parentPairGroups.has(pairKey)) {
+        parentPairGroups.set(pairKey, [])
+      }
+      parentPairGroups.get(pairKey).push(sib)
+    })
+    
+    // If multiple groups exist, use overlap prevention from utils
+    if (parentPairGroups.size > 1) {
+      preventSiblingOverlaps(sorted_siblings, main, node_separation, x_range, main_sorted_index)
+    } else {
+      // Single group - use original positioning logic
+      for (let i = 0; i < sorted_siblings.length; i++) {
+        if (i === main_sorted_index) continue
+        const sib = sorted_siblings[i]
+        if (i < main_sorted_index) {
+          sib.x = (x_range[0] ?? 0) - node_separation*(main_sorted_index - i)
+        } else {
+          sib.x = (x_range[1] ?? 0) + node_separation*(i - main_sorted_index)
+        }
+      }
+    }
   }
 }
