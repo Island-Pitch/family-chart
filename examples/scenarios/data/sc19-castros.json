@@ -1,0 +1,667 @@
+[
+  {
+    "id": "daniel-castro",
+    "main": true,
+    "data": {
+      "first_name": "Daniel",
+      "last_name": "Castro",
+      "preferred_name": "Daniel",
+      "gender": "M",
+      "birthday": "1978-03-15",
+      "birth_place": "New York, NY",
+      "bio": "Daniel Castro is a successful entrepreneur and patent attorney who founded Airluum, a technology company focused on family history and genealogy. Born in New York to immigrant parents from Peru and Uruguay, Daniel was raised in East Los Angeles where he attended Garfield High School and excelled in both academics and athletics, playing football and baseball. He earned a BS in Electrical Engineering and a Master's in Computer Science from MIT, followed by a law degree from UC Berkeley. After 15 years as a patent attorney at Loza and Loza, he founded Airluum to help families preserve and share their stories. Daniel is passionate about literature, particularly the works of Gabriel Garcia Marquez, and is a devoted fan of the Yankees and Green Bay Packers.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Founder & CEO",
+      "employer": "Airluum",
+      "email": "daniel.castro@airluum.com",
+      "phone": "(559) 555-1901",
+      "address": "1234 Innovation Drive, Fresno, CA 93710",
+      "work_entries": [
+        {
+          "title": "Founder & CEO",
+          "organization": "Airluum",
+          "from_year": 2020,
+          "to_year": null,
+          "description": "Founded and lead technology company focused on family history and genealogy. Develop product strategy, manage team, and drive company growth."
+        },
+        {
+          "title": "Patent Attorney",
+          "organization": "Loza and Loza",
+          "from_year": 2005,
+          "to_year": 2020,
+          "description": "Specialized in patent law, represented clients in patent applications and litigation. Focused on technology and software patents. Built strong reputation in intellectual property law."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Juris Doctor (JD)",
+          "institution": "University of California, Berkeley",
+          "from_year": 2002,
+          "to_year": 2005,
+          "description": "Earned law degree with focus on intellectual property and patent law. Member of the Intellectual Property Law Society."
+        },
+        {
+          "title": "Master of Science in Computer Science",
+          "institution": "Massachusetts Institute of Technology",
+          "from_year": 2000,
+          "to_year": 2002,
+          "description": "Earned master's degree with focus on software engineering and artificial intelligence. Research in machine learning applications."
+        },
+        {
+          "title": "Bachelor of Science in Electrical Engineering",
+          "institution": "Massachusetts Institute of Technology",
+          "from_year": 1996,
+          "to_year": 2000,
+          "description": "Graduated with honors. Focused on electrical engineering and computer science. Played intramural sports."
+        },
+        {
+          "title": "High School Diploma",
+          "institution": "Garfield High School, East Los Angeles",
+          "from_year": 1992,
+          "to_year": 1996,
+          "description": "Graduated with honors. Played varsity football and baseball. Member of National Honor Society."
+        }
+      ],
+      "social_media": [
+        {
+          "platform": "LinkedIn",
+          "url": "https://linkedin.com/in/danielcastro"
+        },
+        {
+          "platform": "Twitter",
+          "url": "https://twitter.com/danielcastro"
+        }
+      ]
+    },
+    "rels": {
+      "spouses": [
+        "maria-castro"
+      ],
+      "children": [
+        "gabriel-castro",
+        "camila-castro",
+        "marcos-castro"
+      ],
+      "siblings": [
+        "alva-castro"
+      ],
+      "parents": [
+        "alvaro-castro",
+        "daniela-castro"
+      ]
+    }
+  },
+  {
+    "id": "maria-castro",
+    "data": {
+      "first_name": "Maria",
+      "last_name": "Castro",
+      "preferred_name": "Maria",
+      "gender": "F",
+      "birthday": "1980-07-22",
+      "birth_place": "Fresno, CA",
+      "bio": "Maria is a dedicated mother and marketing professional who balances her career with raising three children, including her stepson Marcos whom she considers her own. Born in California, Maria brings warmth and creativity to everything she does. She works as a marketing director for a local technology company, where she develops brand strategies and manages marketing campaigns. Maria is passionate about family, art, and community involvement. She enjoys cooking traditional Latin American dishes, attending art galleries, and volunteering at her children's school.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Marketing Director",
+      "employer": "Central Valley Tech Solutions",
+      "email": "maria.castro@email.com",
+      "phone": "(559) 555-1902",
+      "address": "1234 Innovation Drive, Fresno, CA 93710",
+      "work_entries": [
+        {
+          "title": "Marketing Director",
+          "organization": "Central Valley Tech Solutions",
+          "from_year": 2015,
+          "to_year": null,
+          "description": "Lead marketing initiatives, develop brand strategies, manage marketing team, and oversee digital marketing campaigns."
+        },
+        {
+          "title": "Senior Marketing Manager",
+          "organization": "Fresno Marketing Group",
+          "from_year": 2010,
+          "to_year": 2015,
+          "description": "Developed and executed marketing campaigns, managed client relationships, and analyzed market trends."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Bachelor of Arts in Marketing",
+          "institution": "California State University, Fresno",
+          "from_year": 1998,
+          "to_year": 2002,
+          "description": "Graduated with honors. Focused on marketing, advertising, and consumer behavior."
+        }
+      ],
+      "social_media": [
+        {
+          "platform": "LinkedIn",
+          "url": "https://linkedin.com/in/mariacastro"
+        },
+        {
+          "platform": "Instagram",
+          "url": "https://instagram.com/mariacastro"
+        }
+      ]
+    },
+    "rels": {
+      "spouses": [
+        "daniel-castro"
+      ],
+      "children": [
+        "gabriel-castro",
+        "camila-castro",
+        "marcos-castro"
+      ]
+    }
+  },
+  {
+    "id": "gabriel-castro",
+    "data": {
+      "first_name": "Gabriel",
+      "last_name": "Castro",
+      "preferred_name": "Gabriel",
+      "gender": "M",
+      "birthday": "2019-06-10",
+      "birth_place": "Fresno, CA",
+      "bio": "Gabriel is a bright and energetic 5-year-old who brings joy and laughter to the Castro family. He loves playing with his younger sister Camila and looks up to his older brother Marcos. Gabriel enjoys building with LEGOs, playing soccer, and reading books with his parents. He has a curious mind and asks lots of questions about the world around him. Gabriel is named after his father's favorite author, Gabriel Garcia Marquez, reflecting the family's love of literature.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Student",
+      "employer": null,
+      "email": null,
+      "phone": null,
+      "address": "1234 Innovation Drive, Fresno, CA 93710",
+      "work_entries": [],
+      "education_entries": [
+        {
+          "title": "Kindergarten",
+          "institution": "Fresno Elementary School",
+          "from_year": 2024,
+          "to_year": 2025,
+          "description": "Currently attending kindergarten, learning letters, numbers, and social skills."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "daniel-castro",
+        "maria-castro"
+      ],
+      "siblings": [
+        "camila-castro",
+        "marcos-castro"
+      ]
+    }
+  },
+  {
+    "id": "camila-castro",
+    "data": {
+      "first_name": "Camila",
+      "last_name": "Castro",
+      "preferred_name": "Camila",
+      "gender": "F",
+      "birthday": "2022-09-15",
+      "birth_place": "Fresno, CA",
+      "bio": "Camila is a happy and playful 2-year-old who is the youngest member of the Castro family. She adores her older brothers Gabriel and Marcos and loves to follow them around and copy everything they do. Camila enjoys playing with dolls, dancing to music, and being read to by her parents. She has a sweet personality and brings endless smiles to her family. Camila is growing up in a bilingual household, learning both English and Spanish.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Toddler",
+      "employer": null,
+      "email": null,
+      "phone": null,
+      "address": "1234 Innovation Drive, Fresno, CA 93710",
+      "work_entries": [],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "daniel-castro",
+        "maria-castro"
+      ],
+      "siblings": [
+        "gabriel-castro",
+        "marcos-castro"
+      ]
+    }
+  },
+  {
+    "id": "marcos-castro",
+    "data": {
+      "first_name": "Marcos",
+      "last_name": "Castro",
+      "preferred_name": "Marcos",
+      "gender": "M",
+      "birthday": "2003-05-24",
+      "birth_place": "Santa Barbara, CA",
+      "bio": "Marcos is a thoughtful and mature 21-year-old who is the oldest child in the Castro family. Although he was born from Daniel's previous relationship, he considers Maria to be his mother and has a strong bond with his entire family. Marcos is currently studying computer science at a local university, following in his father's footsteps in technology. He is passionate about software development and enjoys working on coding projects in his spare time. Marcos is a caring older brother to Gabriel and Camila, often helping with homework and playing games with them.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Student",
+      "employer": null,
+      "email": "marcos.castro@email.com",
+      "phone": "(559) 555-1903",
+      "address": "1234 Innovation Drive, Fresno, CA 93710",
+      "work_entries": [
+        {
+          "title": "Software Development Intern",
+          "organization": "Airluum",
+          "from_year": 2023,
+          "to_year": null,
+          "description": "Part-time internship developing software features, learning from experienced developers, and contributing to product development."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Bachelor of Science in Computer Science",
+          "institution": "California State University, Fresno",
+          "from_year": 2021,
+          "to_year": 2025,
+          "description": "Currently pursuing degree in computer science. Expected graduation 2025. Focus on software engineering and web development."
+        },
+        {
+          "title": "High School Diploma",
+          "institution": "Fresno High School",
+          "from_year": 2017,
+          "to_year": 2021,
+          "description": "Graduated with honors. Participated in computer science club and robotics team."
+        }
+      ],
+      "social_media": [
+        {
+          "platform": "LinkedIn",
+          "url": "https://linkedin.com/in/marcoscastro"
+        },
+        {
+          "platform": "GitHub",
+          "url": "https://github.com/marcoscastro"
+        }
+      ]
+    },
+    "rels": {
+      "parents": [
+        "daniel-castro",
+        "maria-castro"
+      ],
+      "siblings": [
+        "gabriel-castro",
+        "camila-castro"
+      ]
+    }
+  },
+  {
+    "id": "alva-castro",
+    "data": {
+      "first_name": "Alva",
+      "last_name": "Gonzalez",
+      "preferred_name": "Alva",
+      "gender": "F",
+      "birthday": "1976-05-10",
+      "birth_place": "New York, NY",
+      "bio": "Alva is Daniel's older sister, a successful architect who has made her mark in the design world. Born in New York like her brother, Alva moved to California where she met and married Alex Gonzalez. She is a devoted mother to her two sons, Alex and Adrian, and balances her demanding career with family life. Alva is known for her creativity, her attention to detail, and her ability to design beautiful and functional spaces. She enjoys traveling, visiting art museums, and spending time with her extended family.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Architect",
+      "employer": "Gonzalez Architecture Studio",
+      "email": "alva.gonzalez@email.com",
+      "phone": "(559) 555-1904",
+      "address": "5678 Design Avenue, Fresno, CA 93710",
+      "work_entries": [
+        {
+          "title": "Principal Architect",
+          "organization": "Gonzalez Architecture Studio",
+          "from_year": 2010,
+          "to_year": null,
+          "description": "Lead architectural projects, design residential and commercial buildings, manage client relationships, and oversee design team."
+        },
+        {
+          "title": "Senior Architect",
+          "organization": "California Design Group",
+          "from_year": 2005,
+          "to_year": 2010,
+          "description": "Designed buildings, created architectural drawings, and coordinated with construction teams."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Master of Architecture",
+          "institution": "University of California, Berkeley",
+          "from_year": 2000,
+          "to_year": 2003,
+          "description": "Earned master's degree in architecture with focus on sustainable design and urban planning."
+        },
+        {
+          "title": "Bachelor of Arts in Architecture",
+          "institution": "New York University",
+          "from_year": 1994,
+          "to_year": 1998,
+          "description": "Graduated with honors. Focused on architectural design and history."
+        }
+      ],
+      "social_media": [
+        {
+          "platform": "LinkedIn",
+          "url": "https://linkedin.com/in/alvagonzalez"
+        }
+      ]
+    },
+    "rels": {
+      "spouses": [
+        "alex-gonzalez"
+      ],
+      "children": [
+        "alex-gonzalez-jr",
+        "adrian-gonzalez"
+      ],
+      "siblings": [
+        "daniel-castro"
+      ],
+      "parents": [
+        "alvaro-castro",
+        "daniela-castro"
+      ]
+    }
+  },
+  {
+    "id": "alex-gonzalez",
+    "data": {
+      "first_name": "Alex",
+      "last_name": "Gonzalez",
+      "preferred_name": "Alex",
+      "gender": "M",
+      "birthday": "1975-08-20",
+      "birth_place": "Los Angeles, CA",
+      "bio": "Alex is a talented architect and business partner to his wife Alva. Together they run Gonzalez Architecture Studio, where they combine their creative talents to design innovative buildings. Alex is a devoted father to his two sons and enjoys spending time with his extended family, including his brother-in-law Daniel. He is passionate about sustainable architecture and has won several awards for his eco-friendly designs. Alex enjoys playing soccer, reading architecture magazines, and traveling to see famous buildings around the world.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Architect",
+      "employer": "Gonzalez Architecture Studio",
+      "email": "alex.gonzalez@email.com",
+      "phone": "(559) 555-1905",
+      "address": "5678 Design Avenue, Fresno, CA 93710",
+      "work_entries": [
+        {
+          "title": "Principal Architect",
+          "organization": "Gonzalez Architecture Studio",
+          "from_year": 2010,
+          "to_year": null,
+          "description": "Co-founded architecture studio with wife Alva. Lead design projects, manage business operations, and develop sustainable building solutions."
+        },
+        {
+          "title": "Architect",
+          "organization": "Pacific Design Associates",
+          "from_year": 2003,
+          "to_year": 2010,
+          "description": "Designed buildings, created architectural plans, and collaborated with engineering teams."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Master of Architecture",
+          "institution": "University of Southern California",
+          "from_year": 1997,
+          "to_year": 2000,
+          "description": "Earned master's degree in architecture with focus on sustainable design."
+        },
+        {
+          "title": "Bachelor of Science in Architecture",
+          "institution": "California State University, Los Angeles",
+          "from_year": 1993,
+          "to_year": 1997,
+          "description": "Graduated with honors. Focused on architectural design and construction."
+        }
+      ],
+      "social_media": [
+        {
+          "platform": "LinkedIn",
+          "url": "https://linkedin.com/in/alexgonzalez"
+        }
+      ]
+    },
+    "rels": {
+      "spouses": [
+        "alva-castro"
+      ],
+      "children": [
+        "alex-gonzalez-jr",
+        "adrian-gonzalez"
+      ]
+    }
+  },
+  {
+    "id": "alex-gonzalez-jr",
+    "data": {
+      "first_name": "Alex",
+      "last_name": "Gonzalez",
+      "preferred_name": "Alex",
+      "suffix": "Jr.",
+      "gender": "M",
+      "birthday": "2010-03-12",
+      "birth_place": "Fresno, CA",
+      "bio": "Alex Jr. is a bright and creative 14-year-old who is the older son of Alva and Alex Gonzalez. He shares his father's name and shows an early interest in architecture and design, often drawing buildings and creating models. Alex Jr. enjoys playing soccer, video games, and spending time with his cousins Gabriel, Camila, and Marcos. He is a good student who excels in math and art classes.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Student",
+      "employer": null,
+      "email": null,
+      "phone": null,
+      "address": "5678 Design Avenue, Fresno, CA 93710",
+      "work_entries": [],
+      "education_entries": [
+        {
+          "title": "8th Grade",
+          "institution": "Fresno Middle School",
+          "from_year": 2024,
+          "to_year": 2025,
+          "description": "Currently in 8th grade, excelling in math, science, and art classes."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "alva-castro",
+        "alex-gonzalez"
+      ],
+      "siblings": [
+        "adrian-gonzalez"
+      ]
+    }
+  },
+  {
+    "id": "adrian-gonzalez",
+    "data": {
+      "first_name": "Adrian",
+      "last_name": "Gonzalez",
+      "preferred_name": "Adrian",
+      "gender": "M",
+      "birthday": "2012-11-08",
+      "birth_place": "Fresno, CA",
+      "bio": "Adrian is an energetic and curious 12-year-old who is the younger son of Alva and Alex Gonzalez. He loves playing sports, especially soccer and basketball, and enjoys spending time with his older brother Alex and his cousins. Adrian is a good student who shows interest in science and technology. He has a friendly personality and makes friends easily.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Student",
+      "employer": null,
+      "email": null,
+      "phone": null,
+      "address": "5678 Design Avenue, Fresno, CA 93710",
+      "work_entries": [],
+      "education_entries": [
+        {
+          "title": "6th Grade",
+          "institution": "Fresno Middle School",
+          "from_year": 2024,
+          "to_year": 2025,
+          "description": "Currently in 6th grade, enjoying science, math, and physical education classes."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "alva-castro",
+        "alex-gonzalez"
+      ],
+      "siblings": [
+        "alex-gonzalez-jr"
+      ]
+    }
+  },
+  {
+    "id": "alvaro-castro",
+    "data": {
+      "first_name": "Alvaro",
+      "last_name": "Castro",
+      "preferred_name": "Alvaro",
+      "gender": "M",
+      "birthday": "1950-02-14",
+      "birth_place": "Lima, Peru",
+      "death_date": "2020-03-15",
+      "death_place": "Fresno, CA",
+      "deceased": true,
+      "bio": "Alvaro was a hardworking immigrant who came to the United States from Peru in search of better opportunities for his family. He worked as a factory worker and later as a construction supervisor, always providing for his wife Daniela and their children Alva and Daniel. Alvaro was known for his strong work ethic, his love of family, and his passion for soccer. He was proud of his Peruvian heritage and maintained close ties to his homeland. Alvaro passed away in 2020, leaving behind a legacy of hard work, dedication, and love for his family.",
+      "nationality": "American (Naturalized)",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "Spanish",
+        "English"
+      ],
+      "occupation": "Construction Supervisor (Retired)",
+      "employer": "Central Valley Construction",
+      "email": null,
+      "phone": null,
+      "address": null,
+      "work_entries": [
+        {
+          "title": "Construction Supervisor",
+          "organization": "Central Valley Construction",
+          "from_year": 1980,
+          "to_year": 2015,
+          "description": "Supervised construction projects, managed crews, and ensured quality standards. Known for leadership and attention to detail."
+        },
+        {
+          "title": "Factory Worker",
+          "organization": "Various Manufacturing Companies",
+          "from_year": 1970,
+          "to_year": 1980,
+          "description": "Worked in manufacturing, learned construction trades, and saved money to support family."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "High School Equivalent",
+          "institution": "Lima, Peru",
+          "from_year": 1964,
+          "to_year": 1968,
+          "description": "Completed secondary education in Peru before immigrating to the United States."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "daniela-castro"
+      ],
+      "children": [
+        "daniel-castro",
+        "alva-castro"
+      ]
+    }
+  },
+  {
+    "id": "daniela-castro",
+    "data": {
+      "first_name": "Daniela",
+      "last_name": "Castro",
+      "preferred_name": "Daniela",
+      "gender": "F",
+      "birthday": "1952-09-30",
+      "birth_place": "Montevideo, Uruguay",
+      "death_date": "2023-08-20",
+      "death_place": "Fresno, CA",
+      "deceased": true,
+      "bio": "Daniela was a loving mother and homemaker who dedicated her life to her family. She immigrated to the United States from Uruguay with her husband Alvaro, and together they built a beautiful life in America. Daniela was known for her delicious cooking, especially traditional Uruguayan and Peruvian dishes, her warm personality, and her unconditional love for her children and grandchildren. She was proud of her children's accomplishments and took great joy in being a grandmother. Daniela passed away in 2023, leaving behind cherished memories and a legacy of love and family values.",
+      "nationality": "American (Naturalized)",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "Spanish",
+        "English"
+      ],
+      "occupation": "Homemaker",
+      "employer": null,
+      "email": null,
+      "phone": null,
+      "address": null,
+      "work_entries": [],
+      "education_entries": [
+        {
+          "title": "High School Equivalent",
+          "institution": "Montevideo, Uruguay",
+          "from_year": 1966,
+          "to_year": 1970,
+          "description": "Completed secondary education in Uruguay before immigrating to the United States."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "alvaro-castro"
+      ],
+      "children": [
+        "daniel-castro",
+        "alva-castro"
+      ]
+    }
+  }
+]

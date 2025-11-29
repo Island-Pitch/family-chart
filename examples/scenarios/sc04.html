@@ -18,7 +18,7 @@
       background-color: #f5f5f5;
     }
     .container {
-      max-width: 1400px;
+      max-width: 1600px;
       margin: 0 auto;
       padding: 20px;
     }
@@ -28,6 +28,9 @@
       margin-bottom: 20px;
       border-radius: 8px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
     .nav a {
       color: #03a9f4;
@@ -40,61 +43,217 @@
     .nav a:hover {
       background: #e3f2fd;
     }
-    .content {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-      margin-bottom: 20px;
+    .nav-links {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
     }
-    @media (max-width: 1200px) {
-      .content {
-        grid-template-columns: 1fr;
-      }
+    .nav-links a {
+      white-space: nowrap;
     }
-    .panel {
+    
+    /* Tree Section - Full Width with Full Height */
+    .tree-section {
       background: white;
-      padding: 20px;
+      padding: 0;
       border-radius: 8px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+      position: relative;
+      height: calc(100vh - 200px);
+      min-height: 600px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
     }
-    .panel h2 {
-      margin-top: 0;
-      color: #333;
+    .tree-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
       border-bottom: 2px solid #03a9f4;
-      padding-bottom: 10px;
+      flex-shrink: 0;
+      background: white;
+      z-index: 10;
+    }
+    .tree-header h2 {
+      margin: 0;
+      color: #333;
+      font-size: 1.2em;
+    }
+    #FamilyChart {
+      flex: 1;
+      width: 100%;
+      height: 100%;
+      min-height: 0;
+      background-color: #ffffff;
+      border: none;
+      border-radius: 0;
+      overflow: hidden;
+    }
+    
+    /* Scenario Text - Fixed in Corner */
+    .scenario-text-corner {
+      position: fixed;
+      top: 80px;
+      right: 20px;
+      width: 350px;
+      max-height: calc(100vh - 120px);
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .scenario-text-header {
+      padding: 12px 15px;
+      border-bottom: 2px solid #03a9f4;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #f9f9f9;
+      flex-shrink: 0;
+    }
+    .scenario-text-header h3 {
+      margin: 0;
+      color: #333;
+      font-size: 1em;
+      font-weight: 600;
+    }
+    .scenario-text-toggle {
+      background: transparent;
+      border: none;
+      font-size: 18px;
+      color: #666;
+      cursor: pointer;
+      padding: 0;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+      transition: background 0.2s;
+    }
+    .scenario-text-toggle:hover {
+      background: #e0e0e0;
+      color: #333;
+    }
+    .scenario-text-body {
+      padding: 15px;
+      overflow-y: auto;
+      flex: 1;
     }
     .scenario-text {
       white-space: pre-wrap;
       font-family: 'Courier New', monospace;
       background: #f9f9f9;
-      padding: 15px;
+      padding: 12px;
       border-radius: 4px;
       border-left: 4px solid #03a9f4;
-    }
-    .json-data {
-      max-height: 400px;
-      overflow-y: auto;
-      font-family: 'Courier New', monospace;
       font-size: 12px;
-      background: #f9f9f9;
-      padding: 15px;
-      border-radius: 4px;
-      border-left: 4px solid #4caf50;
+      line-height: 1.5;
+      color: #333;
+      margin: 0;
     }
-    .tree-container {
-      grid-column: 1 / -1;
+    .scenario-text-corner.collapsed {
+      width: auto;
+      height: auto;
+    }
+    .scenario-text-corner.collapsed .scenario-text-body {
+      display: none;
+    }
+    .scenario-text-corner.collapsed .scenario-text-header {
+      border-bottom: none;
+    }
+    
+    /* JSON Section - Below Tree */
+    .json-section {
       background: white;
       padding: 20px;
       border-radius: 8px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
-    #FamilyChart {
-      width: 100%;
-      height: 800px;
-      background-color: #ffffff;
-      border: 1px solid #ddd;
-      border-radius: 4px;
+    .json-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #4caf50;
     }
+    .json-header h2 {
+      margin: 0;
+      color: #333;
+      font-size: 1.2em;
+    }
+    .json-toggle {
+      background: #4caf50;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: background 0.2s;
+    }
+    .json-toggle:hover {
+      background: #45a049;
+    }
+    .json-content {
+      font-family: 'Courier New', monospace;
+      font-size: 11px;
+      background: #f9f9f9;
+      padding: 15px;
+      border-radius: 4px;
+      border-left: 4px solid #4caf50;
+      line-height: 1.4;
+      max-height: 600px;
+      overflow-y: auto;
+      white-space: pre;
+      color: #333;
+    }
+    .json-content.collapsed {
+      display: none;
+    }
+    
+    .loading {
+      color: #666;
+      font-style: italic;
+      text-align: center;
+      padding: 20px;
+    }
+    .error {
+      color: #d32f2f;
+      background: #ffebee;
+      padding: 15px;
+      border-radius: 4px;
+      border-left: 4px solid #d32f2f;
+    }
+    
+      @media (max-width: 1024px) {
+      .tree-section {
+        height: calc(100vh - 180px);
+        min-height: 500px;
+      }
+      .scenario-text-corner {
+        width: 300px;
+        top: 70px;
+        right: 10px;
+        max-height: calc(100vh - 100px);
+      }
+    }
+    @media (max-width: 768px) {
+      .scenario-text-corner {
+        width: 280px;
+        font-size: 11px;
+      }
+    }
+    
     /* Figma-Aligned Card Styling */
     .f3 div.card {
       cursor: pointer;
@@ -223,10 +382,10 @@
     .f3 div.card.card-genderless .card-avatar {
       border-color: #d1d1d6 !important;
     }
-    .f3 div.card-main .card-avatar {
+    .f3 div.card.card-main .card-avatar {
       box-shadow: 0 0 20px 8px rgba(147, 51, 234, 0.6), 0 0 40px 12px rgba(147, 51, 234, 0.4);
     }
-    .f3 div.card-main .card-label {
+    .f3 div.card.card-main .card-label {
       box-shadow: 0 0 15px 6px rgba(147, 51, 234, 0.5), 0 0 30px 10px rgba(147, 51, 234, 0.3);
     }
     .f3 div.card:hover .card-avatar {
@@ -234,7 +393,7 @@
       transition: transform 0.2s ease-in-out;
       box-shadow: -8px 4px 8px 0px rgba(0,0,0,0.35);
     }
-    .f3 div.card-main:hover .card-avatar {
+    .f3 div.card.card-main:hover .card-avatar {
       box-shadow: 0 0 25px 10px rgba(147, 51, 234, 0.7), 0 0 50px 15px rgba(147, 51, 234, 0.5);
     }
     .f3 div.card:hover .card-label {
@@ -243,7 +402,7 @@
       box-shadow: -8px 4px 8px 0px rgba(0,0,0,0.35);
       transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
     }
-    .f3 div.card-main:hover .card-label {
+    .f3 div.card.card-main:hover .card-label {
       box-shadow: 0 0 20px 8px rgba(147, 51, 234, 0.6), 0 0 40px 12px rgba(147, 51, 234, 0.4);
     }
     .f3 div.card > div {
@@ -279,30 +438,46 @@
   <div class="container">
     <div class="nav">
       <a href="index.html">← Back to Scenarios</a>
-      <span id="nav-links"></span>
+      <span class="nav-links" id="nav-links"></span>
     </div>
     
-    <div class="content">
-      <div class="panel">
-        <h2>Scenario Text</h2>
-        <div class="scenario-text" id="scenario-text">Loading...</div>
+    <!-- Tree Section - Full Width -->
+    <div class="tree-section">
+      <div class="tree-header">
+        <h2>Family Tree</h2>
       </div>
-      
-      <div class="panel">
-        <h2>JSON Data</h2>
-        <div class="json-data" id="json-data">Loading...</div>
-      </div>
-    </div>
-    
-    <div class="tree-container">
-      <h2>Family Tree Visualization</h2>
       <div id="FamilyChart" class="f3"></div>
+    </div>
+    
+    <!-- Scenario Text - Fixed in Corner -->
+    <div class="scenario-text-corner" id="scenario-text-corner">
+      <div class="scenario-text-header">
+        <h3>Scenario Text</h3>
+        <button class="scenario-text-toggle" id="text-toggle" aria-label="Toggle text">−</button>
+      </div>
+      <div class="scenario-text-body">
+        <div class="scenario-text" id="scenario-text">
+          <div class="loading">Loading scenario text...</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- JSON Section - Below Tree -->
+    <div class="json-section">
+      <div class="json-header">
+        <h2>Source Data (JSON)</h2>
+        <button class="json-toggle" id="json-toggle">Toggle JSON</button>
+      </div>
+      <div class="json-content" id="json-data">
+        <div class="loading">Loading JSON data...</div>
+      </div>
     </div>
   </div>
 
+
   <script type="module">
     import f3 from '../../src/index.ts';
-    import { transformScenarioData, createCardRenderer, createStepsiblingModifier } from '../../src/utils/family-chart-utils.js';
+    import { transformScenarioData, createCardRenderer, createStepsiblingModifier, configureChartSpacing, DEFAULT_CHART_SPACING } from '../../src/utils/family-chart-utils.js';
     import { initializeAdvancedDecorations } from '../../src/utils/family-chart-decorations.js';
     import { extendChart } from '../../src/utils/chart-extensions.js';
 
@@ -311,52 +486,80 @@
     const JSON_FILE = 'sc04-francine.json';
     const SNIPPET_FILE = 'sc04-Francine.txt';
 
-    // Load scenario text
-    // Docs folder is served as publicDir, so path is: /Scenarios/snippet/
-    fetch(`/Scenarios/snippet/${SNIPPET_FILE}`)
-      .then(res => {
-        if (!res.ok) {
-          console.error('Failed to fetch snippet:', res.status, res.statusText, res.url);
-          throw new Error(`HTTP ${res.status}: ${res.statusText}`);
-        }
-        return res.text();
-      })
-      .then(text => {
-        document.getElementById('scenario-text').textContent = text;
-      })
-      .catch(err => {
-        document.getElementById('scenario-text').textContent = 'Error loading scenario text: ' + err.message;
-        console.error('Error loading snippet:', err);
-      });
+    // Scenario text corner toggle
+    const textCorner = document.getElementById('scenario-text-corner');
+    const textToggle = document.getElementById('text-toggle');
+    const jsonToggle = document.getElementById('json-toggle');
+    const jsonContent = document.getElementById('json-data');
 
-    // Load and display JSON data
-    // Docs folder is served as publicDir, so path is: /Scenarios/json/
-    fetch(`/Scenarios/json/${JSON_FILE}`)
-      .then(res => {
-        if (!res.ok) {
-          console.error('Failed to fetch JSON:', res.status, res.statusText, res.url);
-          throw new Error(`HTTP ${res.status}: ${res.statusText}`);
-        }
-        return res.json();
-      })
-      .then(data => {
+    let textExpanded = true;
+    textToggle.addEventListener('click', () => {
+      textExpanded = !textExpanded;
+      if (textExpanded) {
+        textCorner.classList.remove('collapsed');
+        textToggle.textContent = '−';
+      } else {
+        textCorner.classList.add('collapsed');
+        textToggle.textContent = '+';
+      }
+    });
+
+    // JSON toggle functionality
+    let jsonExpanded = true;
+    jsonToggle.addEventListener('click', () => {
+      jsonExpanded = !jsonExpanded;
+      if (jsonExpanded) {
+        jsonContent.classList.remove('collapsed');
+        jsonToggle.textContent = 'Collapse JSON';
+      } else {
+        jsonContent.classList.add('collapsed');
+        jsonToggle.textContent = 'Expand JSON';
+      }
+    });
+
+    // Load scenario text and JSON in parallel for faster loading
+    const loadScenario = async () => {
+      const [snippetRes, jsonRes] = await Promise.allSettled([
+        fetch(`/Scenarios/snippet/${SNIPPET_FILE}`),
+        fetch(`./data/${JSON_FILE}`)
+      ]);
+
+      // Handle snippet loading
+      if (snippetRes.status === 'fulfilled' && snippetRes.value.ok) {
+        const text = await snippetRes.value.text();
+        document.getElementById('scenario-text').textContent = text;
+      } else {
+        const errorMsg = snippetRes.status === 'rejected' 
+          ? snippetRes.reason.message 
+          : `HTTP ${snippetRes.value.status}: ${snippetRes.value.statusText}`;
+        document.getElementById('scenario-text').innerHTML = 
+          `<div class="error">Error loading scenario text: ${errorMsg}</div>`;
+        console.error('Error loading snippet:', snippetRes);
+      }
+
+      // Handle JSON loading
+      if (jsonRes.status === 'fulfilled' && jsonRes.value.ok) {
+        const data = await jsonRes.value.json();
         document.getElementById('json-data').textContent = JSON.stringify(data, null, 2);
-        return data;
-      })
-      .then(data => {
         const transformed = transformScenarioData(data);
         createChart(transformed);
-      })
-      .catch(err => {
-        document.getElementById('json-data').textContent = 'Error loading JSON: ' + err.message;
-        console.error('Error loading scenario data:', err);
-      });
+      } else {
+        const errorMsg = jsonRes.status === 'rejected'
+          ? jsonRes.reason.message
+          : `HTTP ${jsonRes.value.status}: ${jsonRes.value.statusText}`;
+        document.getElementById('json-data').innerHTML = 
+          `<div class="error">Error loading JSON: ${errorMsg}</div>`;
+        console.error('Error loading JSON:', jsonRes);
+      }
+    };
+
+    loadScenario();
 
     function createChart(data) {
-      let f3Chart = f3.createChart('#FamilyChart', data)
-        .setTransitionTime(1000)
-        .setCardXSpacing(200)
-        .setCardYSpacing(180);
+      let f3Chart = f3.createChart('#FamilyChart', data);
+      
+      // Configure spacing using shared utility
+      f3Chart = configureChartSpacing(f3Chart);
 
       f3Chart.setCardHtml()
         .setOnCardUpdate(createCardRenderer(f3Chart)());
@@ -365,15 +568,12 @@
       f3Chart.setShowSiblingsOfMain(true);
 
       // Enable showing stepsiblings (children of step-parents) by using modifyTreeHierarchy
-      // This adds stepsiblings to the tree after it's calculated
       f3Chart.setModifyTreeHierarchy(createStepsiblingModifier(data));
 
       // Enable showing stepsiblings (children of step-parents) by increasing progeny depth
-      // This shows more generations, which includes stepsiblings when step-parents are present
-      f3Chart.setProgenyDepth(10);
+      f3Chart.setProgenyDepth(DEFAULT_CHART_SPACING.progenyDepth);
 
       // Apply tree extensions (spouses of ancestry nodes, stepsibling parent links)
-      // This extends the tree calculation without modifying core library files
       f3Chart = extendChart(f3Chart);
 
       // Initialize advanced decoration system (relationship decorations, chained links, adoption styling)
@@ -388,7 +588,7 @@
       f3Chart.updateTree({ initial: true });
     }
 
-    // Navigation links
+    // Navigation links - all 25 scenarios
     const scenarios = [
       { id: 'sc01', name: 'Marcos' },
       { id: 'sc02', name: 'Eddie' },
@@ -401,7 +601,21 @@
       { id: 'sc08', name: 'Toni' },
       { id: 'sc09', name: 'Rafael' },
       { id: 'sc10', name: 'Cindy' },
-      { id: 'sc11', name: 'Michael' }
+      { id: 'sc11', name: 'Michael' },
+      { id: 'sc12', name: 'Betty' },
+      { id: 'sc13', name: 'Clyde' },
+      { id: 'sc14', name: 'Stephanie' },
+      { id: 'sc15', name: 'Paul' },
+      { id: 'sc16', name: 'Pam' },
+      { id: 'sc17', name: 'Alec' },
+      { id: 'sc18', name: 'Vince' },
+      { id: 'sc19', name: 'The Castros' },
+      { id: 'sc20', name: 'Roberta' },
+      { id: 'sc21', name: 'Lori' },
+      { id: 'sc22', name: 'Samantha' },
+      { id: 'sc23', name: 'Jason' },
+      { id: 'sc24', name: 'Liz' },
+      { id: 'sc25', name: 'Henry XIII' }
     ];
 
     const currentIndex = scenarios.findIndex(s => s.id === SCENARIO_ID);

@@ -6,6 +6,31 @@
 import * as d3 from "d3";
 
 /**
+ * Default chart spacing configuration
+ * Used across all scenarios and components for consistent spacing
+ */
+export const DEFAULT_CHART_SPACING = {
+  cardXSpacing: 280, // Horizontal spacing between nodes (increased from 200 to prevent grandparent overlaps)
+  cardYSpacing: 180, // Vertical spacing between levels
+  transitionTime: 1000, // Animation transition time in milliseconds
+  progenyDepth: 10, // Maximum depth to show descendants
+};
+
+/**
+ * Configure chart with default spacing and settings
+ * @param {Object} f3Chart - The f3 chart instance
+ * @param {Object} options - Optional overrides for spacing
+ * @returns {Object} The configured chart instance
+ */
+export function configureChartSpacing(f3Chart, options = {}) {
+  const spacing = { ...DEFAULT_CHART_SPACING, ...options };
+  return f3Chart
+    .setTransitionTime(spacing.transitionTime)
+    .setCardXSpacing(spacing.cardXSpacing)
+    .setCardYSpacing(spacing.cardYSpacing);
+}
+
+/**
  * Normalize gender values to M, F, or NB
  */
 export function normalizeGender(gender) {
@@ -71,14 +96,31 @@ export function getGenderClass(gender) {
 
 /**
  * Transform scenario JSON format to family-chart format
+ * Handles both array format: [{...}] and object format: { treeData: [{...}] }
  */
 export function transformScenarioData(scenarioData) {
-  const transformed = scenarioData.treeData.map(person => {
+  // Handle both array format and object format with treeData property
+  const treeDataArray = Array.isArray(scenarioData) 
+    ? scenarioData 
+    : (scenarioData.treeData || []);
+  
+  if (!Array.isArray(treeDataArray)) {
+    console.error('[transformScenarioData] Invalid data format:', scenarioData);
+    return [];
+  }
+  
+  const transformed = treeDataArray.map(person => {
     const personData = person.data?.data || person.data || {};
     const rels = person.rels || person.data?.rels || {};
     
+    // Normalize field names - handle both "first name" and "first_name" formats
+    const firstName = personData.first_name || personData["first name"] || '';
+    const lastName = personData.last_name || personData["last name"] || '';
+    const preferredName = personData.preferred_name || personData["preferred name"] || '';
+    const fullName = personData.full_name || 
+                     (firstName && lastName ? `${firstName} ${lastName}` : firstName || lastName || 'Unknown');
+    
     // Generate initials from full_name
-    const fullName = personData.full_name || personData.first_name || 'Unknown';
     const initials = generateInitials(fullName);
     
     // Build parents array from father/mother if needed
@@ -116,16 +158,17 @@ export function transformScenarioData(scenarioData) {
       main: person.main || false,
       data: {
         gender: gender,
-        "first name": personData.first_name || fullName.split(/\s+/)[0] || 'Unknown',
-        "last name": personData.last_name || (fullName.split(/\s+/).length > 1 ? fullName.split(/\s+/).slice(1).join(' ') : ''),
-        "full_name": fullName,
+        first_name: firstName || fullName.split(/\s+/)[0] || 'Unknown',
+        last_name: lastName || (fullName.split(/\s+/).length > 1 ? fullName.split(/\s+/).slice(1).join(' ') : ''),
+        preferred_name: preferredName,
+        full_name: fullName,
         deceased: deceased,
         death_date: deathDate || null,
-        "label": fullName,
-        "initials": initials,
-        "relationshipStatuses": relationshipStatuses,
-        "avatar": personData.avatar || personData.avatarUrl || personData.image || null,
-        "adopted": adopted
+        label: fullName,
+        initials: initials,
+        relationshipStatuses: relationshipStatuses,
+        avatar: personData.avatar || personData.avatarUrl || personData.image || null,
+        adopted: adopted
       },
       rels: {
         spouses: rels.spouses || [],
@@ -150,157 +193,18 @@ export function transformScenarioData(scenarioData) {
     }
   });
   
-  // Add stepsiblings to siblings arrays AND make them share a virtual parent
-  // Stepsiblings are children of step-parents (all spouses - current AND past - of one's parent)
-  // To make the library detect them as siblings, we add the step-parent to the parents array
-  transformed.forEach(person => {
-    const rels = person.rels || {};
-    const parents = rels.parents || [];
-    const allParentIds = new Set(parents);
-    
-    // Find stepsiblings: children of step-parents (all spouses of parents, current and past)
-    const stepsiblingIds = new Set();
-    const stepParentIds = new Set();
-    
-    allParentIds.forEach(parentId => {
-      const parent = transformed.find(p => p.id === parentId);
-      if (parent) {
-        const parentRels = parent.rels || {};
-        // Get ALL spouses (current and past) - the spouses array should include all
-        const parentSpouses = parentRels.spouses || [];
-        
-        // Also check for past partners in relationshipStatuses if available
-        const parentData = parent.data || {};
-        const relationshipStatuses = parentData.relationshipStatuses || {};
-        const pastPartnerIds = Object.keys(relationshipStatuses).filter(personId => {
-          const status = relationshipStatuses[personId];
-          return status && (
-            status.status === 'divorced' || 
-            status.status === 'separated' || 
-            status.status === 'widowed' ||
-            (status.status && status.status !== 'married' && status.status !== 'engaged')
-          );
-        });
-        
-        // Combine current/past spouses from spouses array and past partners from relationshipStatuses
-        const allPartners = new Set([...parentSpouses, ...pastPartnerIds]);
-        
-        // For each partner (current or past) of the parent, find their children
-        allPartners.forEach(partnerId => {
-          // Check if this partner is actually a step-parent (not a biological parent)
-          const isStepParent = !allParentIds.has(partnerId);
-          
-          if (isStepParent) {
-            stepParentIds.add(partnerId);
-            const stepParent = transformed.find(p => p.id === partnerId);
-            if (stepParent) {
-              const stepParentRels = stepParent.rels || {};
-              const stepParentChildren = stepParentRels.children || [];
-              
-              // Add step-parent's children as stepsiblings
-              // These are the children of all past partners (and current partners) of the parent
-              stepParentChildren.forEach(childId => {
-                if (childId !== person.id) { // Don't include self
-                  stepsiblingIds.add(childId);
-                }
-              });
-            }
-          }
-        });
-      }
-    });
-    
-    // Add stepsiblings to siblings array if not already present
-    // NOTE: We do NOT add step-parents to the parents array here
-    // This would break the tree layout (children would drop from wrong parents)
-    // Instead, we'll use modifyTreeHierarchy to add stepsiblings after the tree is built
-    if (stepsiblingIds.size > 0) {
-      if (!rels.siblings) rels.siblings = [];
-      const siblingsSet = new Set(rels.siblings);
-      stepsiblingIds.forEach(stepsibId => {
-        if (!siblingsSet.has(stepsibId)) {
-          rels.siblings.push(stepsibId);
-        }
-      });
-    }
-  });
-  
+  // Removed stepsibling logic - children display using base behavior only
   return transformed;
 }
 
 /**
- * Create a modifyTreeHierarchy function that adds stepsiblings to the tree
+ * Create a modifyTreeHierarchy function (no-op - base behavior only)
+ * Removed stepsibling logic - children display using base behavior
  */
 export function createStepsiblingModifier(allData) {
   return function modifyTreeHierarchy(tree, is_ancestry) {
-    if (is_ancestry) return; // Only modify progeny/main person side
-    
-    const main = tree.find(d => d.data && d.data.main);
-    if (!main) return;
-    
-    const mainId = main.data.id;
-    const mainPerson = allData.find(p => p.id === mainId);
-    if (!mainPerson) return;
-    
-    const mainRels = mainPerson.rels || {};
-    const mainParents = mainRels.parents || [];
-    const mainSiblings = mainRels.siblings || [];
-    
-    // Find stepsiblings from the siblings array (which we added in transformScenarioData)
-    // Stepsiblings are in the siblings array but don't share a parent
-    const stepsiblings = mainSiblings.filter(sibId => {
-      const sibling = allData.find(p => p.id === sibId);
-      if (!sibling) return false;
-      
-      // Check if already in tree (regular siblings are already added by setupSiblings)
-      const alreadyInTree = tree.find(d => d.data && d.data.id === sibId);
-      if (alreadyInTree) return false; // Already added, skip
-      
-      const siblingRels = sibling.rels || {};
-      const siblingParents = siblingRels.parents || [];
-      
-      // Check if this sibling shares any parents with main person
-      const sharesParent = mainParents.some(pId => siblingParents.includes(pId));
-      
-      // If they don't share a parent, they're a stepsibling
-      return !sharesParent;
-    });
-    
-    if (stepsiblings.length === 0) return;
-    
-    // Get the main person's parents in the tree
-    const mainParentsInTree = main.parents || [];
-    if (mainParentsInTree.length === 0) return;
-    
-    // Get node_separation from the tree context (estimate if not available)
-    const node_separation = 200; // Default spacing
-    
-    // Get existing siblings to calculate positioning
-    const existingSiblings = tree.filter(d => d.sibling && d.data && d.data.id !== mainId);
-    const main_x = main.x || 0;
-    const spouses_x = (main.spouses || []).map(d => d.x).filter(x => x !== undefined);
-    const siblings_x = existingSiblings.map(d => d.x).filter(x => x !== undefined);
-    const x_range = [main_x, ...spouses_x, ...siblings_x];
-    const max_x = x_range.length > 0 ? Math.max(...x_range) : main_x;
-    
-    // For each stepsibling, add them to the tree as siblings
-    stepsiblings.forEach((stepsibId, index) => {
-      const stepsibPerson = allData.find(p => p.id === stepsibId);
-      if (!stepsibPerson) return;
-      
-      // Create a tree node for the stepsibling
-      const stepsibNode = {
-        data: stepsibPerson,
-        sibling: true,
-        x: max_x + node_separation * (index + 1), // Position to the right of existing siblings
-        y: main.y,
-        depth: main.depth - 1,
-        parents: mainParentsInTree, // Use same parents as main for positioning
-        children: []
-      };
-      
-      tree.push(stepsibNode);
-    });
+    // No-op - base behavior only, no custom modifications
+    return;
   };
 }
 
@@ -435,6 +339,15 @@ export function drawSlash(group, center, baseAngle, slashAngle, offset, length, 
 }
 
 /**
+ * Shared debounce state for card clicks to prevent rapid-fire clicks
+ */
+const cardClickDebounce = {
+  timeouts: new Map(),
+  processing: new Set(),
+  lastClickTime: 0
+};
+
+/**
  * Create Card renderer function for family chart
  */
 export function createCardRenderer(f3Chart) {
@@ -482,6 +395,14 @@ export function createCardRenderer(f3Chart) {
       
       const hasAvatar = avatarUrl && typeof avatarUrl === 'string' && avatarUrl.trim() !== '' && avatarUrl !== 'null' && avatarUrl !== 'undefined';
       
+      // Store old click handler if it exists
+      const oldClickHandler = this._cardClickHandler;
+      
+      // Remove old click handler before updating
+      if (oldClickHandler) {
+        this.removeEventListener('click', oldClickHandler);
+      }
+      
       card.outerHTML = (`
       <div class="card ${genderClass} ${isMain ? 'card-main' : ''} ${isDeceased ? 'card-deceased' : ''}">
         <div class="card-avatar" style="border: 6px solid ${borderColor}; box-sizing: border-box;">
@@ -498,13 +419,55 @@ export function createCardRenderer(f3Chart) {
       </div>
       `);
       
-      this.addEventListener('click', e => {
-        if (f3Chart.cleanupDecorations) {
-          f3Chart.cleanupDecorations();
+      // Create debounced click handler
+      const clickHandler = (e) => {
+        e.stopPropagation();
+        
+        const now = Date.now();
+        const timeSinceLastClick = now - cardClickDebounce.lastClickTime;
+        
+        // Ignore clicks if one is already processing
+        if (cardClickDebounce.processing.has(personId)) {
+          return;
         }
-        f3Chart.updateMainId(d.data.id);
-        f3Chart.updateTree({});
-      });
+        
+        // Clear any existing timeout for this person
+        if (cardClickDebounce.timeouts.has(personId)) {
+          clearTimeout(cardClickDebounce.timeouts.get(personId));
+        }
+        
+        // Debounce: only process if enough time has passed since last click
+        const debounceDelay = timeSinceLastClick < 500 ? 200 : 50;
+        
+        const timeoutId = setTimeout(() => {
+          try {
+            cardClickDebounce.processing.add(personId);
+            cardClickDebounce.lastClickTime = Date.now();
+            
+            if (f3Chart.cleanupDecorations) {
+              f3Chart.cleanupDecorations();
+            }
+            f3Chart.updateMainId(d.data.id);
+            f3Chart.updateTree({});
+          } catch (err) {
+            console.error('[createCardRenderer] Error handling card click:', err);
+          } finally {
+            // Remove from processing set after a delay
+            setTimeout(() => {
+              cardClickDebounce.processing.delete(personId);
+              cardClickDebounce.timeouts.delete(personId);
+            }, 500);
+          }
+        }, debounceDelay);
+        
+        cardClickDebounce.timeouts.set(personId, timeoutId);
+      };
+      
+      // Store handler reference for cleanup
+      this._cardClickHandler = clickHandler;
+      
+      // Add click listener to the container element (this)
+      this.addEventListener('click', clickHandler);
     };
   };
 }

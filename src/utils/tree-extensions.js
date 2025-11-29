@@ -24,48 +24,207 @@ export function extendSpousesForAncestryNodes(
     if (spouses.length > 0) {
       if (one_level_rels && d.depth > 0) continue
       const side = d.data.data.gender === "M" ? -1 : 1;  // female on right
-      d.x += spouses.length/2*node_separation*side;
+      
+      // First pass: collect all spouses (existing and new)
+      const spouseNodes = []
+      const newSpouses = []
+      
       spouses.forEach((sp_id, i) => {
         // Check if spouse is already in tree
         const existingSpouse = tree.find(t => t.data.id === sp_id)
         if (existingSpouse) {
-          // Spouse already in tree (e.g., as a parent), link them
-          if (!d.spouses) d.spouses = []
-          if (!d.spouses.includes(existingSpouse)) {
-            d.spouses.push(existingSpouse)
+          // CRITICAL: Validate that this is actually a spouse, not a sibling or child
+          // Check that the found node's spouses array includes the current node, OR
+          // that the found node is in the current node's spouses array (already checked above)
+          const foundNodeSpouses = existingSpouse.data?.rels?.spouses || []
+          const foundNodeChildren = existingSpouse.data?.rels?.children || []
+          const foundNodeSiblings = existingSpouse.data?.rels?.siblings || []
+          const currentNodeId = d.data.id
+          
+          // CRITICAL: Check if this node is already a parent of the current node OR
+          // if it's already a parent of any of the current node's children
+          // If it's already a parent, we should link it as a spouse but NOT add it again
+          const currentNodeParents = d.data?.rels?.parents || []
+          const currentNodeChildren = d.data?.rels?.children || []
+          const isAlreadyParent = currentNodeParents.includes(sp_id)
+          // Check if this spouse is already a parent of any of Elena's children
+          const isParentOfChildren = currentNodeChildren.some(childId => {
+            const childNode = tree.find(t => t.data.id === childId)
+            if (!childNode) return false
+            const childParents = childNode.data?.rels?.parents || []
+            return childParents.includes(sp_id)
+          })
+          
+          // Debug logging for alfred-sr
+          if (sp_id === 'alfred-sr' && d.data.id === 'elena') {
+            console.log(`[extendSpousesForAncestryNodes] DEBUG alfred-sr for elena:`, {
+              isAlreadyParent,
+              isParentOfChildren,
+              currentNodeChildren,
+              willSkip: isAlreadyParent || isParentOfChildren,
+              willAddToSpouseNodes: !(isAlreadyParent || isParentOfChildren) && isActuallySpouse && !isSibling && !isChild
+            })
           }
-          // Set coparent relationship for ancestry nodes
-          if (d.is_ancestry && !d.coparent) {
-            d.coparent = existingSpouse
+          
+          // Verify this is actually a spouse relationship, not a sibling or child
+          const isActuallySpouse = foundNodeSpouses.includes(currentNodeId)
+          const isSibling = foundNodeSiblings.includes(currentNodeId)
+          const isChild = foundNodeChildren.includes(currentNodeId)
+          
+          // Only add if it's actually a spouse, not a sibling or child
+          // If it's already a parent (of current node or its children), we still link it as a spouse (coparent relationship)
+          if (isActuallySpouse && !isSibling && !isChild) {
+            // If it's already a parent (of current node or its children), just link it as coparent, don't add to spouseNodes
+            // (it's already positioned correctly as a parent)
+            if (isAlreadyParent || isParentOfChildren) {
+              // Link as coparent but don't reposition - it's already in the tree as a parent
+              if (d.is_ancestry && !d.coparent) {
+                d.coparent = existingSpouse
+              }
+              if (existingSpouse.is_ancestry && !existingSpouse.coparent) {
+                existingSpouse.coparent = d
+              }
+            } else {
+              // Not a parent, so add to spouseNodes for positioning
+              spouseNodes.push(existingSpouse)
+            }
+          } else {
+            // This is NOT a spouse - it's a sibling or child, so don't add it
+            console.warn(`[extendSpousesForAncestryNodes] Skipping ${sp_id} for ${d.data.id} - it's a ${isSibling ? 'sibling' : isChild ? 'child' : 'non-spouse'}, not a spouse`)
           }
-          if (existingSpouse.is_ancestry && !existingSpouse.coparent) {
-            existingSpouse.coparent = d
+        } else {
+          // Double-check the node isn't already in the tree (defensive check)
+          const alreadyInTree = tree.find(t => t.data.id === sp_id)
+          if (alreadyInTree) {
+            // Node is already in tree but wasn't found in first check - this shouldn't happen
+            // but if it does, link it as coparent if it's a parent
+            const currentNodeParents = d.data?.rels?.parents || []
+            const isAlreadyParent = currentNodeParents.includes(sp_id)
+            if (isAlreadyParent) {
+              if (d.is_ancestry && !d.coparent) {
+                d.coparent = alreadyInTree
+              }
+              if (alreadyInTree.is_ancestry && !alreadyInTree.coparent) {
+                alreadyInTree.coparent = d
+              }
+            }
+            console.warn(`[extendSpousesForAncestryNodes] Node ${sp_id} already in tree for ${d.data.id}, skipping duplicate add`)
+            return // Skip adding as new spouse
           }
-          return
+          
+          const spouseData = data_stash.find(d0 => d0.id === sp_id)
+          if (spouseData) {
+            // Validate the spouse data also has the reciprocal relationship
+            const spouseSpouses = spouseData.rels?.spouses || []
+            if (spouseSpouses.includes(d.data.id)) {
+              // CRITICAL: Check if this spouse is already a parent (of current node or its children) - if so, don't add as new spouse
+              const currentNodeParents = d.data?.rels?.parents || []
+              const currentNodeChildren = d.data?.rels?.children || []
+              const isAlreadyParent = currentNodeParents.includes(sp_id)
+              // Check if this spouse is already a parent of any of the current node's children
+              const isParentOfChildren = currentNodeChildren.some(childId => {
+                const childNode = tree.find(t => t.data.id === childId)
+                if (!childNode) return false
+                const childParents = childNode.data?.rels?.parents || []
+                return childParents.includes(sp_id)
+              })
+              if (isAlreadyParent || isParentOfChildren) {
+                // Already a parent, just link as coparent (will be handled elsewhere)
+                console.warn(`[extendSpousesForAncestryNodes] Skipping ${sp_id} for ${d.data.id} - already a parent (of current node or its children), should not be added as new spouse`)
+              } else {
+                newSpouses.push({ data: spouseData, index: i })
+              }
+            } else {
+              console.warn(`[extendSpousesForAncestryNodes] Skipping ${sp_id} for ${d.data.id} - missing reciprocal spouse relationship`)
+            }
+          }
         }
+      })
+      
+      // Position existing spouses relative to each other and Elena
+      if (spouseNodes.length > 0) {
+        // Sort existing spouses by their current x position
+        spouseNodes.sort((a, b) => a.x - b.x)
         
+        // Calculate center position for all spouses
+        const totalSpouses = spouseNodes.length + newSpouses.length
+        const centerOffset = (totalSpouses - 1) / 2 * node_separation * side
+        
+        // Position existing spouses evenly around Elena
+        spouseNodes.forEach((spouse, idx) => {
+          // Link spouse to Elena
+          if (!d.spouses) d.spouses = []
+          if (!d.spouses.includes(spouse)) {
+            d.spouses.push(spouse)
+          }
+          
+          // Position spouse relative to Elena
+          const spouseOffset = (idx - (spouseNodes.length - 1) / 2) * node_separation * side
+          spouse.x = d.x + spouseOffset
+          
+          // Set coparent relationship
+          if (d.is_ancestry && !d.coparent && idx === 0) {
+            d.coparent = spouse
+          }
+          if (spouse.is_ancestry && !spouse.coparent) {
+            spouse.coparent = d
+          }
+        })
+        
+        // Adjust Elena's position to center all spouses
+        d.x += centerOffset
+      }
+      
+      // Second pass: add new spouses (not already in tree)
+      newSpouses.forEach(({ data: spouseData, index: i }) => {
         const spouse = {
-          data: data_stash.find(d0 => d0.id === sp_id),
+          data: spouseData,
           added: true,
           depth: d.depth,
           spouse: d,
-          x: d.x-(node_separation*(i+1))*side,
+          x: d.x - (node_separation * (spouseNodes.length + i + 1)) * side,
           y: d.y,
-          tid: `${d.data.id}-spouse-${i}`,
+          tid: `${d.data.id}-spouse-${spouseNodes.length + i}`,
           is_ancestry: d.is_ancestry, // Spouse of ancestry node is also ancestry
         }
-        spouse.sx = i > 0 ? spouse.x : spouse.x + (node_separation/2)*side
-        spouse.sy = i > 0 ? spouse.y : spouse.y + (node_separation/2)*side
+        spouse.sx = spouse.x + (node_separation/2)*side
+        spouse.sy = spouse.y
         if (!d.spouses) d.spouses = []
         d.spouses.push(spouse)
         tree.push(spouse)
         
         // Set coparent relationship for ancestry nodes
-        if (d.is_ancestry) {
+        if (d.is_ancestry && !d.coparent) {
           d.coparent = spouse
           spouse.coparent = d
         }
       })
+      
+      // Ensure minimum spacing between spouses with different children
+      if (d.spouses && d.spouses.length > 1) {
+        for (let j = 0; j < d.spouses.length; j++) {
+          for (let k = j + 1; k < d.spouses.length; k++) {
+            const spouseA = d.spouses[j]
+            const spouseB = d.spouses[k]
+            if (spouseA.is_ancestry && spouseB.is_ancestry && 
+                spouseA.depth === spouseB.depth) {
+              const childrenA = spouseA.data?.rels?.children || [];
+              const childrenB = spouseB.data?.rels?.children || [];
+              const hasDifferentChildren = !childrenA.some(id => childrenB.includes(id));
+              if (hasDifferentChildren) {
+                const minSpacing = node_separation * 1.5;
+                const currentDistance = Math.abs(spouseB.x - spouseA.x);
+                if (currentDistance < minSpacing) {
+                  const direction = spouseA.x < spouseB.x ? -1 : 1;
+                  const adjustment = (minSpacing - currentDistance) / 2;
+                  spouseA.x -= adjustment * direction;
+                  spouseB.x += adjustment * direction;
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
@@ -288,13 +447,7 @@ export function extendTree(
     one_level_rels
   )
   
-  // 2. If siblings are shown, extend stepsibling parent links
-  if (show_siblings_of_main) {
-    const main = treeResult.data.find(d => d.data.main)
-    if (main) {
-      extendStepsiblingParentLinks(treeResult.data, main)
-    }
-  }
+  // Removed stepsibling parent links extension - using base behavior only
   
   return treeResult
 }

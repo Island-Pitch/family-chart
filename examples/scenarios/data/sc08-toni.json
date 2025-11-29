@@ -1,0 +1,386 @@
+[
+  {
+    "id": "toni",
+    "main": true,
+    "data": {
+      "first_name": "Tonia",
+      "last_name": "Martinez",
+      "preferred_name": "Toni",
+      "nicknames": "Toni",
+      "gender": "F",
+      "birthday": "1990-07-15",
+      "birth_place": "Phoenix, AZ",
+      "bio": "Toni, whose full name is Tonia, is a dedicated mother and marketing professional who balances her career with raising her son Rudy. She has a close relationship with her sister Lili, and together they navigate the joys and challenges of motherhood. Toni works as a marketing manager for a local advertising agency, where she develops creative campaigns and manages client relationships. She enjoys spending time with her family, especially watching Rudy and her nephew Marty play together. Toni values the strong family bonds she shares with her parents Marlon and Judith, and her uncles Jeffery and Luke.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Marketing Manager",
+      "employer": "Phoenix Advertising Agency",
+      "email": "toni.martinez@email.com",
+      "phone": "(602) 555-0801",
+      "address": "1234 Marketing Way, Phoenix, AZ 85004",
+      "work_entries": [
+        {
+          "title": "Marketing Manager",
+          "organization": "Phoenix Advertising Agency",
+          "from_year": 2015,
+          "to_year": null,
+          "description": "Lead marketing campaigns, manage client relationships, develop brand strategies, and oversee marketing team."
+        },
+        {
+          "title": "Marketing Coordinator",
+          "organization": "Desert Marketing Solutions",
+          "from_year": 2012,
+          "to_year": 2015,
+          "description": "Supported marketing team, created content, and managed marketing campaigns."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Bachelor of Arts in Marketing",
+          "institution": "Arizona State University",
+          "from_year": 2008,
+          "to_year": 2012,
+          "description": "Graduated with focus on marketing, advertising, and consumer behavior."
+        }
+      ],
+      "social_media": [
+        {
+          "platform": "LinkedIn",
+          "url": "https://linkedin.com/in/tonimartinez"
+        },
+        {
+          "platform": "Instagram",
+          "url": "https://instagram.com/tonimartinez"
+        }
+      ]
+    },
+    "rels": {
+      "parents": [
+        "marlon",
+        "judith"
+      ],
+      "children": [
+        "rudy"
+      ],
+      "siblings": [
+        "lili"
+      ]
+    }
+  },
+  {
+    "id": "lili",
+    "data": {
+      "first_name": "Liliana",
+      "last_name": "Martinez",
+      "preferred_name": "Lili",
+      "nicknames": "Lili",
+      "gender": "F",
+      "birthday": "1992-11-20",
+      "birth_place": "Phoenix, AZ",
+      "bio": "Lili, whose full name is Liliana, is Toni's younger sister and the mother of Marty. She works as a teacher and is passionate about education. Lili has a close relationship with her sister Toni and enjoys watching their sons play together. She values the strong family bonds she shares with her parents and extended family.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Elementary School Teacher",
+      "employer": "Phoenix Elementary School",
+      "email": "lili.martinez@email.com",
+      "phone": "(602) 555-0802",
+      "address": "2345 School St, Phoenix, AZ 85004",
+      "work_entries": [
+        {
+          "title": "Elementary School Teacher",
+          "organization": "Phoenix Elementary School",
+          "from_year": 2016,
+          "to_year": null,
+          "description": "Teach elementary students, develop lesson plans, and support student learning."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Bachelor of Science in Education",
+          "institution": "Arizona State University",
+          "from_year": 2010,
+          "to_year": 2014,
+          "description": "Graduated with focus on elementary education."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "marlon",
+        "judith"
+      ],
+      "children": [
+        "marty"
+      ],
+      "siblings": [
+        "toni"
+      ]
+    }
+  },
+  {
+    "id": "rudy",
+    "data": {
+      "first_name": "Rudy",
+      "last_name": "Martinez",
+      "preferred_name": "Rudy",
+      "gender": "M",
+      "birthday": "2015-03-10",
+      "birth_place": "Phoenix, AZ",
+      "bio": "Rudy is Toni's son, a bright and energetic 9-year-old who loves playing with his cousin Marty. He enjoys sports, especially soccer and basketball, and is a good student who excels in math and science. Rudy has a close relationship with his mother and his extended family.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Student",
+      "employer": null,
+      "email": null,
+      "phone": null,
+      "address": "1234 Marketing Way, Phoenix, AZ 85004",
+      "work_entries": [],
+      "education_entries": [
+        {
+          "title": "4th Grade",
+          "institution": "Phoenix Elementary School",
+          "from_year": 2024,
+          "to_year": 2025,
+          "description": "Currently in 4th grade, excelling in math and science."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "toni"
+      ],
+      "siblings": []
+    }
+  },
+  {
+    "id": "marty",
+    "data": {
+      "first_name": "Marty",
+      "last_name": "Martinez",
+      "preferred_name": "Marty",
+      "gender": "M",
+      "birthday": "2017-08-22",
+      "birth_place": "Phoenix, AZ",
+      "bio": "Marty is Lili's son, a happy and playful 7-year-old who loves playing with his cousin Rudy. He enjoys playing with toys, drawing, and spending time with his family. Marty is growing up in a bilingual household, learning both English and Spanish.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Student",
+      "employer": null,
+      "email": null,
+      "phone": null,
+      "address": "2345 School St, Phoenix, AZ 85004",
+      "work_entries": [],
+      "education_entries": [
+        {
+          "title": "2nd Grade",
+          "institution": "Phoenix Elementary School",
+          "from_year": 2024,
+          "to_year": 2025,
+          "description": "Currently in 2nd grade, enjoying learning and playing with friends."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "lili"
+      ],
+      "siblings": []
+    }
+  },
+  {
+    "id": "marlon",
+    "data": {
+      "first_name": "Marlon",
+      "last_name": "Martinez",
+      "preferred_name": "Marlon",
+      "gender": "M",
+      "birthday": "1965-05-18",
+      "birth_place": "Phoenix, AZ",
+      "bio": "Marlon is Toni and Lili's father, a hardworking construction supervisor who has provided for his family throughout his career. He is proud of his daughters and grandsons, and enjoys spending time with his family. Marlon has two brothers, Jeffery and Luke, with whom he maintains close relationships. He is known for his sense of humor and his ability to make everyone laugh.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Construction Supervisor",
+      "employer": "Phoenix Construction Co.",
+      "email": "marlon.martinez@email.com",
+      "phone": "(602) 555-0803",
+      "address": "3456 Family Way, Phoenix, AZ 85004",
+      "work_entries": [
+        {
+          "title": "Construction Supervisor",
+          "organization": "Phoenix Construction Co.",
+          "from_year": 1990,
+          "to_year": null,
+          "description": "Supervise construction projects, manage crews, ensure safety compliance, and coordinate with clients."
+        }
+      ],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "judith"
+      ],
+      "children": [
+        "toni",
+        "lili"
+      ],
+      "siblings": [
+        "jeffery",
+        "luke"
+      ]
+    }
+  },
+  {
+    "id": "judith",
+    "data": {
+      "first_name": "Judith",
+      "last_name": "Martinez",
+      "preferred_name": "Judith",
+      "gender": "F",
+      "birthday": "1967-09-25",
+      "birth_place": "Tucson, AZ",
+      "bio": "Judith is Toni and Lili's mother, a loving homemaker who has dedicated her life to her family. She is an only child, which has made her especially close to her daughters and grandsons. Judith is known for her warm personality, her delicious cooking, and her unconditional love for her family. She enjoys spending time with her grandchildren and helping with family activities.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Catholic",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Homemaker",
+      "employer": null,
+      "email": "judith.martinez@email.com",
+      "phone": "(602) 555-0804",
+      "address": "3456 Family Way, Phoenix, AZ 85004",
+      "work_entries": [],
+      "education_entries": [
+        {
+          "title": "High School Diploma",
+          "institution": "Tucson High School",
+          "from_year": 1983,
+          "to_year": 1985,
+          "description": "Graduated with focus on home economics."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "marlon"
+      ],
+      "children": [
+        "toni",
+        "lili"
+      ]
+    }
+  },
+  {
+    "id": "jeffery",
+    "data": {
+      "first_name": "Jeffery",
+      "last_name": "Martinez",
+      "preferred_name": "Jeffery",
+      "gender": "M",
+      "birthday": "1968-12-10",
+      "birth_place": "Phoenix, AZ",
+      "bio": "Jeffery is Marlon's brother and Toni and Lili's uncle. He works as an electrician and enjoys working with his hands. Jeffery maintains close relationships with his brothers and nieces, and often helps with family projects and activities.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Licensed Electrician",
+      "employer": "Phoenix Electric Services",
+      "email": "jeffery.martinez@email.com",
+      "phone": "(602) 555-0805",
+      "address": "4567 Electric Way, Phoenix, AZ 85004",
+      "work_entries": [
+        {
+          "title": "Licensed Electrician",
+          "organization": "Phoenix Electric Services",
+          "from_year": 1992,
+          "to_year": null,
+          "description": "Install and repair electrical systems in residential and commercial buildings."
+        }
+      ],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "siblings": [
+        "marlon",
+        "luke"
+      ]
+    }
+  },
+  {
+    "id": "luke",
+    "data": {
+      "first_name": "Luke",
+      "last_name": "Martinez",
+      "preferred_name": "Luke",
+      "gender": "M",
+      "birthday": "1970-04-05",
+      "birth_place": "Phoenix, AZ",
+      "bio": "Luke is Marlon's brother and Toni and Lili's uncle. He works as a mechanic and enjoys working on cars. Luke maintains close relationships with his brothers and nieces, and often helps with family projects and activities.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Automotive Mechanic",
+      "employer": "Phoenix Auto Repair",
+      "email": "luke.martinez@email.com",
+      "phone": "(602) 555-0806",
+      "address": "5678 Auto Lane, Phoenix, AZ 85004",
+      "work_entries": [
+        {
+          "title": "Automotive Mechanic",
+          "organization": "Phoenix Auto Repair",
+          "from_year": 1994,
+          "to_year": null,
+          "description": "Diagnose and repair vehicles, perform routine maintenance, and ensure customer satisfaction."
+        }
+      ],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "siblings": [
+        "marlon",
+        "jeffery"
+      ]
+    }
+  }
+]

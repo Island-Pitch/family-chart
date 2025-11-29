@@ -1,0 +1,318 @@
+[
+  {
+    "id": "vince",
+    "main": true,
+    "data": {
+      "first_name": "Vince",
+      "last_name": "Martinez",
+      "preferred_name": "Vince",
+      "gender": "M",
+      "birthday": "1995-06-20",
+      "birth_place": "Los Angeles, CA",
+      "bio": "Vince is a young man who has a close relationship with his mother Farrah and his two brothers John and Victor. He also has two sisters-in-law, Michelle and Lisa, who are married to his brothers. Vince works as a graphic designer and enjoys spending time with his family. He values the relationships he has with all of his family members and appreciates the support they provide.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Graphic Designer",
+      "employer": "Los Angeles Design Studio",
+      "email": "vince.martinez@email.com",
+      "phone": "(310) 555-1801",
+      "address": "1234 Design Way, Los Angeles, CA 90028",
+      "work_entries": [
+        {
+          "title": "Graphic Designer",
+          "organization": "Los Angeles Design Studio",
+          "from_year": 2018,
+          "to_year": null,
+          "description": "Create visual designs for clients, develop brand identities, and design marketing materials."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Bachelor of Fine Arts in Graphic Design",
+          "institution": "Art Center College of Design",
+          "from_year": 2013,
+          "to_year": 2017,
+          "description": "Graduated with focus on graphic design and visual communication."
+        }
+      ],
+      "social_media": [
+        {
+          "platform": "Instagram",
+          "url": "https://instagram.com/vincemartinez"
+        },
+        {
+          "platform": "Behance",
+          "url": "https://behance.net/vincemartinez"
+        }
+      ]
+    },
+    "rels": {
+      "parents": [
+        "farrah"
+      ],
+      "siblings": [
+        "john",
+        "victor"
+      ]
+    }
+  },
+  {
+    "id": "farrah",
+    "data": {
+      "first_name": "Farrah",
+      "last_name": "Martinez",
+      "preferred_name": "Farrah",
+      "gender": "F",
+      "birthday": "1970-09-15",
+      "birth_place": "Los Angeles, CA",
+      "bio": "Farrah is Vince's mother, a loving and dedicated woman who has raised three sons. She works as a nurse and is passionate about helping others. Farrah is proud of her sons and enjoys spending time with them and their wives. She values the relationships she has with all of her family members and works to maintain strong family bonds.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Registered Nurse",
+      "employer": "Los Angeles Medical Center",
+      "email": "farrah.martinez@email.com",
+      "phone": "(310) 555-1802",
+      "address": "2345 Family Way, Los Angeles, CA 90028",
+      "work_entries": [
+        {
+          "title": "Registered Nurse",
+          "organization": "Los Angeles Medical Center",
+          "from_year": 1995,
+          "to_year": null,
+          "description": "Provide patient care, administer medications, and support families during medical treatment."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Associate Degree in Nursing",
+          "institution": "Los Angeles Community College",
+          "from_year": 1993,
+          "to_year": 1995,
+          "description": "Completed nursing program with clinical rotations."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "children": [
+        "vince",
+        "john",
+        "victor"
+      ]
+    }
+  },
+  {
+    "id": "john",
+    "data": {
+      "first_name": "John",
+      "last_name": "Martinez",
+      "preferred_name": "John",
+      "gender": "M",
+      "birthday": "1992-03-10",
+      "birth_place": "Los Angeles, CA",
+      "bio": "John is Vince's older brother, a responsible and hardworking man who is married to Michelle. He works as an engineer and takes pride in providing for his family. John maintains close relationships with his brothers and mother, and he values the family bonds they share.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Engineer",
+      "employer": "Los Angeles Engineering Firm",
+      "email": "john.martinez@email.com",
+      "phone": "(310) 555-1803",
+      "address": "3456 Engineer Way, Los Angeles, CA 90028",
+      "work_entries": [
+        {
+          "title": "Mechanical Engineer",
+          "organization": "Los Angeles Engineering Firm",
+          "from_year": 2016,
+          "to_year": null,
+          "description": "Design mechanical systems, create engineering drawings, and coordinate with manufacturing teams."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Bachelor of Science in Mechanical Engineering",
+          "institution": "University of California, Los Angeles",
+          "from_year": 2010,
+          "to_year": 2014,
+          "description": "Graduated with honors. Focused on mechanical engineering and design."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "farrah"
+      ],
+      "spouses": [
+        "michelle"
+      ],
+      "siblings": [
+        "vince",
+        "victor"
+      ]
+    }
+  },
+  {
+    "id": "victor",
+    "data": {
+      "first_name": "Victor",
+      "last_name": "Martinez",
+      "preferred_name": "Victor",
+      "gender": "M",
+      "birthday": "1993-11-22",
+      "birth_place": "Los Angeles, CA",
+      "bio": "Victor is Vince's older brother, a friendly and outgoing man who is married to Lisa. He works as a teacher and is passionate about education. Victor maintains close relationships with his brothers and mother, and he values the family bonds they share.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Teacher",
+      "employer": "Los Angeles High School",
+      "email": "victor.martinez@email.com",
+      "phone": "(310) 555-1804",
+      "address": "4567 School St, Los Angeles, CA 90028",
+      "work_entries": [
+        {
+          "title": "High School Teacher",
+          "organization": "Los Angeles High School",
+          "from_year": 2017,
+          "to_year": null,
+          "description": "Teach high school students, develop lesson plans, and support student learning."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Bachelor of Science in Education",
+          "institution": "California State University, Los Angeles",
+          "from_year": 2011,
+          "to_year": 2015,
+          "description": "Graduated with focus on secondary education."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "farrah"
+      ],
+      "spouses": [
+        "lisa"
+      ],
+      "siblings": [
+        "vince",
+        "john"
+      ]
+    }
+  },
+  {
+    "id": "michelle",
+    "data": {
+      "first_name": "Michelle",
+      "last_name": "Martinez",
+      "preferred_name": "Michelle",
+      "gender": "F",
+      "birthday": "1994-07-18",
+      "birth_place": "Los Angeles, CA",
+      "bio": "Michelle is John's wife and Vince's sister-in-law. She works as a marketing manager and enjoys spending time with her husband's family. Michelle values the relationships she has with her in-laws and works to maintain strong family bonds.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Catholic",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Marketing Manager",
+      "employer": "Los Angeles Marketing Agency",
+      "email": "michelle.martinez@email.com",
+      "phone": "(310) 555-1805",
+      "address": "3456 Engineer Way, Los Angeles, CA 90028",
+      "work_entries": [
+        {
+          "title": "Marketing Manager",
+          "organization": "Los Angeles Marketing Agency",
+          "from_year": 2018,
+          "to_year": null,
+          "description": "Lead marketing campaigns, manage client relationships, and develop brand strategies."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Bachelor of Arts in Marketing",
+          "institution": "University of California, Los Angeles",
+          "from_year": 2012,
+          "to_year": 2016,
+          "description": "Graduated with focus on marketing and advertising."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "john"
+      ]
+    }
+  },
+  {
+    "id": "lisa",
+    "data": {
+      "first_name": "Lisa",
+      "last_name": "Martinez",
+      "preferred_name": "Lisa",
+      "gender": "F",
+      "birthday": "1995-04-12",
+      "birth_place": "Los Angeles, CA",
+      "bio": "Lisa is Victor's wife and Vince's sister-in-law. She works as a nurse and enjoys spending time with her husband's family. Lisa values the relationships she has with her in-laws and works to maintain strong family bonds.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Catholic",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Registered Nurse",
+      "employer": "Los Angeles Medical Center",
+      "email": "lisa.martinez@email.com",
+      "phone": "(310) 555-1806",
+      "address": "4567 School St, Los Angeles, CA 90028",
+      "work_entries": [
+        {
+          "title": "Registered Nurse",
+          "organization": "Los Angeles Medical Center",
+          "from_year": 2019,
+          "to_year": null,
+          "description": "Provide patient care, administer medications, and support families during medical treatment."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Associate Degree in Nursing",
+          "institution": "Los Angeles Community College",
+          "from_year": 2017,
+          "to_year": 2019,
+          "description": "Completed nursing program with clinical rotations."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "victor"
+      ]
+    }
+  }
+]

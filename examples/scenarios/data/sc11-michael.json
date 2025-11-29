@@ -1,0 +1,360 @@
+[
+  {
+    "id": "michael-iii",
+    "main": true,
+    "data": {
+      "first_name": "Michael",
+      "last_name": "Johnson",
+      "preferred_name": "Mike",
+      "suffix": "III",
+      "gender": "M",
+      "birthday": "2000-08-20",
+      "birth_place": "Chicago, IL",
+      "bio": "Michael III, who goes by Mike, is the third generation of Michaels in his family. His father is Michael Jr., and his grandfather is also named Michael, creating a strong family naming tradition. Mike has a close relationship with his little brother Manny and enjoys spending time with his extended family, including his favorite aunt Harlow and uncle Perry who live with his Nana and grandpops. Mike is currently studying business at a local university and works part-time at a retail store. He values the family traditions and the close relationships he has with his relatives, even though some live far away.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Student / Retail Associate",
+      "employer": "Retail Store",
+      "email": "michael.iii.johnson@email.com",
+      "phone": "(312) 555-1101",
+      "address": "1234 Family Way, Chicago, IL 60601",
+      "work_entries": [
+        {
+          "title": "Retail Associate (Part-time)",
+          "organization": "Retail Store",
+          "from_year": 2022,
+          "to_year": null,
+          "description": "Assist customers, manage inventory, and process transactions. Part-time position while attending college."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Bachelor of Science in Business",
+          "institution": "University of Illinois",
+          "from_year": 2018,
+          "to_year": 2024,
+          "description": "Currently pursuing degree in business management. Expected graduation 2024."
+        }
+      ],
+      "social_media": [
+        {
+          "platform": "Instagram",
+          "url": "https://instagram.com/michaeliii"
+        }
+      ]
+    },
+    "rels": {
+      "parents": [
+        "michael-jr",
+        "lori"
+      ],
+      "siblings": [
+        "manny"
+      ]
+    }
+  },
+  {
+    "id": "manny",
+    "data": {
+      "first_name": "Manuel",
+      "last_name": "Johnson",
+      "preferred_name": "Manny",
+      "nicknames": "Manny",
+      "gender": "M",
+      "birthday": "2003-12-10",
+      "birth_place": "Chicago, IL",
+      "bio": "Manny is Mike's little brother, a bright and energetic teenager who looks up to his older brother. He enjoys playing sports, especially basketball and soccer, and is a good student. Manny has a close relationship with his family and enjoys spending time with his extended family, including his favorite aunt Harlow and uncle Perry.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Student",
+      "employer": null,
+      "email": null,
+      "phone": null,
+      "address": "1234 Family Way, Chicago, IL 60601",
+      "work_entries": [],
+      "education_entries": [
+        {
+          "title": "11th Grade",
+          "institution": "Chicago High School",
+          "from_year": 2024,
+          "to_year": 2025,
+          "description": "Currently in 11th grade, enjoying sports and science classes."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "michael-jr",
+        "lori"
+      ],
+      "siblings": [
+        "michael-iii"
+      ]
+    }
+  },
+  {
+    "id": "michael-jr",
+    "data": {
+      "first_name": "Michael",
+      "last_name": "Johnson",
+      "preferred_name": "Michael",
+      "suffix": "Jr.",
+      "gender": "M",
+      "birthday": "1975-05-15",
+      "birth_place": "Chicago, IL",
+      "bio": "Michael Jr. is Mike's father, continuing the family tradition of naming sons Michael. He works as a construction supervisor and takes pride in providing for his family. Michael Jr. has a close relationship with his father and enjoys spending time with his extended family. He is known for his strong work ethic and his dedication to his family.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Construction Supervisor",
+      "employer": "Chicago Construction Co.",
+      "email": "michael.jr.johnson@email.com",
+      "phone": "(312) 555-1102",
+      "address": "1234 Family Way, Chicago, IL 60601",
+      "work_entries": [
+        {
+          "title": "Construction Supervisor",
+          "organization": "Chicago Construction Co.",
+          "from_year": 2000,
+          "to_year": null,
+          "description": "Supervise construction projects, manage crews, ensure safety compliance, and coordinate with clients."
+        }
+      ],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "lori"
+      ],
+      "children": [
+        "michael-iii",
+        "manny"
+      ],
+      "parents": [
+        "michael-sr",
+        "nana"
+      ]
+    }
+  },
+  {
+    "id": "lori",
+    "data": {
+      "first_name": "Lori",
+      "last_name": "Johnson",
+      "preferred_name": "Lori",
+      "gender": "F",
+      "birthday": "1977-09-22",
+      "birth_place": "Chicago, IL",
+      "bio": "Lori is Mike and Manny's mother, a loving and dedicated homemaker who has raised her two sons with care and attention. She works part-time as a receptionist and enjoys spending time with her family. Lori values the close relationships she has with her extended family and often helps organize family gatherings.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Receptionist (Part-time)",
+      "employer": "Chicago Medical Office",
+      "email": "lori.johnson@email.com",
+      "phone": "(312) 555-1103",
+      "address": "1234 Family Way, Chicago, IL 60601",
+      "work_entries": [
+        {
+          "title": "Receptionist (Part-time)",
+          "organization": "Chicago Medical Office",
+          "from_year": 2010,
+          "to_year": null,
+          "description": "Greet patients, schedule appointments, and manage front desk operations. Part-time position."
+        }
+      ],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "michael-jr"
+      ],
+      "children": [
+        "michael-iii",
+        "manny"
+      ]
+    }
+  },
+  {
+    "id": "michael-sr",
+    "data": {
+      "first_name": "Michael",
+      "last_name": "Johnson",
+      "preferred_name": "Michael",
+      "suffix": "Sr.",
+      "gender": "M",
+      "birthday": "1950-03-10",
+      "birth_place": "Chicago, IL",
+      "bio": "Michael Sr. is Mike's grandfather, the patriarch of the Johnson family. He worked as a factory worker for many years before retiring. Michael Sr. lives far away with his wife Nana, and they are visited by their favorite daughter Harlow and her husband Perry. He is proud of his family and enjoys spending time with his grandchildren when they visit.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Factory Worker (Retired)",
+      "employer": "Chicago Manufacturing",
+      "email": null,
+      "phone": null,
+      "address": "5678 Far Away Lane, Remote City, State",
+      "work_entries": [
+        {
+          "title": "Factory Worker",
+          "organization": "Chicago Manufacturing",
+          "from_year": 1970,
+          "to_year": 2010,
+          "description": "Worked in manufacturing, operated machinery, and maintained production lines."
+        }
+      ],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "nana"
+      ],
+      "children": [
+        "michael-jr",
+        "harlow"
+      ]
+    }
+  },
+  {
+    "id": "nana",
+    "data": {
+      "first_name": "Margaret",
+      "last_name": "Johnson",
+      "preferred_name": "Nana",
+      "nicknames": "Nana",
+      "gender": "F",
+      "birthday": "1952-07-18",
+      "birth_place": "Chicago, IL",
+      "bio": "Nana is Mike's grandmother, a warm and loving woman who lives far away with her husband Michael Sr. She is visited by her favorite daughter Harlow and her husband Perry, who live with them. Nana enjoys cooking, gardening, and spending time with her family when they visit. She is known for her delicious home-cooked meals and her warm personality.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Homemaker (Retired)",
+      "employer": null,
+      "email": null,
+      "phone": null,
+      "address": "5678 Far Away Lane, Remote City, State",
+      "work_entries": [],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "michael-sr"
+      ],
+      "children": [
+        "michael-jr",
+        "harlow"
+      ]
+    }
+  },
+  {
+    "id": "harlow",
+    "data": {
+      "first_name": "Harlow",
+      "last_name": "Johnson",
+      "preferred_name": "Harlow",
+      "gender": "F",
+      "birthday": "1978-11-05",
+      "birth_place": "Chicago, IL",
+      "bio": "Harlow is Mike's favorite aunt, the daughter of Michael Sr. and Nana. She lives with her parents along with her husband Perry, and they are considered the favorite relatives in the family. Harlow works as a teacher and enjoys spending time with her extended family. She is known for her sense of humor and her ability to make everyone feel welcome.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Teacher",
+      "employer": "Remote City Elementary School",
+      "email": "harlow.johnson@email.com",
+      "phone": null,
+      "address": "5678 Far Away Lane, Remote City, State",
+      "work_entries": [
+        {
+          "title": "Elementary School Teacher",
+          "organization": "Remote City Elementary School",
+          "from_year": 2003,
+          "to_year": null,
+          "description": "Teach elementary students, develop lesson plans, and support student learning."
+        }
+      ],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "perry"
+      ],
+      "parents": [
+        "michael-sr",
+        "nana"
+      ],
+      "siblings": [
+        "michael-jr"
+      ]
+    }
+  },
+  {
+    "id": "perry",
+    "data": {
+      "first_name": "Perry",
+      "last_name": "Johnson",
+      "preferred_name": "Perry",
+      "gender": "M",
+      "birthday": "1976-04-20",
+      "birth_place": "Chicago, IL",
+      "bio": "Perry is Mike's favorite uncle, married to Harlow. He lives with his wife and her parents, and they are considered the favorite relatives in the family. Perry works as a mechanic and enjoys working on cars. He is known for his sense of humor and his ability to fix anything.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Automotive Mechanic",
+      "employer": "Remote City Auto Repair",
+      "email": "perry.johnson@email.com",
+      "phone": null,
+      "address": "5678 Far Away Lane, Remote City, State",
+      "work_entries": [
+        {
+          "title": "Automotive Mechanic",
+          "organization": "Remote City Auto Repair",
+          "from_year": 2000,
+          "to_year": null,
+          "description": "Diagnose and repair vehicles, perform routine maintenance, and ensure customer satisfaction."
+        }
+      ],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "harlow"
+      ]
+    }
+  }
+]

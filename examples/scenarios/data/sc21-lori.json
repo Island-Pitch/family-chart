@@ -1,0 +1,275 @@
+[
+  {
+    "id": "lori-santana",
+    "main": true,
+    "data": {
+      "gender": "F",
+      "first_name": "Lorraine",
+      "last_name": "Santana",
+      "preferred_name": "Lori",
+      "full_name": "Lorraine Santana",
+      "nicknames": "Lori",
+      "birthday": "1994-12-20",
+      "birth_place": "Riverside, CA",
+      "bio": "Lori is a compassionate and dedicated social worker who works at a non-profit organization helping foster children find homes. As the oldest of three siblings, she has always felt a responsibility to help others, which led her to her career in social work. Lori is a devout Catholic who volunteers at her church 3-4 times a week, finding fulfillment in serving her community. When she was 22, Lori was in a serious car accident that left a scar from her ankle to her hip, requiring extensive hospitalization and ongoing physical therapy. Through this experience, she discovered yoga, which has become essential for maintaining her physical and mental balance. Lori adores her 3-year-old niece Monica, whom she considers one of the greatest joys in her life. She loves watching CSI shows and listening to Spanish rock music, and she looks up to Michelle Obama as a role model.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Social Worker",
+      "employer": "Foster Care Connection Non-Profit",
+      "email": "lori.santana@email.com",
+      "phone": "(626) 555-2101",
+      "address": "1234 Mission Blvd, Alhambra, CA 91801",
+      "work_entries": [
+        {
+          "title": "Social Worker",
+          "organization": "Foster Care Connection Non-Profit",
+          "from_year": 2018,
+          "to_year": null,
+          "description": "Help foster children find permanent homes, conduct home studies, provide support to foster families, and advocate for children's best interests."
+        },
+        {
+          "title": "Case Worker",
+          "organization": "Riverside Social Services",
+          "from_year": 2016,
+          "to_year": 2018,
+          "description": "Worked with families in need, connected them with resources, and provided case management services."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Associate Degree in Social Work",
+          "institution": "Riverside Community College",
+          "from_year": 2012,
+          "to_year": 2016,
+          "description": "Completed degree program on and off over several years while working. Focused on social work, psychology, and child welfare."
+        }
+      ],
+      "social_media": [
+        {
+          "platform": "Facebook",
+          "url": "https://facebook.com/lorisantana"
+        },
+        {
+          "platform": "Instagram",
+          "url": "https://instagram.com/lorisantana"
+        }
+      ]
+    },
+    "rels": {
+      "parents": [
+        "santana-parent-1",
+        "santana-parent-2"
+      ],
+      "siblings": [
+        "sally-santana",
+        "sal-santana"
+      ]
+    }
+  },
+  {
+    "id": "sally-santana",
+    "data": {
+      "gender": "F",
+      "first_name": "Sally",
+      "last_name": "Santana",
+      "preferred_name": "Sally",
+      "full_name": "Sally Santana",
+      "birthday": "1997-04-15",
+      "birth_place": "Riverside, CA",
+      "bio": "Sally is Lori's younger sister and the mother of Monica, whom Lori adores. Sally works as a preschool teacher and balances her career with raising her daughter. She maintains a close relationship with her siblings and appreciates the support they provide. Sally enjoys spending time with her daughter, reading children's books, and participating in family activities.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Preschool Teacher",
+      "employer": "Riverside Preschool",
+      "email": "sally.santana@email.com",
+      "phone": "(951) 555-2102",
+      "address": "2345 Garden St, Riverside, CA 92501",
+      "work_entries": [
+        {
+          "title": "Preschool Teacher",
+          "organization": "Riverside Preschool",
+          "from_year": 2019,
+          "to_year": null,
+          "description": "Teach preschool children, develop age-appropriate activities, and support early childhood development."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Associate Degree in Early Childhood Education",
+          "institution": "Riverside Community College",
+          "from_year": 2015,
+          "to_year": 2017,
+          "description": "Completed degree program focused on early childhood education and child development."
+        }
+      ],
+      "social_media": [
+        {
+          "platform": "Facebook",
+          "url": "https://facebook.com/sallysantana"
+        },
+        {
+          "platform": "Instagram",
+          "url": "https://instagram.com/sallysantana"
+        }
+      ]
+    },
+    "rels": {
+      "parents": [
+        "santana-parent-1",
+        "santana-parent-2"
+      ],
+      "siblings": [
+        "lori-santana",
+        "sal-santana"
+      ],
+      "children": [
+        "monica-santana"
+      ]
+    }
+  },
+  {
+    "id": "sal-santana",
+    "data": {
+      "gender": "M",
+      "first_name": "Salvador",
+      "last_name": "Santana",
+      "preferred_name": "Sal",
+      "full_name": "Salvador Santana",
+      "nicknames": "Sal",
+      "birthday": "1999-08-30",
+      "birth_place": "Riverside, CA",
+      "bio": "Sal is the youngest of the Santana siblings and works as a construction worker. He maintains close relationships with his sisters Lori and Sally, and enjoys being an uncle to his niece Monica. Sal is known for his sense of humor and his willingness to help family members. He enjoys playing soccer, watching sports, and spending time with friends.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Construction Worker",
+      "employer": "Riverside Construction Co.",
+      "email": "sal.santana@email.com",
+      "phone": "(951) 555-2103",
+      "address": "3456 Work Ave, Riverside, CA 92501",
+      "work_entries": [
+        {
+          "title": "Construction Worker",
+          "organization": "Riverside Construction Co.",
+          "from_year": 2018,
+          "to_year": null,
+          "description": "Work on construction projects, assist with building and renovation tasks, and learn construction trades."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "High School Diploma",
+          "institution": "Riverside High School",
+          "from_year": 2013,
+          "to_year": 2017,
+          "description": "Graduated with focus on vocational training in construction trades."
+        }
+      ],
+      "social_media": [
+        {
+          "platform": "Instagram",
+          "url": "https://instagram.com/salsantana"
+        }
+      ]
+    },
+    "rels": {
+      "parents": [
+        "santana-parent-1",
+        "santana-parent-2"
+      ],
+      "siblings": [
+        "lori-santana",
+        "sally-santana"
+      ]
+    }
+  },
+  {
+    "id": "monica-santana",
+    "data": {
+      "gender": "F",
+      "first_name": "Monica",
+      "last_name": "Santana",
+      "preferred_name": "Monie",
+      "full_name": "Monica Santana",
+      "nicknames": "Monie",
+      "birthday": "2021-06-10",
+      "birth_place": "Riverside, CA",
+      "bio": "Monica, affectionately called Monie by her family, is a happy and energetic 3-year-old who brings joy to everyone around her. She is especially adored by her aunt Lori, who considers her one of the greatest joys in life. Monica enjoys playing with toys, dancing to music, and spending time with her family. She is growing up in a bilingual household, learning both English and Spanish.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Toddler",
+      "employer": null,
+      "email": null,
+      "phone": null,
+      "address": "2345 Garden St, Riverside, CA 92501",
+      "work_entries": [],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "sally-santana"
+      ],
+      "siblings": []
+    }
+  },
+  {
+    "id": "santana-parent-1",
+    "data": {
+      "gender": "M",
+      "first_name": "Unknown",
+      "last_name": "Santana",
+      "full_name": "Unknown Santana",
+      "label": "Unknown"
+    },
+    "rels": {
+      "spouses": [
+        "santana-parent-2"
+      ],
+      "children": [
+        "lori-santana",
+        "sally-santana",
+        "sal-santana"
+      ]
+    }
+  },
+  {
+    "id": "santana-parent-2",
+    "data": {
+      "gender": "F",
+      "first_name": "Unknown",
+      "last_name": "Santana",
+      "full_name": "Unknown Santana",
+      "label": "Unknown"
+    },
+    "rels": {
+      "spouses": [
+        "santana-parent-1"
+      ],
+      "children": [
+        "lori-santana",
+        "sally-santana",
+        "sal-santana"
+      ]
+    }
+  }
+]

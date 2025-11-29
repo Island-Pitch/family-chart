@@ -1,0 +1,842 @@
+[
+  {
+    "id": "henry-viii",
+    "main": true,
+    "data": {
+      "first_name": "Henry",
+      "last_name": "VIII",
+      "preferred_name": "Henry",
+      "suffix": "VIII",
+      "gender": "M",
+      "birthday": "1491-06-28",
+      "birth_place": "Greenwich Palace, England",
+      "death_date": "1547-01-28",
+      "death_place": "Whitehall Palace, London, England",
+      "deceased": true,
+      "bio": "Henry VIII was the King of England from 1509 until his death in 1547. He is perhaps most famous for his six marriages, which he pursued in his quest for a male heir. His first marriage to Catherine of Aragon lasted nearly 23 years before being annulled. He then married Anne Boleyn, who gave him two daughters before her execution. His third wife, Jane Seymour, gave him the son he desperately wanted but died shortly after childbirth. His fourth marriage to Anne of Cleves was annulled after just six months. His fifth wife, Catherine Howard, was executed for treason. His final wife, Catherine Parr, outlived him and was known for her intelligence and her role in reconciling Henry with his daughters. Henry was a complex figure - a Renaissance prince, a patron of the arts, a skilled musician and athlete, but also a ruler who broke with Rome and established the Church of England.",
+      "nationality": "English",
+      "ethnicity": "Caucasian",
+      "religion": "Anglican",
+      "languages": [
+        "English",
+        "French",
+        "Latin",
+        "Spanish"
+      ],
+      "occupation": "King of England",
+      "employer": "Crown of England",
+      "email": null,
+      "phone": null,
+      "address": "Various Royal Palaces, England",
+      "work_entries": [
+        {
+          "title": "King of England",
+          "organization": "Crown of England",
+          "from_year": 1509,
+          "to_year": 1547,
+          "description": "Reigned as King of England and Ireland. Established the Church of England, dissolved monasteries, and significantly expanded royal power. Patron of the arts and Renaissance learning."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Royal Education",
+          "institution": "Royal Court",
+          "from_year": 1495,
+          "to_year": 1509,
+          "description": "Received comprehensive education in languages, theology, music, and military arts. Studied under leading scholars of the day."
+        }
+      ],
+      "social_media": [],
+      "relationshipStatuses": {
+        "catherine-parr": {
+          "status": "married"
+        },
+        "catherine-howard": {
+          "status": "divorced"
+        },
+        "anne-cleves": {
+          "status": "divorced"
+        },
+        "jane-seymour": {
+          "status": "widowed"
+        },
+        "anne-boleyn": {
+          "status": "divorced"
+        },
+        "catherine-aragon": {
+          "status": "divorced"
+        }
+      }
+    },
+    "rels": {
+      "spouses": [
+        "catherine-parr",
+        "catherine-howard",
+        "anne-cleves",
+        "jane-seymour",
+        "anne-boleyn",
+        "catherine-aragon"
+      ],
+      "children": [
+        "mary-i",
+        "elizabeth-i",
+        "edward-vi"
+      ],
+      "parents": [
+        "henry-vii",
+        "elizabeth-york"
+      ]
+    }
+  },
+  {
+    "id": "catherine-aragon",
+    "data": {
+      "first_name": "Catherine",
+      "last_name": "of Aragon",
+      "preferred_name": "Catherine",
+      "gender": "F",
+      "birthday": "1485-12-16",
+      "birth_place": "Alcalá de Henares, Spain",
+      "death_date": "1536-01-07",
+      "death_place": "Kimbolton Castle, England",
+      "deceased": true,
+      "bio": "Catherine of Aragon was Henry VIII's first wife, married for nearly 23 years from 1509 until their marriage was annulled in 1533. She was the daughter of Ferdinand and Isabella of Spain and was originally married to Henry's older brother Arthur, who died shortly after their wedding. Catherine was a devout Catholic, highly educated, and a capable regent during Henry's absences. She gave birth to one surviving child, Mary I, who would later become Queen of England. Catherine refused to accept the annulment of her marriage and maintained her position as Henry's true wife until her death. She was known for her dignity, intelligence, and unwavering faith.",
+      "nationality": "Spanish",
+      "ethnicity": "Caucasian",
+      "religion": "Catholic",
+      "languages": [
+        "Spanish",
+        "English",
+        "Latin",
+        "French"
+      ],
+      "occupation": "Queen Consort of England",
+      "employer": "Crown of England",
+      "email": null,
+      "phone": null,
+      "address": "Various Royal Palaces, England",
+      "work_entries": [
+        {
+          "title": "Queen Consort of England",
+          "organization": "Crown of England",
+          "from_year": 1509,
+          "to_year": 1533,
+          "description": "Served as Queen Consort, acted as regent during Henry's absences, and was a patron of education and the arts."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Royal Education",
+          "institution": "Spanish Court",
+          "from_year": 1490,
+          "to_year": 1501,
+          "description": "Received comprehensive education in languages, theology, history, and courtly arts under the supervision of leading Spanish scholars."
+        }
+      ],
+      "social_media": [],
+      "marriage_status": "divorced"
+    },
+    "rels": {
+      "spouses": [
+        "henry-viii"
+      ],
+      "children": [
+        "mary-i"
+      ]
+    }
+  },
+  {
+    "id": "anne-boleyn",
+    "data": {
+      "first_name": "Anne",
+      "last_name": "Boleyn",
+      "preferred_name": "Anne",
+      "gender": "F",
+      "birthday": "1501",
+      "birth_place": "Blickling Hall, Norfolk, England",
+      "death_date": "1536-05-19",
+      "death_place": "Tower of London, England",
+      "deceased": true,
+      "bio": "Anne Boleyn was Henry VIII's second wife, married from 1533 until her execution in 1536. She was a lady-in-waiting to Catherine of Aragon and caught Henry's attention with her intelligence, wit, and charm. Anne was highly educated, fluent in French, and had spent time at the French court. She gave birth to two daughters, though only Elizabeth I survived. Anne's marriage to Henry was annulled just before her execution on charges of treason, adultery, and incest - charges that are widely believed to have been fabricated. She was a key figure in the English Reformation and is remembered for her intelligence, her role in establishing the Church of England, and her tragic end.",
+      "nationality": "English",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English",
+        "French",
+        "Latin"
+      ],
+      "occupation": "Queen Consort of England",
+      "employer": "Crown of England",
+      "email": null,
+      "phone": null,
+      "address": "Various Royal Palaces, England",
+      "work_entries": [
+        {
+          "title": "Queen Consort of England",
+          "organization": "Crown of England",
+          "from_year": 1533,
+          "to_year": 1536,
+          "description": "Served as Queen Consort, was a patron of the arts and education, and played a key role in the English Reformation."
+        },
+        {
+          "title": "Lady-in-Waiting",
+          "organization": "Royal Court",
+          "from_year": 1522,
+          "to_year": 1533,
+          "description": "Served as lady-in-waiting to Catherine of Aragon and participated in court life."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Court Education",
+          "institution": "French Court",
+          "from_year": 1513,
+          "to_year": 1521,
+          "description": "Educated at the French court, learned languages, music, dance, and courtly arts. Studied under leading French scholars."
+        }
+      ],
+      "social_media": [],
+      "marriage_status": "divorced"
+    },
+    "rels": {
+      "spouses": [
+        "henry-viii"
+      ],
+      "children": [
+        "elizabeth-i"
+      ]
+    }
+  },
+  {
+    "id": "jane-seymour",
+    "data": {
+      "first_name": "Jane",
+      "last_name": "Seymour",
+      "preferred_name": "Jane",
+      "gender": "F",
+      "birthday": "1508",
+      "birth_place": "Wulfhall, Wiltshire, England",
+      "death_date": "1537-10-24",
+      "death_place": "Hampton Court Palace, England",
+      "deceased": true,
+      "bio": "Jane Seymour was Henry VIII's third wife, married in 1536 and died in 1537 shortly after giving birth to their son, the future Edward VI. She was a lady-in-waiting to both Catherine of Aragon and Anne Boleyn. Jane was known for her gentle, quiet nature and was said to be Henry's favorite wife. She successfully gave birth to the male heir Henry had desperately wanted, but died from complications of childbirth just 12 days later. Jane was the only one of Henry's wives to receive a queen's funeral and to be buried beside him at St. George's Chapel, Windsor. She is remembered for her kindness, her role in reconciling Henry with his daughter Mary, and for giving birth to the long-awaited male heir.",
+      "nationality": "English",
+      "ethnicity": "Caucasian",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "French"
+      ],
+      "occupation": "Queen Consort of England",
+      "employer": "Crown of England",
+      "email": null,
+      "phone": null,
+      "address": "Various Royal Palaces, England",
+      "work_entries": [
+        {
+          "title": "Queen Consort of England",
+          "organization": "Crown of England",
+          "from_year": 1536,
+          "to_year": 1537,
+          "description": "Served as Queen Consort, worked to reconcile Henry with his daughter Mary, and was known for her gentle influence on court life."
+        },
+        {
+          "title": "Lady-in-Waiting",
+          "organization": "Royal Court",
+          "from_year": 1532,
+          "to_year": 1536,
+          "description": "Served as lady-in-waiting to Catherine of Aragon and Anne Boleyn."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Court Education",
+          "institution": "Royal Court",
+          "from_year": 1527,
+          "to_year": 1532,
+          "description": "Educated in courtly arts, languages, and household management."
+        }
+      ],
+      "social_media": [],
+      "marriage_status": "widowed"
+    },
+    "rels": {
+      "spouses": [
+        "henry-viii"
+      ],
+      "children": [
+        "edward-vi"
+      ]
+    }
+  },
+  {
+    "id": "anne-cleves",
+    "data": {
+      "first_name": "Anne",
+      "last_name": "of Cleves",
+      "preferred_name": "Anne",
+      "gender": "F",
+      "birthday": "1515-09-22",
+      "birth_place": "Düsseldorf, Germany",
+      "death_date": "1557-07-16",
+      "death_place": "Chelsea Manor, London, England",
+      "deceased": true,
+      "bio": "Anne of Cleves was Henry VIII's fourth wife, married in January 1540 and divorced in July of the same year - a marriage that lasted just six months. The marriage was arranged for political reasons, but Henry found her unattractive and the marriage was never consummated. Anne agreed to an annulment and was given a generous settlement, becoming known as 'the King's Beloved Sister.' She remained in England for the rest of her life, outliving Henry and all of his other wives. Anne was known for her intelligence, her good nature, and her ability to navigate the dangerous waters of the English court. She maintained friendly relationships with Henry's children and was a respected figure in English society.",
+      "nationality": "German",
+      "ethnicity": "Caucasian",
+      "religion": "Lutheran",
+      "languages": [
+        "German",
+        "English"
+      ],
+      "occupation": "Queen Consort of England (Former)",
+      "employer": "Crown of England",
+      "email": null,
+      "phone": null,
+      "address": "Chelsea Manor, London, England",
+      "work_entries": [
+        {
+          "title": "Queen Consort of England",
+          "organization": "Crown of England",
+          "from_year": 1540,
+          "to_year": 1540,
+          "description": "Briefly served as Queen Consort before the marriage was annulled."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Royal Education",
+          "institution": "Cleves Court",
+          "from_year": 1520,
+          "to_year": 1539,
+          "description": "Educated in German courtly arts, languages, and household management."
+        }
+      ],
+      "social_media": [],
+      "marriage_status": "divorced"
+    },
+    "rels": {
+      "spouses": [
+        "henry-viii"
+      ]
+    }
+  },
+  {
+    "id": "catherine-howard",
+    "data": {
+      "first_name": "Catherine",
+      "last_name": "Howard",
+      "preferred_name": "Catherine",
+      "gender": "F",
+      "birthday": "1523",
+      "birth_place": "Lambeth, London, England",
+      "death_date": "1542-02-13",
+      "death_place": "Tower of London, England",
+      "deceased": true,
+      "bio": "Catherine Howard was Henry VIII's fifth wife, married in 1540 when she was just 17 years old and Henry was 49. She was a first cousin of Anne Boleyn and a lady-in-waiting to Anne of Cleves. Catherine was known for her youth, beauty, and vivacious personality. However, her marriage to Henry was short-lived - she was executed in 1542 on charges of adultery and treason. Her youth and inexperience, combined with allegations of pre-marital relationships and possible infidelity during her marriage, led to her downfall. Catherine's story is one of tragedy, as a young woman caught in the dangerous politics of the Tudor court.",
+      "nationality": "English",
+      "ethnicity": "Caucasian",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "French"
+      ],
+      "occupation": "Queen Consort of England",
+      "employer": "Crown of England",
+      "email": null,
+      "phone": null,
+      "address": "Various Royal Palaces, England",
+      "work_entries": [
+        {
+          "title": "Queen Consort of England",
+          "organization": "Crown of England",
+          "from_year": 1540,
+          "to_year": 1542,
+          "description": "Served as Queen Consort, known for her youth and vivacious personality."
+        },
+        {
+          "title": "Lady-in-Waiting",
+          "organization": "Royal Court",
+          "from_year": 1539,
+          "to_year": 1540,
+          "description": "Served as lady-in-waiting to Anne of Cleves."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Court Education",
+          "institution": "Royal Court",
+          "from_year": 1536,
+          "to_year": 1539,
+          "description": "Educated in courtly arts, music, and dance at the English court."
+        }
+      ],
+      "social_media": [],
+      "marriage_status": "divorced"
+    },
+    "rels": {
+      "spouses": [
+        "henry-viii"
+      ]
+    }
+  },
+  {
+    "id": "catherine-parr",
+    "data": {
+      "first_name": "Catherine",
+      "last_name": "Parr",
+      "preferred_name": "Catherine",
+      "gender": "F",
+      "birthday": "1512",
+      "birth_place": "Kendal, Westmorland, England",
+      "death_date": "1548-09-05",
+      "death_place": "Sudeley Castle, Gloucestershire, England",
+      "deceased": true,
+      "bio": "Catherine Parr was Henry VIII's sixth and final wife, married in 1543 and outlived him, dying in 1548. She was the most married of Henry's wives, having been married twice before and once after Henry's death. Catherine was highly educated, intelligent, and a published author - the first English queen to publish books under her own name. She played a crucial role in reconciling Henry with his daughters Mary and Elizabeth, and she was a stepmother to all three of Henry's children. Catherine was known for her learning, her religious devotion, and her ability to navigate the complex politics of the Tudor court. She was a patron of the arts and education, and her influence helped shape the education of the future Queen Elizabeth I.",
+      "nationality": "English",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English",
+        "French",
+        "Latin"
+      ],
+      "occupation": "Queen Consort of England / Author",
+      "employer": "Crown of England",
+      "email": null,
+      "phone": null,
+      "address": "Various Royal Palaces, England",
+      "work_entries": [
+        {
+          "title": "Queen Consort of England",
+          "organization": "Crown of England",
+          "from_year": 1543,
+          "to_year": 1547,
+          "description": "Served as Queen Consort, reconciled Henry with his daughters, acted as regent during Henry's absences, and was a patron of education and the arts."
+        },
+        {
+          "title": "Author",
+          "organization": "Independent",
+          "from_year": 1545,
+          "to_year": 1548,
+          "description": "Published religious and educational works, becoming the first English queen to publish books under her own name."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Comprehensive Education",
+          "institution": "Private Tutors",
+          "from_year": 1518,
+          "to_year": 1528,
+          "description": "Received extensive education in languages, theology, literature, and the arts from leading scholars."
+        }
+      ],
+      "social_media": [],
+      "marriage_status": "married"
+    },
+    "rels": {
+      "spouses": [
+        "henry-viii"
+      ]
+    }
+  },
+  {
+    "id": "mary-i",
+    "data": {
+      "first_name": "Mary",
+      "last_name": "I",
+      "preferred_name": "Mary",
+      "suffix": "I",
+      "gender": "F",
+      "birthday": "1516-02-18",
+      "birth_place": "Greenwich Palace, England",
+      "death_date": "1558-11-17",
+      "death_place": "St. James's Palace, London, England",
+      "deceased": true,
+      "bio": "Mary I was the daughter of Henry VIII and Catherine of Aragon, and she became Queen of England in 1553. Known as 'Bloody Mary' for her persecution of Protestants, Mary was a devout Catholic who sought to restore Catholicism to England. She was married to Philip II of Spain, though the marriage was largely political and produced no children. Mary's reign was marked by religious conflict, economic difficulties, and her determination to reverse the English Reformation. Despite her reputation, Mary was a capable ruler who faced significant challenges, including the loss of Calais, England's last possession in France. She is remembered as England's first queen regnant and a complex figure in English history.",
+      "nationality": "English",
+      "ethnicity": "Caucasian",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish",
+        "French",
+        "Latin"
+      ],
+      "occupation": "Queen of England",
+      "employer": "Crown of England",
+      "email": null,
+      "phone": null,
+      "address": "Various Royal Palaces, England",
+      "work_entries": [
+        {
+          "title": "Queen of England",
+          "organization": "Crown of England",
+          "from_year": 1553,
+          "to_year": 1558,
+          "description": "Reigned as Queen of England, sought to restore Catholicism, and faced significant political and religious challenges."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Royal Education",
+          "institution": "Royal Court",
+          "from_year": 1520,
+          "to_year": 1533,
+          "description": "Received comprehensive education in languages, theology, music, and the arts from leading scholars."
+        }
+      ],
+      "social_media": [],
+      "relationshipStatuses": {
+        "philip-ii-spain": {
+          "status": "widowed"
+        },
+        "thomas-seymour": {
+          "status": "married"
+        }
+      }
+    },
+    "rels": {
+      "parents": [
+        "henry-viii",
+        "catherine-aragon"
+      ],
+      "spouses": [
+        "thomas-seymour",
+        "philip-ii-spain"
+      ]
+    }
+  },
+  {
+    "id": "elizabeth-i",
+    "data": {
+      "first_name": "Elizabeth",
+      "last_name": "I",
+      "preferred_name": "Elizabeth",
+      "suffix": "I",
+      "gender": "F",
+      "birthday": "1533-09-07",
+      "birth_place": "Greenwich Palace, England",
+      "death_date": "1603-03-24",
+      "death_place": "Richmond Palace, England",
+      "deceased": true,
+      "bio": "Elizabeth I was the daughter of Henry VIII and Anne Boleyn, and she became Queen of England in 1558, reigning for 45 years until her death in 1603. Known as the 'Virgin Queen' because she never married, Elizabeth was one of England's most successful and celebrated monarchs. Her reign, known as the Elizabethan Era, was marked by the defeat of the Spanish Armada, the flourishing of English literature and drama (including the works of Shakespeare), and the establishment of England as a major European power. Elizabeth was highly educated, fluent in multiple languages, and known for her intelligence, political acumen, and ability to navigate the complex politics of her time. She is remembered as one of England's greatest monarchs.",
+      "nationality": "English",
+      "ethnicity": "Caucasian",
+      "religion": "Anglican",
+      "languages": [
+        "English",
+        "French",
+        "Italian",
+        "Spanish",
+        "Latin",
+        "Greek"
+      ],
+      "occupation": "Queen of England",
+      "employer": "Crown of England",
+      "email": null,
+      "phone": null,
+      "address": "Various Royal Palaces, England",
+      "work_entries": [
+        {
+          "title": "Queen of England",
+          "organization": "Crown of England",
+          "from_year": 1558,
+          "to_year": 1603,
+          "description": "Reigned as Queen of England for 45 years, established England as a major European power, and presided over the Elizabethan Era - a golden age of English culture and exploration."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Royal Education",
+          "institution": "Royal Court",
+          "from_year": 1536,
+          "to_year": 1553,
+          "description": "Received comprehensive education in languages, theology, history, music, and the arts from leading scholars, including Roger Ascham."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "henry-viii",
+        "anne-boleyn"
+      ]
+    }
+  },
+  {
+    "id": "edward-vi",
+    "data": {
+      "first_name": "Edward",
+      "last_name": "VI",
+      "preferred_name": "Edward",
+      "suffix": "VI",
+      "gender": "M",
+      "birthday": "1537-10-12",
+      "birth_place": "Hampton Court Palace, England",
+      "death_date": "1553-07-06",
+      "death_place": "Greenwich Palace, England",
+      "deceased": true,
+      "bio": "Edward VI was the son of Henry VIII and Jane Seymour, and he became King of England in 1547 at the age of nine, reigning until his death in 1553 at the age of 15. Edward was the long-awaited male heir that Henry had desperately wanted. He was highly educated, intelligent, and deeply Protestant. During his short reign, England continued its move toward Protestantism, with Edward playing an active role in religious reforms despite his youth. Edward's health was always fragile, and he died from what was likely tuberculosis. His death led to a succession crisis, with his half-sisters Mary and Elizabeth both having claims to the throne. Edward is remembered as a promising young king whose early death changed the course of English history.",
+      "nationality": "English",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English",
+        "Latin",
+        "French",
+        "Greek"
+      ],
+      "occupation": "King of England",
+      "employer": "Crown of England",
+      "email": null,
+      "phone": null,
+      "address": "Various Royal Palaces, England",
+      "work_entries": [
+        {
+          "title": "King of England",
+          "organization": "Crown of England",
+          "from_year": 1547,
+          "to_year": 1553,
+          "description": "Reigned as King of England, continued the English Reformation, and advanced Protestant reforms during his short reign."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Royal Education",
+          "institution": "Royal Court",
+          "from_year": 1543,
+          "to_year": 1547,
+          "description": "Received comprehensive education in languages, theology, history, and the arts from leading scholars, including John Cheke and Roger Ascham."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "henry-viii",
+        "jane-seymour"
+      ]
+    }
+  },
+  {
+    "id": "henry-vii",
+    "data": {
+      "first_name": "Henry",
+      "last_name": "VII",
+      "preferred_name": "Henry",
+      "suffix": "VII",
+      "gender": "M",
+      "birthday": "1457-01-28",
+      "birth_place": "Pembroke Castle, Wales",
+      "death_date": "1509-04-21",
+      "death_place": "Richmond Palace, England",
+      "deceased": true,
+      "bio": "Henry VII was the first Tudor king of England, reigning from 1485 until his death in 1509. He was the father of Henry VIII and the founder of the Tudor dynasty. Henry VII came to the throne after defeating Richard III at the Battle of Bosworth Field, ending the Wars of the Roses. He was known for his financial acumen, his establishment of a strong central government, and his efforts to secure the Tudor dynasty through strategic marriages. Henry VII was a careful, prudent ruler who restored stability to England after decades of civil war. He is remembered as a skilled administrator and the founder of one of England's most famous dynasties.",
+      "nationality": "English",
+      "ethnicity": "Caucasian",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "French",
+        "Latin"
+      ],
+      "occupation": "King of England",
+      "employer": "Crown of England",
+      "email": null,
+      "phone": null,
+      "address": "Various Royal Palaces, England",
+      "work_entries": [
+        {
+          "title": "King of England",
+          "organization": "Crown of England",
+          "from_year": 1485,
+          "to_year": 1509,
+          "description": "Reigned as King of England, founded the Tudor dynasty, restored stability after the Wars of the Roses, and established a strong central government."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Royal Education",
+          "institution": "Royal Court",
+          "from_year": 1465,
+          "to_year": 1485,
+          "description": "Received education in languages, theology, and statecraft while in exile and at court."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "children": [
+        "henry-viii"
+      ],
+      "spouses": [
+        "elizabeth-york"
+      ]
+    }
+  },
+  {
+    "id": "elizabeth-york",
+    "data": {
+      "first_name": "Elizabeth",
+      "last_name": "of York",
+      "preferred_name": "Elizabeth",
+      "gender": "F",
+      "birthday": "1466-02-11",
+      "birth_place": "Westminster Palace, England",
+      "death_date": "1503-02-11",
+      "death_place": "Tower of London, England",
+      "deceased": true,
+      "bio": "Elizabeth of York was the wife of Henry VII and the mother of Henry VIII. She was the daughter of Edward IV and Elizabeth Woodville, making her a member of the House of York. Her marriage to Henry VII, a Lancastrian, helped unite the warring houses and end the Wars of the Roses. Elizabeth was known for her beauty, her gentle nature, and her role as a peacemaker. She was a devoted mother and queen who helped establish the legitimacy of the Tudor dynasty. Elizabeth died in 1503, shortly after giving birth to her last child, leaving Henry VII a widower for the last six years of his reign.",
+      "nationality": "English",
+      "ethnicity": "Caucasian",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "French",
+        "Latin"
+      ],
+      "occupation": "Queen Consort of England",
+      "employer": "Crown of England",
+      "email": null,
+      "phone": null,
+      "address": "Various Royal Palaces, England",
+      "work_entries": [
+        {
+          "title": "Queen Consort of England",
+          "organization": "Crown of England",
+          "from_year": 1486,
+          "to_year": 1503,
+          "description": "Served as Queen Consort, helped unite the Houses of York and Lancaster, and was a patron of the arts and education."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Royal Education",
+          "institution": "Royal Court",
+          "from_year": 1470,
+          "to_year": 1485,
+          "description": "Received comprehensive education in languages, theology, music, and the arts at the English court."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "children": [
+        "henry-viii"
+      ],
+      "spouses": [
+        "henry-vii"
+      ]
+    }
+  },
+  {
+    "id": "philip-ii-spain",
+    "data": {
+      "first_name": "Philip",
+      "last_name": "II",
+      "preferred_name": "Philip",
+      "suffix": "II",
+      "gender": "M",
+      "birthday": "1527-05-21",
+      "birth_place": "Valladolid, Spain",
+      "death_date": "1598-09-13",
+      "death_place": "El Escorial, Spain",
+      "deceased": true,
+      "bio": "Philip II of Spain was the husband of Mary I of England, married in 1554. He was one of the most powerful monarchs in European history, ruling over Spain, the Netherlands, and vast territories in the Americas. His marriage to Mary was largely political, aimed at strengthening ties between England and Spain. The marriage produced no children, and after Mary's death, Philip attempted to marry her half-sister Elizabeth I, but was refused. Philip is remembered for his role in the Spanish Armada, his patronage of the arts, and his efforts to maintain Catholic dominance in Europe.",
+      "nationality": "Spanish",
+      "ethnicity": "Caucasian",
+      "religion": "Catholic",
+      "languages": [
+        "Spanish",
+        "English",
+        "French",
+        "Latin",
+        "Italian"
+      ],
+      "occupation": "King of Spain",
+      "employer": "Crown of Spain",
+      "email": null,
+      "phone": null,
+      "address": "Various Royal Palaces, Spain",
+      "work_entries": [
+        {
+          "title": "King of Spain",
+          "organization": "Crown of Spain",
+          "from_year": 1556,
+          "to_year": 1598,
+          "description": "Reigned as King of Spain, ruled over vast territories, and was one of the most powerful monarchs in European history."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Royal Education",
+          "institution": "Spanish Court",
+          "from_year": 1535,
+          "to_year": 1543,
+          "description": "Received comprehensive education in languages, theology, statecraft, and military arts from leading Spanish scholars."
+        }
+      ],
+      "social_media": [],
+      "marriage_status": "widowed"
+    },
+    "rels": {
+      "spouses": [
+        "mary-i"
+      ]
+    }
+  },
+  {
+    "id": "thomas-seymour",
+    "data": {
+      "first_name": "Thomas",
+      "last_name": "Seymour",
+      "preferred_name": "Thomas",
+      "gender": "M",
+      "birthday": "1508",
+      "birth_place": "England",
+      "death_date": "1549-03-20",
+      "death_place": "Tower of London, England",
+      "deceased": true,
+      "bio": "Thomas Seymour was a courtier and the brother of Jane Seymour, Henry VIII's third wife. He was married to Mary I, though the details of this relationship are less well-documented. Thomas was known for his ambition and his involvement in court politics. He was executed in 1549 for treason, having been accused of plotting against the government during the reign of Edward VI. Thomas's story illustrates the dangerous nature of Tudor court politics and the high stakes of ambition in the royal court.",
+      "nationality": "English",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English",
+        "French"
+      ],
+      "occupation": "Lord High Admiral / Courtier",
+      "employer": "Crown of England",
+      "email": null,
+      "phone": null,
+      "address": "Various Royal Palaces, England",
+      "work_entries": [
+        {
+          "title": "Lord High Admiral",
+          "organization": "Crown of England",
+          "from_year": 1547,
+          "to_year": 1549,
+          "description": "Served as Lord High Admiral, responsible for the English navy and maritime affairs."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Court Education",
+          "institution": "Royal Court",
+          "from_year": 1520,
+          "to_year": 1530,
+          "description": "Educated in courtly arts, military tactics, and statecraft at the English court."
+        }
+      ],
+      "social_media": [],
+      "marriage_status": "married"
+    },
+    "rels": {
+      "spouses": [
+        "mary-i"
+      ]
+    }
+  }
+]

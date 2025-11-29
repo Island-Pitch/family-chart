@@ -1,0 +1,274 @@
+[
+  {
+    "id": "eddie",
+    "main": true,
+    "data": {
+      "first_name": "Eddie",
+      "last_name": "Martinez",
+      "preferred_name": "Eddie",
+      "suffix": "Jr.",
+      "gender": "M",
+      "birthday": "1992-04-18",
+      "birth_place": "Phoenix, AZ",
+      "bio": "Eddie is a thoughtful and hardworking individual who shares a special bond with his father, Eddie Sr., who he was named after. Growing up with his mother Claire and sister Sylvia, he learned the importance of family unity and support. Eddie works as an automotive mechanic, following in his father's footsteps, and takes pride in his ability to diagnose and fix complex engine problems. He enjoys restoring classic cars in his spare time and has won several awards at local car shows for his 1967 Mustang restoration project.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Protestant",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Automotive Mechanic",
+      "employer": "Martinez Auto Repair",
+      "email": "eddie.martinez@email.com",
+      "phone": "(602) 555-0201",
+      "address": "2345 Central Ave, Phoenix, AZ 85004",
+      "work_entries": [
+        {
+          "title": "Master Automotive Technician",
+          "organization": "Martinez Auto Repair",
+          "from_year": 2015,
+          "to_year": null,
+          "description": "Diagnose and repair vehicles, manage shop operations, train junior mechanics. Specialized in engine diagnostics and transmission repair."
+        },
+        {
+          "title": "Automotive Technician",
+          "organization": "Quick Fix Auto",
+          "from_year": 2012,
+          "to_year": 2015,
+          "description": "Performed routine maintenance, oil changes, tire rotations, and basic repairs."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Automotive Technology Certificate",
+          "institution": "Phoenix Technical College",
+          "from_year": 2010,
+          "to_year": 2012,
+          "description": "Completed comprehensive program in automotive repair, engine diagnostics, and electrical systems."
+        },
+        {
+          "title": "High School Diploma",
+          "institution": "Phoenix High School",
+          "from_year": 2006,
+          "to_year": 2010,
+          "description": "Graduated with focus on vocational automotive classes."
+        }
+      ],
+      "social_media": [
+        {
+          "platform": "Instagram",
+          "url": "https://instagram.com/eddiemartinez"
+        }
+      ]
+    },
+    "rels": {
+      "parents": [
+        "claire",
+        "eddie-sr"
+      ],
+      "siblings": [
+        "sylvia"
+      ]
+    }
+  },
+  {
+    "id": "claire",
+    "data": {
+      "first_name": "Claire",
+      "last_name": "Martinez",
+      "preferred_name": "Claire",
+      "gender": "F",
+      "birthday": "1970-09-25",
+      "birth_place": "Tucson, AZ",
+      "bio": "Claire is a dedicated mother and successful real estate agent who has built a reputation for helping families find their dream homes. She balances her demanding career with her role as a single mother, always making time for her children's activities and school events. Claire is known for her warm personality and excellent communication skills, which have made her one of the top agents in her area. She enjoys yoga and meditation, which help her maintain balance in her busy life.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Real Estate Agent",
+      "employer": "Desert View Realty",
+      "email": "claire.martinez@email.com",
+      "phone": "(602) 555-0202",
+      "address": "2345 Central Ave, Phoenix, AZ 85004",
+      "work_entries": [
+        {
+          "title": "Senior Real Estate Agent",
+          "organization": "Desert View Realty",
+          "from_year": 2005,
+          "to_year": null,
+          "description": "Help clients buy and sell residential properties. Consistently ranked in top 10% of agents in Phoenix metro area. Specialized in first-time homebuyers and family homes."
+        },
+        {
+          "title": "Real Estate Agent",
+          "organization": "Sunset Properties",
+          "from_year": 2000,
+          "to_year": 2005,
+          "description": "Started real estate career, learned the market, and built client base."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Bachelor of Arts in Business",
+          "institution": "Arizona State University",
+          "from_year": 1988,
+          "to_year": 1992,
+          "description": "Graduated with focus on marketing and business management."
+        }
+      ],
+      "social_media": [
+        {
+          "platform": "LinkedIn",
+          "url": "https://linkedin.com/in/clairemartinez"
+        },
+        {
+          "platform": "Facebook",
+          "url": "https://facebook.com/claire.martinez"
+        }
+      ]
+    },
+    "rels": {
+      "spouses": [
+        "eddie-sr"
+      ],
+      "children": [
+        "eddie",
+        "sylvia"
+      ]
+    }
+  },
+  {
+    "id": "eddie-sr",
+    "data": {
+      "first_name": "Eddie",
+      "last_name": "Martinez",
+      "preferred_name": "Eddie",
+      "suffix": "Sr.",
+      "gender": "M",
+      "birthday": "1968-11-12",
+      "birth_place": "El Paso, TX",
+      "bio": "Eddie Sr. is a skilled automotive mechanic who has owned and operated his own auto repair shop for over 25 years. He takes great pride in his work and has built a loyal customer base through honest service and quality repairs. Eddie Sr. is a devoted father who enjoys spending time with his children, especially working on cars together. He is passionate about classic cars and has restored several vintage vehicles. He also volunteers his time teaching automotive skills to at-risk youth in his community.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Auto Shop Owner / Master Mechanic",
+      "employer": "Martinez Auto Repair",
+      "email": "eddie.sr.martinez@email.com",
+      "phone": "(602) 555-0203",
+      "address": "2345 Central Ave, Phoenix, AZ 85004",
+      "work_entries": [
+        {
+          "title": "Owner / Master Mechanic",
+          "organization": "Martinez Auto Repair",
+          "from_year": 1998,
+          "to_year": null,
+          "description": "Founded and operate successful auto repair shop. Manage business operations, train staff, and perform complex repairs. Built reputation for honest service and quality work."
+        },
+        {
+          "title": "Automotive Technician",
+          "organization": "City Auto Service",
+          "from_year": 1988,
+          "to_year": 1998,
+          "description": "Worked as lead technician, gaining experience in all aspects of automotive repair and business management."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Automotive Technology Certificate",
+          "institution": "El Paso Technical Institute",
+          "from_year": 1986,
+          "to_year": 1988,
+          "description": "Completed comprehensive automotive repair program with focus on engine and transmission systems."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "claire"
+      ],
+      "children": [
+        "eddie",
+        "sylvia"
+      ]
+    }
+  },
+  {
+    "id": "sylvia",
+    "data": {
+      "first_name": "Sylvia",
+      "last_name": "Martinez",
+      "preferred_name": "Sylvia",
+      "gender": "F",
+      "birthday": "1995-08-30",
+      "birth_place": "Phoenix, AZ",
+      "bio": "Sylvia is an ambitious and creative young professional who works as a graphic designer for a marketing agency. As the younger sibling, she developed her own unique identity while maintaining close relationships with her family. Sylvia is passionate about art and design, and her work has been featured in several design publications. She enjoys attending art galleries, trying new restaurants, and traveling to find inspiration for her creative projects. Sylvia is also an advocate for mental health awareness and volunteers with local organizations.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Protestant",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Graphic Designer",
+      "employer": "Creative Minds Marketing",
+      "email": "sylvia.martinez@email.com",
+      "phone": "(602) 555-0204",
+      "address": "3456 Desert View Dr, Phoenix, AZ 85004",
+      "work_entries": [
+        {
+          "title": "Senior Graphic Designer",
+          "organization": "Creative Minds Marketing",
+          "from_year": 2019,
+          "to_year": null,
+          "description": "Create visual designs for marketing campaigns, brand identities, and digital media. Lead design projects and collaborate with marketing teams."
+        },
+        {
+          "title": "Graphic Designer",
+          "organization": "Design Studio Pro",
+          "from_year": 2017,
+          "to_year": 2019,
+          "description": "Designed logos, brochures, and digital graphics for various clients."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Bachelor of Fine Arts in Graphic Design",
+          "institution": "Arizona State University",
+          "from_year": 2013,
+          "to_year": 2017,
+          "description": "Graduated with honors. Focused on digital design, branding, and typography. Won several student design awards."
+        }
+      ],
+      "social_media": [
+        {
+          "platform": "Instagram",
+          "url": "https://instagram.com/sylviamartinez"
+        },
+        {
+          "platform": "Behance",
+          "url": "https://behance.net/sylviamartinez"
+        },
+        {
+          "platform": "LinkedIn",
+          "url": "https://linkedin.com/in/sylviamartinez"
+        }
+      ]
+    },
+    "rels": {
+      "parents": [
+        "claire",
+        "eddie-sr"
+      ],
+      "siblings": [
+        "eddie"
+      ]
+    }
+  }
+]

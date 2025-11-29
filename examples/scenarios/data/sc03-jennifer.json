@@ -1,0 +1,427 @@
+[
+  {
+    "id": "jennifer",
+    "main": true,
+    "data": {
+      "first_name": "Jennifer",
+      "last_name": "Johnson",
+      "preferred_name": "Jennifer",
+      "gender": "F",
+      "birthday": "1988-03-14",
+      "birth_place": "Portland, OR",
+      "bio": "Jennifer is a dedicated elementary school teacher who was named after her beloved grandmother. She finds great joy in teaching young children and watching them grow and learn. Jennifer comes from a close-knit family and values the traditions passed down through generations, especially her name connection to her grandmother. She enjoys reading, gardening, and spending weekends with her family. Jennifer is passionate about early childhood education and volunteers at local literacy programs.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Methodist",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Elementary School Teacher",
+      "employer": "Riverside Elementary School",
+      "email": "jennifer.johnson@email.com",
+      "phone": "(503) 555-0301",
+      "address": "4567 Oak Street, Portland, OR 97201",
+      "work_entries": [
+        {
+          "title": "3rd Grade Teacher",
+          "organization": "Riverside Elementary School",
+          "from_year": 2012,
+          "to_year": null,
+          "description": "Teach third grade students, develop lesson plans, assess student progress, and collaborate with parents. Specialized in reading and mathematics instruction."
+        },
+        {
+          "title": "Student Teacher",
+          "organization": "Maple Elementary School",
+          "from_year": 2011,
+          "to_year": 2012,
+          "description": "Completed student teaching requirement, worked with experienced teachers to develop teaching skills."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Master of Education in Elementary Education",
+          "institution": "Portland State University",
+          "from_year": 2009,
+          "to_year": 2011,
+          "description": "Earned master's degree with focus on early childhood development and literacy instruction."
+        },
+        {
+          "title": "Bachelor of Arts in Education",
+          "institution": "University of Oregon",
+          "from_year": 2005,
+          "to_year": 2009,
+          "description": "Graduated magna cum laude. Completed teacher preparation program with focus on elementary education."
+        }
+      ],
+      "social_media": [
+        {
+          "platform": "Facebook",
+          "url": "https://facebook.com/jennifer.johnson"
+        }
+      ]
+    },
+    "rels": {
+      "parents": [
+        "john-sr",
+        "joanne"
+      ],
+      "siblings": [
+        "john-jr",
+        "janet"
+      ]
+    }
+  },
+  {
+    "id": "john-sr",
+    "data": {
+      "first_name": "John",
+      "last_name": "Johnson",
+      "preferred_name": "John",
+      "suffix": "Sr.",
+      "gender": "M",
+      "birthday": "1960-07-22",
+      "birth_place": "Seattle, WA",
+      "bio": "John Sr. is a successful business owner who runs a construction company that he built from the ground up. He is a devoted father who takes pride in his children's accomplishments and enjoys spending time with his family. John Sr. learned the value of hard work from his father and has instilled those same values in his children. He enjoys fishing, woodworking, and coaching his children's sports teams. John Sr. is also active in his community, serving on the local school board.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Methodist",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Construction Company Owner",
+      "employer": "Johnson Construction LLC",
+      "email": "john.sr.johnson@email.com",
+      "phone": "(503) 555-0302",
+      "address": "4567 Oak Street, Portland, OR 97201",
+      "work_entries": [
+        {
+          "title": "Owner / General Contractor",
+          "organization": "Johnson Construction LLC",
+          "from_year": 1985,
+          "to_year": null,
+          "description": "Founded and operate construction company specializing in residential and commercial projects. Manage projects, coordinate subcontractors, and ensure quality standards."
+        },
+        {
+          "title": "Construction Foreman",
+          "organization": "Pacific Builders",
+          "from_year": 1978,
+          "to_year": 1985,
+          "description": "Supervised construction crews and managed project timelines."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "High School Diploma",
+          "institution": "Seattle High School",
+          "from_year": 1974,
+          "to_year": 1978,
+          "description": "Graduated with focus on vocational training in construction trades."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "joanne"
+      ],
+      "children": [
+        "jennifer",
+        "john-jr",
+        "janet"
+      ],
+      "parents": [
+        "jennifer-grandma",
+        "jonah"
+      ]
+    }
+  },
+  {
+    "id": "joanne",
+    "data": {
+      "first_name": "Joanne",
+      "last_name": "Johnson",
+      "preferred_name": "Joanne",
+      "gender": "F",
+      "birthday": "1962-12-05",
+      "birth_place": "Portland, OR",
+      "bio": "Joanne is a loving mother and dedicated nurse who works in the emergency department of a local hospital. She balances her demanding career with raising three children, always making time for family activities and school events. Joanne is known for her calm demeanor and ability to handle stressful situations, both at work and at home. She enjoys cooking, reading mystery novels, and taking family vacations to the Oregon coast.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Methodist",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Emergency Room Nurse",
+      "employer": "Portland General Hospital",
+      "email": "joanne.johnson@email.com",
+      "phone": "(503) 555-0303",
+      "address": "4567 Oak Street, Portland, OR 97201",
+      "work_entries": [
+        {
+          "title": "Registered Nurse - Emergency Department",
+          "organization": "Portland General Hospital",
+          "from_year": 1985,
+          "to_year": null,
+          "description": "Provide emergency care to patients, triage cases, assist with procedures, and support families during medical crises."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Associate Degree in Nursing",
+          "institution": "Portland Community College",
+          "from_year": 1983,
+          "to_year": 1985,
+          "description": "Completed nursing program with clinical rotations in emergency and critical care."
+        }
+      ],
+      "social_media": [
+        {
+          "platform": "Facebook",
+          "url": "https://facebook.com/joanne.johnson"
+        }
+      ]
+    },
+    "rels": {
+      "spouses": [
+        "john-sr"
+      ],
+      "children": [
+        "jennifer",
+        "john-jr",
+        "janet"
+      ]
+    }
+  },
+  {
+    "id": "john-jr",
+    "data": {
+      "first_name": "John",
+      "last_name": "Johnson",
+      "preferred_name": "John",
+      "suffix": "Jr.",
+      "gender": "M",
+      "birthday": "1990-09-18",
+      "birth_place": "Portland, OR",
+      "bio": "John Jr. is an ambitious software engineer who works for a tech startup in Portland. He followed in his father's footsteps in terms of work ethic and determination, but chose a different career path in technology. John Jr. is passionate about coding and enjoys working on side projects in his spare time. He is an avid runner and has completed several marathons. He also enjoys playing guitar and is part of a local band that performs at small venues around the city.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Methodist",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Software Engineer",
+      "employer": "TechStart PDX",
+      "email": "john.jr.johnson@email.com",
+      "phone": "(503) 555-0304",
+      "address": "5678 Tech Blvd, Portland, OR 97201",
+      "work_entries": [
+        {
+          "title": "Senior Software Engineer",
+          "organization": "TechStart PDX",
+          "from_year": 2016,
+          "to_year": null,
+          "description": "Develop web applications using React and Node.js. Lead technical projects and mentor junior developers."
+        },
+        {
+          "title": "Software Developer",
+          "organization": "Digital Solutions Inc.",
+          "from_year": 2014,
+          "to_year": 2016,
+          "description": "Built and maintained web applications, collaborated with design and product teams."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Bachelor of Science in Computer Science",
+          "institution": "Oregon State University",
+          "from_year": 2010,
+          "to_year": 2014,
+          "description": "Graduated with honors. Focused on software engineering and web development."
+        }
+      ],
+      "social_media": [
+        {
+          "platform": "LinkedIn",
+          "url": "https://linkedin.com/in/johnjohnsonjr"
+        },
+        {
+          "platform": "GitHub",
+          "url": "https://github.com/johnjohnsonjr"
+        }
+      ]
+    },
+    "rels": {
+      "parents": [
+        "john-sr",
+        "joanne"
+      ],
+      "siblings": [
+        "jennifer",
+        "janet"
+      ]
+    }
+  },
+  {
+    "id": "janet",
+    "data": {
+      "first_name": "Janet",
+      "last_name": "Johnson",
+      "preferred_name": "Janet",
+      "gender": "F",
+      "birthday": "1993-05-27",
+      "birth_place": "Portland, OR",
+      "bio": "Janet is a creative and independent marketing professional who works for a local advertising agency. As the youngest sibling, she developed her own unique personality while maintaining close relationships with her family. Janet is passionate about social media marketing and has helped several local businesses grow their online presence. She enjoys photography, hiking in the Pacific Northwest, and trying new restaurants. Janet is also an animal lover and volunteers at a local animal shelter.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Methodist",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Marketing Specialist",
+      "employer": "Northwest Advertising Agency",
+      "email": "janet.johnson@email.com",
+      "phone": "(503) 555-0305",
+      "address": "6789 Pine Ave, Portland, OR 97201",
+      "work_entries": [
+        {
+          "title": "Marketing Specialist",
+          "organization": "Northwest Advertising Agency",
+          "from_year": 2017,
+          "to_year": null,
+          "description": "Develop and execute marketing campaigns, manage social media accounts, and create content for clients across various industries."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Bachelor of Arts in Marketing",
+          "institution": "University of Oregon",
+          "from_year": 2013,
+          "to_year": 2017,
+          "description": "Graduated with focus on digital marketing and social media strategy."
+        }
+      ],
+      "social_media": [
+        {
+          "platform": "Instagram",
+          "url": "https://instagram.com/janetjohnson"
+        },
+        {
+          "platform": "LinkedIn",
+          "url": "https://linkedin.com/in/janetjohnson"
+        },
+        {
+          "platform": "Twitter",
+          "url": "https://twitter.com/janetjohnson"
+        }
+      ]
+    },
+    "rels": {
+      "parents": [
+        "john-sr",
+        "joanne"
+      ],
+      "siblings": [
+        "jennifer",
+        "john-jr"
+      ]
+    }
+  },
+  {
+    "id": "jennifer-grandma",
+    "data": {
+      "first_name": "Jennifer",
+      "last_name": "Johnson",
+      "preferred_name": "Grandma Jennifer",
+      "gender": "F",
+      "birthday": "1935-03-20",
+      "birth_place": "Seattle, WA",
+      "death_date": "2015-11-10",
+      "death_place": "Portland, OR",
+      "deceased": true,
+      "bio": "Jennifer was a beloved grandmother who was known for her warm heart, delicious home-cooked meals, and her love of gardening. She was married to Jonah for over 50 years and together they built a beautiful life filled with family, friends, and traditions. Grandma Jennifer was the matriarch of the family, always hosting holiday gatherings and making sure everyone felt welcome. She had a green thumb and her garden was the envy of the neighborhood. Her legacy lives on through her granddaughter who was named after her.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Methodist",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Homemaker",
+      "employer": null,
+      "email": null,
+      "phone": null,
+      "address": null,
+      "work_entries": [],
+      "education_entries": [
+        {
+          "title": "High School Diploma",
+          "institution": "Seattle High School",
+          "from_year": 1951,
+          "to_year": 1953,
+          "description": "Graduated with focus on home economics and family studies."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "jonah"
+      ],
+      "children": [
+        "john-sr"
+      ]
+    }
+  },
+  {
+    "id": "jonah",
+    "data": {
+      "first_name": "Jonah",
+      "last_name": "Johnson",
+      "preferred_name": "Grandpa Jonah",
+      "gender": "M",
+      "birthday": "1933-08-15",
+      "birth_place": "Tacoma, WA",
+      "death_date": "2018-06-22",
+      "death_place": "Portland, OR",
+      "deceased": true,
+      "bio": "Jonah was a devoted husband, father, and grandfather who worked as a machinist for over 40 years. He was known for his strong work ethic, his sense of humor, and his love of fishing. Grandpa Jonah was a skilled craftsman who could fix anything and was always willing to help family and neighbors with home repairs. He enjoyed telling stories, playing cards, and spending time with his grandchildren. His marriage to Jennifer was a true partnership built on love, respect, and shared values.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Methodist",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Machinist (Retired)",
+      "employer": "Pacific Manufacturing",
+      "email": null,
+      "phone": null,
+      "address": null,
+      "work_entries": [
+        {
+          "title": "Master Machinist",
+          "organization": "Pacific Manufacturing",
+          "from_year": 1955,
+          "to_year": 1995,
+          "description": "Operated precision machinery, created custom parts, and trained apprentices. Known for exceptional attention to detail and craftsmanship."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "High School Diploma",
+          "institution": "Tacoma High School",
+          "from_year": 1949,
+          "to_year": 1951,
+          "description": "Graduated with focus on vocational training in machine shop."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "jennifer-grandma"
+      ],
+      "children": [
+        "john-sr"
+      ]
+    }
+  }
+]

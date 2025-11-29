@@ -1,0 +1,333 @@
+[
+  {
+    "id": "marcos",
+    "main": true,
+    "data": {
+      "first_name": "Marcos",
+      "last_name": "Rodriguez",
+      "preferred_name": "Marcos",
+      "gender": "M",
+      "birthday": "1995-06-15",
+      "birth_place": "Los Angeles, CA",
+      "bio": "Marcos is a dedicated family man who values the close relationships he shares with his two sisters, Remmy and Brandine. Growing up in a tight-knit household with parents Jessie and Julie, he learned the importance of family bonds and mutual support. He works as a software engineer at a tech startup in Silicon Valley, where he combines his passion for technology with his natural problem-solving abilities. In his free time, Marcos enjoys hiking in the California mountains and playing guitar, often performing at local open mic nights.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Software Engineer",
+      "employer": "TechVenture Solutions",
+      "email": "marcos.rodriguez@email.com",
+      "phone": "(310) 555-0123",
+      "address": "1234 Sunset Blvd, Los Angeles, CA 90028",
+      "work_entries": [
+        {
+          "title": "Senior Software Engineer",
+          "organization": "TechVenture Solutions",
+          "from_year": 2020,
+          "to_year": null,
+          "description": "Leading development of cloud-based applications using React and Node.js. Mentoring junior developers and implementing best practices."
+        },
+        {
+          "title": "Software Developer",
+          "organization": "Digital Innovations Inc.",
+          "from_year": 2018,
+          "to_year": 2020,
+          "description": "Developed and maintained web applications. Collaborated with cross-functional teams to deliver high-quality software solutions."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Bachelor of Science in Computer Science",
+          "institution": "University of California, Los Angeles",
+          "from_year": 2013,
+          "to_year": 2017,
+          "description": "Graduated magna cum laude. Focused on software engineering and web development. Member of the Computer Science Honor Society."
+        }
+      ],
+      "social_media": [
+        {
+          "platform": "LinkedIn",
+          "url": "https://linkedin.com/in/marcosrodriguez"
+        },
+        {
+          "platform": "GitHub",
+          "url": "https://github.com/marcosrodriguez"
+        }
+      ]
+    },
+    "rels": {
+      "parents": [
+        "jessie",
+        "julie"
+      ],
+      "siblings": [
+        "remmy",
+        "brandine"
+      ]
+    }
+  },
+  {
+    "id": "jessie",
+    "data": {
+      "first_name": "Jessie",
+      "last_name": "Rodriguez",
+      "preferred_name": "Jessie",
+      "gender": "M",
+      "birthday": "1968-03-22",
+      "birth_place": "San Diego, CA",
+      "bio": "Jessie is a loving father and husband who has worked hard to provide for his family. He spent over 30 years as a construction foreman, building homes and commercial buildings throughout Southern California. Known for his strong work ethic and dedication to his craft, Jessie takes pride in teaching his children the value of hard work and perseverance. He enjoys weekend fishing trips with his family and is an avid Dodgers fan.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Construction Foreman (Retired)",
+      "employer": "Pacific Builders Group",
+      "email": "jessie.rodriguez@email.com",
+      "phone": "(619) 555-0145",
+      "address": "1234 Sunset Blvd, Los Angeles, CA 90028",
+      "work_entries": [
+        {
+          "title": "Construction Foreman",
+          "organization": "Pacific Builders Group",
+          "from_year": 1990,
+          "to_year": 2020,
+          "description": "Supervised construction projects, managed teams of 15-20 workers, ensured safety compliance and quality standards. Specialized in residential and commercial building projects."
+        },
+        {
+          "title": "Construction Worker",
+          "organization": "Various Contractors",
+          "from_year": 1985,
+          "to_year": 1990,
+          "description": "Worked on various construction sites, learning the trade and building expertise in carpentry, electrical, and plumbing."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "High School Diploma",
+          "institution": "San Diego High School",
+          "from_year": 1982,
+          "to_year": 1986,
+          "description": "Graduated with focus on vocational training in construction trades."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "julie"
+      ],
+      "children": [
+        "marcos",
+        "remmy",
+        "brandine"
+      ]
+    }
+  },
+  {
+    "id": "julie",
+    "data": {
+      "first_name": "Julie",
+      "last_name": "Rodriguez",
+      "preferred_name": "Julie",
+      "gender": "F",
+      "birthday": "1970-07-10",
+      "birth_place": "Los Angeles, CA",
+      "bio": "Julie is a compassionate mother and dedicated nurse who has spent her career caring for others. She works in the pediatric ward of a local hospital, where her warm personality and medical expertise have made her a favorite among young patients and their families. Julie balances her demanding career with her role as a mother, always making time for family dinners and weekend activities. She enjoys gardening and has transformed their backyard into a beautiful vegetable and flower garden.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Registered Nurse",
+      "employer": "Los Angeles Children's Hospital",
+      "email": "julie.rodriguez@email.com",
+      "phone": "(310) 555-0146",
+      "address": "1234 Sunset Blvd, Los Angeles, CA 90028",
+      "work_entries": [
+        {
+          "title": "Pediatric Registered Nurse",
+          "organization": "Los Angeles Children's Hospital",
+          "from_year": 2005,
+          "to_year": null,
+          "description": "Provide compassionate care to pediatric patients, administer medications, monitor vital signs, and support families during difficult times. Specialized in pediatric oncology."
+        },
+        {
+          "title": "Staff Nurse",
+          "organization": "Community General Hospital",
+          "from_year": 1995,
+          "to_year": 2005,
+          "description": "Worked in various departments including emergency, medical-surgical, and maternity wards."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Bachelor of Science in Nursing",
+          "institution": "California State University, Los Angeles",
+          "from_year": 1991,
+          "to_year": 1995,
+          "description": "Graduated with honors. Completed clinical rotations in pediatrics, which became her specialty."
+        }
+      ],
+      "social_media": [
+        {
+          "platform": "Facebook",
+          "url": "https://facebook.com/julie.rodriguez"
+        }
+      ]
+    },
+    "rels": {
+      "spouses": [
+        "jessie"
+      ],
+      "children": [
+        "marcos",
+        "remmy",
+        "brandine"
+      ]
+    }
+  },
+  {
+    "id": "remmy",
+    "data": {
+      "first_name": "Remmy",
+      "last_name": "Rodriguez",
+      "preferred_name": "Remmy",
+      "gender": "F",
+      "birthday": "1997-11-08",
+      "birth_place": "Los Angeles, CA",
+      "bio": "Remmy is an ambitious and creative marketing professional who brings energy and innovation to everything she does. As the middle child, she developed strong communication skills and a natural ability to connect with people. She works for a digital marketing agency where she creates compelling campaigns for clients across various industries. Remmy is passionate about social justice issues and volunteers at a local women's shelter on weekends. She loves traveling and has visited over 20 countries, documenting her adventures on social media.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish",
+        "French"
+      ],
+      "occupation": "Marketing Manager",
+      "employer": "Creative Digital Agency",
+      "email": "remmy.rodriguez@email.com",
+      "phone": "(310) 555-0124",
+      "address": "5678 Hollywood Blvd, Los Angeles, CA 90028",
+      "work_entries": [
+        {
+          "title": "Marketing Manager",
+          "organization": "Creative Digital Agency",
+          "from_year": 2021,
+          "to_year": null,
+          "description": "Lead marketing campaigns for clients, manage social media strategies, and coordinate with creative teams to deliver impactful brand messaging."
+        },
+        {
+          "title": "Marketing Coordinator",
+          "organization": "Brand Solutions Inc.",
+          "from_year": 2019,
+          "to_year": 2021,
+          "description": "Supported marketing team with campaign execution, content creation, and client communications."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Bachelor of Arts in Marketing",
+          "institution": "University of Southern California",
+          "from_year": 2015,
+          "to_year": 2019,
+          "description": "Graduated with a focus on digital marketing and consumer behavior. Member of the Marketing Club and studied abroad in Paris."
+        }
+      ],
+      "social_media": [
+        {
+          "platform": "Instagram",
+          "url": "https://instagram.com/remmyrodriguez"
+        },
+        {
+          "platform": "LinkedIn",
+          "url": "https://linkedin.com/in/remmyrodriguez"
+        },
+        {
+          "platform": "Twitter",
+          "url": "https://twitter.com/remmyrodriguez"
+        }
+      ]
+    },
+    "rels": {
+      "parents": [
+        "jessie",
+        "julie"
+      ],
+      "siblings": [
+        "marcos",
+        "brandine"
+      ]
+    }
+  },
+  {
+    "id": "brandine",
+    "data": {
+      "first_name": "Brandine",
+      "last_name": "Rodriguez",
+      "preferred_name": "Brandine",
+      "gender": "F",
+      "birthday": "2000-02-14",
+      "birth_place": "Los Angeles, CA",
+      "bio": "Brandine is the youngest of the Rodriguez siblings, bringing creativity and artistic talent to the family. Currently studying graphic design at a local art institute, she has already won several student design competitions. Brandine is known for her vibrant personality and her ability to see beauty in everyday moments. She works part-time at a local coffee shop while pursuing her degree, where her friendly demeanor has made her a favorite among regular customers. In her spare time, she creates digital art and volunteers at an animal shelter.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Student / Barista",
+      "employer": "Brew & Bean Coffee Shop",
+      "email": "brandine.rodriguez@email.com",
+      "phone": "(310) 555-0125",
+      "address": "1234 Sunset Blvd, Los Angeles, CA 90028",
+      "work_entries": [
+        {
+          "title": "Barista",
+          "organization": "Brew & Bean Coffee Shop",
+          "from_year": 2021,
+          "to_year": null,
+          "description": "Prepare specialty coffee drinks, maintain customer service standards, and create latte art. Part-time position while attending school."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Bachelor of Fine Arts in Graphic Design",
+          "institution": "Los Angeles Art Institute",
+          "from_year": 2018,
+          "to_year": 2024,
+          "description": "Expected graduation 2024. Focus on digital design, branding, and user experience. Winner of 2022 Student Design Excellence Award."
+        }
+      ],
+      "social_media": [
+        {
+          "platform": "Instagram",
+          "url": "https://instagram.com/brandinerodriguez"
+        },
+        {
+          "platform": "Behance",
+          "url": "https://behance.net/brandinerodriguez"
+        }
+      ]
+    },
+    "rels": {
+      "parents": [
+        "jessie",
+        "julie"
+      ],
+      "siblings": [
+        "marcos",
+        "remmy"
+      ]
+    }
+  }
+]

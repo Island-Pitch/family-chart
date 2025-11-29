@@ -1,0 +1,579 @@
+[
+  {
+    "id": "francine",
+    "main": true,
+    "data": {
+      "first_name": "Francine",
+      "last_name": "Williams",
+      "preferred_name": "Frenchie",
+      "nicknames": "Frenchie",
+      "gender": "F",
+      "birthday": "1991-08-12",
+      "birth_place": "Nashville, TN",
+      "bio": "Francine, affectionately known as Frenchie by everyone who knows her, is a vibrant and outgoing marketing director who brings energy and creativity to everything she does. As the oldest of three siblings, she developed strong leadership skills and a protective nature toward her younger brothers, Billy Joe and Randy. Francine works for a major advertising agency where she leads campaigns for national brands. She enjoys country music, line dancing, and hosting family gatherings. Her nickname 'Frenchie' has stuck with her since childhood and reflects her fun-loving personality.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Baptist",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Marketing Director",
+      "employer": "Nashville Advertising Group",
+      "email": "francine.williams@email.com",
+      "phone": "(615) 555-0401",
+      "address": "1234 Music Row, Nashville, TN 37203",
+      "work_entries": [
+        {
+          "title": "Marketing Director",
+          "organization": "Nashville Advertising Group",
+          "from_year": 2018,
+          "to_year": null,
+          "description": "Lead marketing campaigns for major brands, manage creative teams, develop brand strategies, and oversee multi-channel marketing initiatives."
+        },
+        {
+          "title": "Senior Marketing Manager",
+          "organization": "Tennessee Marketing Solutions",
+          "from_year": 2015,
+          "to_year": 2018,
+          "description": "Developed and executed marketing campaigns, managed client relationships, and analyzed campaign performance."
+        },
+        {
+          "title": "Marketing Coordinator",
+          "organization": "Southern Brand Agency",
+          "from_year": 2013,
+          "to_year": 2015,
+          "description": "Supported marketing team with campaign execution, event coordination, and client communications."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Master of Business Administration",
+          "institution": "Vanderbilt University",
+          "from_year": 2011,
+          "to_year": 2013,
+          "description": "Earned MBA with focus on marketing and brand management. Graduated with honors."
+        },
+        {
+          "title": "Bachelor of Arts in Marketing",
+          "institution": "University of Tennessee",
+          "from_year": 2007,
+          "to_year": 2011,
+          "description": "Graduated magna cum laude. Focused on advertising and consumer behavior. Member of Marketing Club."
+        }
+      ],
+      "social_media": [
+        {
+          "platform": "LinkedIn",
+          "url": "https://linkedin.com/in/francinewilliams"
+        },
+        {
+          "platform": "Instagram",
+          "url": "https://instagram.com/frenchiewilliams"
+        },
+        {
+          "platform": "Twitter",
+          "url": "https://twitter.com/frenchiewilliams"
+        }
+      ]
+    },
+    "rels": {
+      "parents": [
+        "sam",
+        "bec"
+      ],
+      "siblings": [
+        "billy-joe",
+        "randy"
+      ]
+    }
+  },
+  {
+    "id": "sam",
+    "data": {
+      "first_name": "Sam",
+      "last_name": "Williams",
+      "preferred_name": "Sam",
+      "gender": "M",
+      "birthday": "1965-03-20",
+      "birth_place": "Memphis, TN",
+      "bio": "Sam is a hardworking construction supervisor who has spent his career building homes and commercial buildings throughout Tennessee. He is a devoted father who takes pride in his children's accomplishments and enjoys spending time with his family. Sam learned the value of hard work from his parents, Bob and Sue, and has instilled those same values in his own children. He enjoys fishing, watching football, and working on home improvement projects. Sam is known for his sense of humor and his ability to make people laugh.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Baptist",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Construction Supervisor",
+      "employer": "Tennessee Builders Inc.",
+      "email": "sam.williams@email.com",
+      "phone": "(615) 555-0402",
+      "address": "5678 Country Lane, Nashville, TN 37203",
+      "work_entries": [
+        {
+          "title": "Construction Supervisor",
+          "organization": "Tennessee Builders Inc.",
+          "from_year": 1995,
+          "to_year": null,
+          "description": "Supervise construction projects, manage crews, ensure safety compliance, and coordinate with subcontractors and clients."
+        },
+        {
+          "title": "Construction Foreman",
+          "organization": "Nashville Construction Co.",
+          "from_year": 1985,
+          "to_year": 1995,
+          "description": "Led construction crews, managed project timelines, and ensured quality standards."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "High School Diploma",
+          "institution": "Memphis High School",
+          "from_year": 1981,
+          "to_year": 1983,
+          "description": "Graduated with focus on vocational training in construction trades."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "bec"
+      ],
+      "children": [
+        "francine",
+        "billy-joe",
+        "randy"
+      ],
+      "parents": [
+        "bob",
+        "sue"
+      ]
+    }
+  },
+  {
+    "id": "bec",
+    "data": {
+      "first_name": "Rebecca",
+      "last_name": "Williams",
+      "preferred_name": "Bec",
+      "nicknames": "Bec",
+      "gender": "F",
+      "birthday": "1967-07-15",
+      "birth_place": "Knoxville, TN",
+      "bio": "Bec is a loving mother and dedicated elementary school teacher who has spent her career nurturing young minds. She balances her teaching career with raising three children, always making time for family activities and school events. Bec is known for her patience, creativity, and her ability to connect with children. She enjoys reading, gardening, and baking, often making treats for her students and family. Bec comes from a close-knit family and maintains strong relationships with her parents, Lisa and Jeff.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Baptist",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Elementary School Teacher",
+      "employer": "Nashville Elementary School",
+      "email": "bec.williams@email.com",
+      "phone": "(615) 555-0403",
+      "address": "5678 Country Lane, Nashville, TN 37203",
+      "work_entries": [
+        {
+          "title": "2nd Grade Teacher",
+          "organization": "Nashville Elementary School",
+          "from_year": 1990,
+          "to_year": null,
+          "description": "Teach second grade students, develop lesson plans, assess student progress, and collaborate with parents. Specialized in reading and mathematics instruction."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Bachelor of Science in Elementary Education",
+          "institution": "University of Tennessee",
+          "from_year": 1985,
+          "to_year": 1989,
+          "description": "Graduated with honors. Completed teacher preparation program with focus on early childhood education."
+        }
+      ],
+      "social_media": [
+        {
+          "platform": "Facebook",
+          "url": "https://facebook.com/bec.williams"
+        }
+      ]
+    },
+    "rels": {
+      "spouses": [
+        "sam"
+      ],
+      "children": [
+        "francine",
+        "billy-joe",
+        "randy"
+      ],
+      "parents": [
+        "lisa",
+        "jeff"
+      ]
+    }
+  },
+  {
+    "id": "billy-joe",
+    "data": {
+      "first_name": "Billy",
+      "last_name": "Williams",
+      "preferred_name": "Billy Joe",
+      "nicknames": "Billy Joe",
+      "gender": "M",
+      "birthday": "1994-11-08",
+      "birth_place": "Nashville, TN",
+      "bio": "Billy Joe is an ambitious and hardworking electrician who followed in his father's footsteps in the construction trades. As the middle child, he developed his own unique personality while maintaining close relationships with his siblings. Billy Joe is passionate about his work and takes pride in his craftsmanship. He enjoys playing guitar, watching sports, and spending time with friends. Billy Joe is also an avid outdoorsman who loves hunting and fishing in the Tennessee wilderness.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Baptist",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Licensed Electrician",
+      "employer": "Nashville Electric Services",
+      "email": "billyjoe.williams@email.com",
+      "phone": "(615) 555-0404",
+      "address": "9012 Electric Ave, Nashville, TN 37203",
+      "work_entries": [
+        {
+          "title": "Licensed Electrician",
+          "organization": "Nashville Electric Services",
+          "from_year": 2016,
+          "to_year": null,
+          "description": "Install and repair electrical systems in residential and commercial buildings. Ensure code compliance and safety standards."
+        },
+        {
+          "title": "Electrician Apprentice",
+          "organization": "Tennessee Electrical Contractors",
+          "from_year": 2012,
+          "to_year": 2016,
+          "description": "Completed apprenticeship program, learned electrical trade, and obtained journeyman license."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Electrician Apprenticeship",
+          "institution": "Tennessee Electrical Training Program",
+          "from_year": 2012,
+          "to_year": 2016,
+          "description": "Completed 4-year apprenticeship program with on-the-job training and classroom instruction."
+        },
+        {
+          "title": "High School Diploma",
+          "institution": "Nashville High School",
+          "from_year": 2008,
+          "to_year": 2012,
+          "description": "Graduated with focus on vocational training in electrical trades."
+        }
+      ],
+      "social_media": [
+        {
+          "platform": "Instagram",
+          "url": "https://instagram.com/billyjoewilliams"
+        }
+      ]
+    },
+    "rels": {
+      "parents": [
+        "sam",
+        "bec"
+      ],
+      "siblings": [
+        "francine",
+        "randy"
+      ]
+    }
+  },
+  {
+    "id": "randy",
+    "data": {
+      "first_name": "Randy",
+      "last_name": "Williams",
+      "preferred_name": "Randy",
+      "gender": "M",
+      "birthday": "1997-02-14",
+      "birth_place": "Nashville, TN",
+      "bio": "Randy is the youngest of the Williams siblings, bringing energy and enthusiasm to everything he does. Currently working as a personal trainer at a local gym, he is passionate about fitness and helping others achieve their health goals. Randy is known for his outgoing personality and his ability to motivate people. He enjoys weightlifting, running, and participating in fitness competitions. Randy is also studying to become a certified nutritionist and hopes to open his own fitness studio one day.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Baptist",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Personal Trainer",
+      "employer": "FitLife Gym",
+      "email": "randy.williams@email.com",
+      "phone": "(615) 555-0405",
+      "address": "3456 Fitness Way, Nashville, TN 37203",
+      "work_entries": [
+        {
+          "title": "Certified Personal Trainer",
+          "organization": "FitLife Gym",
+          "from_year": 2019,
+          "to_year": null,
+          "description": "Design and implement fitness programs for clients, provide one-on-one training sessions, and motivate clients to achieve their fitness goals."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Certified Personal Trainer",
+          "institution": "National Academy of Sports Medicine",
+          "from_year": 2018,
+          "to_year": 2019,
+          "description": "Completed certification program in personal training, nutrition, and exercise science."
+        },
+        {
+          "title": "High School Diploma",
+          "institution": "Nashville High School",
+          "from_year": 2013,
+          "to_year": 2017,
+          "description": "Graduated with focus on physical education and health sciences."
+        }
+      ],
+      "social_media": [
+        {
+          "platform": "Instagram",
+          "url": "https://instagram.com/randywilliams"
+        },
+        {
+          "platform": "TikTok",
+          "url": "https://tiktok.com/@randywilliams"
+        }
+      ]
+    },
+    "rels": {
+      "parents": [
+        "sam",
+        "bec"
+      ],
+      "siblings": [
+        "francine",
+        "billy-joe"
+      ]
+    }
+  },
+  {
+    "id": "bob",
+    "data": {
+      "first_name": "Bob",
+      "last_name": "Williams",
+      "preferred_name": "Bob",
+      "gender": "M",
+      "birthday": "1940-05-10",
+      "birth_place": "Chattanooga, TN",
+      "death_date": "2010-12-20",
+      "death_place": "Nashville, TN",
+      "deceased": true,
+      "bio": "Bob was a hardworking factory worker who spent his career working in manufacturing. He was a devoted husband to Sue and a loving father to Sam. Bob was known for his strong work ethic, his sense of humor, and his love of country music. He enjoyed fishing, watching football, and spending time with his family. Bob's legacy lives on through his son and grandchildren, who remember him fondly for his kindness and his ability to make people laugh.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Baptist",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Factory Worker (Retired)",
+      "employer": "Tennessee Manufacturing Co.",
+      "email": null,
+      "phone": null,
+      "address": null,
+      "work_entries": [
+        {
+          "title": "Factory Worker",
+          "organization": "Tennessee Manufacturing Co.",
+          "from_year": 1960,
+          "to_year": 2000,
+          "description": "Worked in manufacturing, operated machinery, and maintained production lines."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "High School Diploma",
+          "institution": "Chattanooga High School",
+          "from_year": 1956,
+          "to_year": 1958,
+          "description": "Graduated with focus on vocational training."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "sue"
+      ],
+      "children": [
+        "sam"
+      ]
+    }
+  },
+  {
+    "id": "sue",
+    "data": {
+      "first_name": "Sue",
+      "last_name": "Williams",
+      "preferred_name": "Sue",
+      "gender": "F",
+      "birthday": "1942-09-18",
+      "birth_place": "Nashville, TN",
+      "death_date": "2012-03-15",
+      "death_place": "Nashville, TN",
+      "deceased": true,
+      "bio": "Sue was a devoted homemaker who dedicated her life to her family. She was a loving wife to Bob and a caring mother to Sam. Sue was known for her delicious home-cooked meals, her beautiful garden, and her warm personality. She enjoyed sewing, reading, and spending time with her grandchildren. Sue's legacy lives on through her family, who remember her fondly for her kindness, her sense of humor, and her unconditional love.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Baptist",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Homemaker",
+      "employer": null,
+      "email": null,
+      "phone": null,
+      "address": null,
+      "work_entries": [],
+      "education_entries": [
+        {
+          "title": "High School Diploma",
+          "institution": "Nashville High School",
+          "from_year": 1958,
+          "to_year": 1960,
+          "description": "Graduated with focus on home economics."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "bob"
+      ],
+      "children": [
+        "sam"
+      ]
+    }
+  },
+  {
+    "id": "lisa",
+    "data": {
+      "first_name": "Lisa",
+      "last_name": "Thompson",
+      "preferred_name": "Lisa",
+      "gender": "F",
+      "birthday": "1945-11-25",
+      "birth_place": "Knoxville, TN",
+      "bio": "Lisa is a vibrant and active grandmother who enjoys spending time with her family, especially her grandchildren. She worked as a nurse for over 30 years before retiring, and her caring nature extends to everyone she meets. Lisa is known for her sense of humor, her love of gardening, and her delicious baking. She enjoys reading, traveling, and volunteering at her local church. Lisa maintains a close relationship with her daughter Bec and takes great pride in her family.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Baptist",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Registered Nurse (Retired)",
+      "employer": "Knoxville General Hospital",
+      "email": "lisa.thompson@email.com",
+      "phone": "(865) 555-0406",
+      "address": "7890 Garden Lane, Knoxville, TN 37902",
+      "work_entries": [
+        {
+          "title": "Registered Nurse",
+          "organization": "Knoxville General Hospital",
+          "from_year": 1970,
+          "to_year": 2005,
+          "description": "Provided patient care in various departments, including medical-surgical, maternity, and emergency. Known for compassionate care and attention to detail."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Associate Degree in Nursing",
+          "institution": "Knoxville Community College",
+          "from_year": 1968,
+          "to_year": 1970,
+          "description": "Completed nursing program with clinical rotations in various hospital departments."
+        }
+      ],
+      "social_media": [
+        {
+          "platform": "Facebook",
+          "url": "https://facebook.com/lisa.thompson"
+        }
+      ]
+    },
+    "rels": {
+      "spouses": [
+        "jeff"
+      ],
+      "children": [
+        "bec"
+      ]
+    }
+  },
+  {
+    "id": "jeff",
+    "data": {
+      "first_name": "Jeff",
+      "last_name": "Thompson",
+      "preferred_name": "Jeff",
+      "gender": "M",
+      "birthday": "1943-04-12",
+      "birth_place": "Memphis, TN",
+      "bio": "Jeff is a retired school principal who dedicated his career to education and helping young people succeed. He is a devoted husband to Lisa and a loving grandfather to his grandchildren. Jeff is known for his wisdom, his patience, and his ability to connect with people of all ages. He enjoys reading, woodworking, and spending time with his family. Jeff is also active in his community, serving on various boards and volunteering at local organizations.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Baptist",
+      "languages": [
+        "English"
+      ],
+      "occupation": "School Principal (Retired)",
+      "employer": "Knoxville School District",
+      "email": "jeff.thompson@email.com",
+      "phone": "(865) 555-0407",
+      "address": "7890 Garden Lane, Knoxville, TN 37902",
+      "work_entries": [
+        {
+          "title": "High School Principal",
+          "organization": "Knoxville High School",
+          "from_year": 1985,
+          "to_year": 2008,
+          "description": "Led high school, managed staff, developed curriculum, and supported student success. Known for innovative programs and student-centered approach."
+        },
+        {
+          "title": "Assistant Principal",
+          "organization": "Knoxville Middle School",
+          "from_year": 1975,
+          "to_year": 1985,
+          "description": "Supported principal, managed discipline, and coordinated student activities."
+        },
+        {
+          "title": "Teacher",
+          "organization": "Knoxville School District",
+          "from_year": 1965,
+          "to_year": 1975,
+          "description": "Taught history and social studies, coached sports teams, and mentored students."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Master of Education in Educational Administration",
+          "institution": "University of Tennessee",
+          "from_year": 1970,
+          "to_year": 1972,
+          "description": "Earned master's degree in educational administration and leadership."
+        },
+        {
+          "title": "Bachelor of Arts in History",
+          "institution": "University of Tennessee",
+          "from_year": 1961,
+          "to_year": 1965,
+          "description": "Graduated with focus on history and education."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "lisa"
+      ],
+      "children": [
+        "bec"
+      ]
+    }
+  }
+]

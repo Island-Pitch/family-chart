@@ -1,0 +1,387 @@
+[
+  {
+    "id": "betty",
+    "main": true,
+    "data": {
+      "first_name": "Bethany",
+      "last_name": "Smith",
+      "preferred_name": "Betty",
+      "nicknames": "Betty",
+      "gender": "F",
+      "birthday": "1995-02-14",
+      "birth_place": "Nashville, TN",
+      "bio": "Betty, whose full name is Bethany Ann Smith, comes from a family with a rich naming tradition. Her great-great-grandmother was named Bethany, and her daughter was named Ann, creating a legacy that continues through the generations. Betty's grandmother Pauline and grandfather Simon had 16 children, though she only knows 4 of them: Joseph, Yuri, Kiko, and her mother Bobbie Sue. Betty works as a graphic designer and is passionate about art and design. She values her family history and the traditions that have been passed down through the generations.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Baptist",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Graphic Designer",
+      "employer": "Nashville Design Studio",
+      "email": "betty.smith@email.com",
+      "phone": "(615) 555-1201",
+      "address": "1234 Design Way, Nashville, TN 37203",
+      "work_entries": [
+        {
+          "title": "Graphic Designer",
+          "organization": "Nashville Design Studio",
+          "from_year": 2018,
+          "to_year": null,
+          "description": "Create visual designs for clients, develop brand identities, and design marketing materials."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Bachelor of Fine Arts in Graphic Design",
+          "institution": "Belmont University",
+          "from_year": 2013,
+          "to_year": 2017,
+          "description": "Graduated with focus on graphic design and visual communication."
+        }
+      ],
+      "social_media": [
+        {
+          "platform": "Instagram",
+          "url": "https://instagram.com/bettysmith"
+        },
+        {
+          "platform": "Behance",
+          "url": "https://behance.net/bettysmith"
+        }
+      ]
+    },
+    "rels": {
+      "parents": [
+        "bobbie-sue",
+        "simon-smith"
+      ],
+      "siblings": []
+    }
+  },
+  {
+    "id": "bobbie-sue",
+    "data": {
+      "first_name": "Bobbie",
+      "last_name": "Smith",
+      "preferred_name": "Bobbie Sue",
+      "nicknames": "Bobbie Sue",
+      "gender": "F",
+      "birthday": "1970-06-20",
+      "birth_place": "Nashville, TN",
+      "bio": "Bobbie Sue is Betty's mother, one of the 16 children of Pauline and Simon. She works as a nurse and is passionate about helping others. Bobbie Sue is proud of her daughter Betty and the family traditions that have been passed down through the generations. She maintains relationships with her siblings Joseph, Yuri, and Kiko, though she has lost touch with most of her other siblings.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Baptist",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Registered Nurse",
+      "employer": "Nashville Medical Center",
+      "email": "bobbie.sue.smith@email.com",
+      "phone": "(615) 555-1202",
+      "address": "2345 Medical Way, Nashville, TN 37203",
+      "work_entries": [
+        {
+          "title": "Registered Nurse",
+          "organization": "Nashville Medical Center",
+          "from_year": 1995,
+          "to_year": null,
+          "description": "Provide patient care, administer medications, and support families during medical treatment."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Associate Degree in Nursing",
+          "institution": "Nashville Community College",
+          "from_year": 1993,
+          "to_year": 1995,
+          "description": "Completed nursing program with clinical rotations."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "simon-smith"
+      ],
+      "children": [
+        "betty"
+      ],
+      "parents": [
+        "pauline",
+        "simon"
+      ],
+      "siblings": [
+        "joseph",
+        "yuri",
+        "kiko"
+      ]
+    }
+  },
+  {
+    "id": "simon-smith",
+    "data": {
+      "first_name": "Simon",
+      "last_name": "Smith",
+      "preferred_name": "Simon",
+      "gender": "M",
+      "birthday": "1968-09-15",
+      "birth_place": "Nashville, TN",
+      "bio": "Simon Smith is Betty's father, a hardworking construction supervisor who has provided for his family throughout his career. He is proud of his daughter Betty and enjoys spending time with his family. Simon values the family traditions and the close relationships he has with his extended family.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Baptist",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Construction Supervisor",
+      "employer": "Nashville Construction Co.",
+      "email": "simon.smith@email.com",
+      "phone": "(615) 555-1203",
+      "address": "2345 Medical Way, Nashville, TN 37203",
+      "work_entries": [
+        {
+          "title": "Construction Supervisor",
+          "organization": "Nashville Construction Co.",
+          "from_year": 1995,
+          "to_year": null,
+          "description": "Supervise construction projects, manage crews, ensure safety compliance, and coordinate with clients."
+        }
+      ],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "bobbie-sue"
+      ],
+      "children": [
+        "betty"
+      ]
+    }
+  },
+  {
+    "id": "pauline",
+    "data": {
+      "first_name": "Pauline",
+      "last_name": "Smith",
+      "preferred_name": "Pauline",
+      "gender": "F",
+      "birthday": "1930-04-10",
+      "birth_place": "Nashville, TN",
+      "death_date": "2010-12-20",
+      "death_place": "Nashville, TN",
+      "deceased": true,
+      "bio": "Pauline was Betty's grandmother, a remarkable woman who had 16 children with her husband Simon. She was known for her strength, her love of family, and her ability to manage a large household. Pauline passed away in 2010, but her legacy lives on through her children and grandchildren. She is remembered fondly for her warm personality and her dedication to her family.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Baptist",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Homemaker",
+      "employer": null,
+      "email": null,
+      "phone": null,
+      "address": null,
+      "work_entries": [],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "simon"
+      ],
+      "children": [
+        "bobbie-sue",
+        "joseph",
+        "yuri",
+        "kiko"
+      ]
+    }
+  },
+  {
+    "id": "simon",
+    "data": {
+      "first_name": "Simon",
+      "last_name": "Smith",
+      "preferred_name": "Simon",
+      "gender": "M",
+      "birthday": "1928-08-25",
+      "birth_place": "Nashville, TN",
+      "death_date": "2008-05-15",
+      "death_place": "Nashville, TN",
+      "deceased": true,
+      "bio": "Simon was Betty's grandfather, a hardworking man who had 16 children with his wife Pauline. He worked as a factory worker for many years before retiring. Simon passed away in 2008, but his legacy lives on through his children and grandchildren. He is remembered fondly for his strong work ethic and his love of family.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Baptist",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Factory Worker (Deceased)",
+      "employer": "Nashville Manufacturing",
+      "email": null,
+      "phone": null,
+      "address": null,
+      "work_entries": [
+        {
+          "title": "Factory Worker",
+          "organization": "Nashville Manufacturing",
+          "from_year": 1950,
+          "to_year": 1990,
+          "description": "Worked in manufacturing, operated machinery, and maintained production lines."
+        }
+      ],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "pauline"
+      ],
+      "children": [
+        "bobbie-sue",
+        "joseph",
+        "yuri",
+        "kiko"
+      ]
+    }
+  },
+  {
+    "id": "joseph",
+    "data": {
+      "first_name": "Joseph",
+      "last_name": "Smith",
+      "preferred_name": "Joseph",
+      "gender": "M",
+      "birthday": "1955-03-12",
+      "birth_place": "Nashville, TN",
+      "bio": "Joseph is one of Betty's uncles, one of the 16 children of Pauline and Simon. He works as a mechanic and maintains relationships with his siblings Bobbie Sue, Yuri, and Kiko. Joseph is known for his sense of humor and his willingness to help family members.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Baptist",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Automotive Mechanic",
+      "employer": "Nashville Auto Repair",
+      "email": "joseph.smith@email.com",
+      "phone": "(615) 555-1204",
+      "address": "3456 Auto Way, Nashville, TN 37203",
+      "work_entries": [
+        {
+          "title": "Automotive Mechanic",
+          "organization": "Nashville Auto Repair",
+          "from_year": 1980,
+          "to_year": null,
+          "description": "Diagnose and repair vehicles, perform routine maintenance, and ensure customer satisfaction."
+        }
+      ],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "pauline",
+        "simon"
+      ],
+      "siblings": [
+        "bobbie-sue",
+        "yuri",
+        "kiko"
+      ]
+    }
+  },
+  {
+    "id": "yuri",
+    "data": {
+      "first_name": "Yuri",
+      "last_name": "Smith",
+      "preferred_name": "Yuri",
+      "gender": "M",
+      "birthday": "1960-07-18",
+      "birth_place": "Nashville, TN",
+      "bio": "Yuri is one of Betty's uncles, one of the 16 children of Pauline and Simon. He works as a teacher and maintains relationships with his siblings Bobbie Sue, Joseph, and Kiko. Yuri is known for his passion for education and his dedication to his students.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Baptist",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Teacher",
+      "employer": "Nashville High School",
+      "email": "yuri.smith@email.com",
+      "phone": "(615) 555-1205",
+      "address": "4567 School St, Nashville, TN 37203",
+      "work_entries": [
+        {
+          "title": "High School Teacher",
+          "organization": "Nashville High School",
+          "from_year": 1985,
+          "to_year": null,
+          "description": "Teach high school students, develop lesson plans, and support student learning."
+        }
+      ],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "pauline",
+        "simon"
+      ],
+      "siblings": [
+        "bobbie-sue",
+        "joseph",
+        "kiko"
+      ]
+    }
+  },
+  {
+    "id": "kiko",
+    "data": {
+      "first_name": "Kiko",
+      "last_name": "Smith",
+      "preferred_name": "Kiko",
+      "gender": "M",
+      "birthday": "1965-11-30",
+      "birth_place": "Nashville, TN",
+      "bio": "Kiko is one of Betty's uncles, one of the 16 children of Pauline and Simon. He works as a chef and maintains relationships with his siblings Bobbie Sue, Joseph, and Yuri. Kiko is known for his culinary skills and his ability to bring people together through food.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Baptist",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Chef",
+      "employer": "Nashville Restaurant",
+      "email": "kiko.smith@email.com",
+      "phone": "(615) 555-1206",
+      "address": "5678 Food Ave, Nashville, TN 37203",
+      "work_entries": [
+        {
+          "title": "Head Chef",
+          "organization": "Nashville Restaurant",
+          "from_year": 1990,
+          "to_year": null,
+          "description": "Lead kitchen operations, create menus, and manage kitchen staff."
+        }
+      ],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "pauline",
+        "simon"
+      ],
+      "siblings": [
+        "bobbie-sue",
+        "joseph",
+        "yuri"
+      ]
+    }
+  }
+]
