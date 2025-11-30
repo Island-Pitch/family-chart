@@ -19,6 +19,7 @@ export function extendChart(chart) {
       // Extend the tree with our customizations
       extendTree(tree, {
         node_separation: chart.store.state.node_separation || 250,
+        level_separation: chart.store.state.level_separation || 150,
         one_level_rels: chart.store.state.one_level_rels || false,
         show_siblings_of_main: chart.store.state.show_siblings_of_main || false,
       })

@@ -29,6 +29,8 @@ export function initializeAdvancedDecorations(f3Chart, allData) {
       d3.select(svg).selectAll('line.slash').remove();
       // Remove parallel line overlays for married chained links
       d3.select(svg).selectAll('g.link-overlay-group[data-chain-link="true"]').remove();
+      // Remove parallel line overlays for married spouse links
+      d3.select(svg).selectAll('g.link-overlay-group[data-married-link="true"]').remove();
     }
     // Cancel any pending decoration timeouts
     if (pendingDecorationTimeout) {
@@ -154,6 +156,11 @@ export function initializeAdvancedDecorations(f3Chart, allData) {
     if (!relationshipStatus) {
       relationshipStatus = getPastPartnerRelationshipStatus(source, target, allData);
     }
+    // Default to 'married' for spouse links if no status is found
+    // This ensures spouse relationships show double lines even without relationshipStatuses data
+    if (!relationshipStatus && linkData.spouse) {
+      relationshipStatus = 'married';
+    }
   }
   
   if (!relationshipStatus) return;
@@ -246,8 +253,78 @@ export function initializeAdvancedDecorations(f3Chart, allData) {
     linkElement.classed('edge--widowed', true).attr('stroke', '#AEB8C7');
   } else if (relationshipStatus === 'married' || relationshipStatus === 'partnered') {
     linkElement.classed('edge--married', true).attr('stroke', '#090909');
-    // For married links, double parallel lines are handled separately
-    // Don't draw decorations for married - the double lines are the decoration
+    // For married links, create double parallel lines matching Figma design
+    // Use the actual rendered path's start and end points as uniform anchor points
+    const pathNode = linkPath;
+    if (pathNode && pathNode.getTotalLength && pathNode.getTotalLength() > 0) {
+      // Get the actual start and end points from the rendered path
+      // This ensures we use the same coordinate space as the rendered link
+      const pathLength = pathNode.getTotalLength();
+      const startPoint = pathNode.getPointAtLength(0);
+      const endPoint = pathNode.getPointAtLength(pathLength);
+      
+      // Calculate the direction vector and its perpendicular (normal)
+      const dx = endPoint.x - startPoint.x;
+      const dy = endPoint.y - startPoint.y;
+      const length = Math.hypot(dx, dy) || 1;
+      
+      // Normal vector (perpendicular to the line)
+      const nx = -dy / length;
+      const ny = dx / length;
+      
+      // Figma design: two parallel lines 9px apart (28.5 - 19.5 = 9px)
+      const separation = 9;
+      const halfSeparation = separation / 2; // 4.5px offset on each side
+      
+      // Create two parallel lines by offsetting the start and end points
+      const start1 = { x: startPoint.x - nx * halfSeparation, y: startPoint.y - ny * halfSeparation };
+      const end1 = { x: endPoint.x - nx * halfSeparation, y: endPoint.y - ny * halfSeparation };
+      const start2 = { x: startPoint.x + nx * halfSeparation, y: startPoint.y + ny * halfSeparation };
+      const end2 = { x: endPoint.x + nx * halfSeparation, y: endPoint.y + ny * halfSeparation };
+      
+      const overlayGroupId = `married-overlay-${sourceId}-${targetId}`;
+      // Remove existing overlay if it exists
+      linksView.select(`g#${overlayGroupId}`).remove();
+      
+      const overlayGroup = linksView.append('g')
+        .attr('id', overlayGroupId)
+        .attr('class', 'link-overlay-group')
+        .attr('data-link-id', linkId)
+        .attr('data-married-link', 'true');
+      
+      // Create simple line paths using the path's actual start/end points
+      const line = d3.line().x(d => d.x).y(d => d.y);
+      const pathString1 = line([start1, end1]);
+      const pathString2 = line([start2, end2]);
+      
+      // Hide the original link completely - we'll replace it with two parallel lines
+      linkElement.style('opacity', 0);
+      
+      // Create both parallel lines as overlays using uniform anchor points from the path
+      if (pathString1) {
+        overlayGroup.append('path')
+          .attr('d', pathString1)
+          .attr('class', 'link married-line-1')
+          .style('stroke', '#090909')
+          .style('stroke-width', '6')
+          .style('stroke-linecap', 'round')
+          .style('stroke-linejoin', 'round')
+          .style('fill', 'none')
+          .style('opacity', 1);
+      }
+      
+      if (pathString2) {
+        overlayGroup.append('path')
+          .attr('d', pathString2)
+          .attr('class', 'link married-line-2')
+          .style('stroke', '#090909')
+          .style('stroke-width', '6')
+          .style('stroke-linecap', 'round')
+          .style('stroke-linejoin', 'round')
+          .style('fill', 'none')
+          .style('opacity', 1);
+      }
+    }
     return;
   }
   
@@ -500,8 +577,11 @@ export function initializeAdvancedDecorations(f3Chart, allData) {
               points.push(point);
             }
             
-            const offset = 4.5;
-            const offsetPoints = [];
+            // Figma design: two parallel lines 9px apart (28.5 - 19.5 = 9px)
+            const separation = 9; // Total separation between lines
+            const halfSeparation = separation / 2; // 4.5px offset on each side
+            const offsetPoints1 = []; // First line (offset -4.5px)
+            const offsetPoints2 = []; // Second line (offset +4.5px)
             
             for (let i = 0; i < points.length; i++) {
               let nx, ny;
@@ -529,9 +609,14 @@ export function initializeAdvancedDecorations(f3Chart, allData) {
                 ny = dx / len;
               }
               
-              offsetPoints.push({
-                x: points[i].x + nx * offset,
-                y: points[i].y + ny * offset
+              // Create two lines: one at -4.5px, one at +4.5px (total 9px apart)
+              offsetPoints1.push({
+                x: points[i].x - nx * halfSeparation,
+                y: points[i].y - ny * halfSeparation
+              });
+              offsetPoints2.push({
+                x: points[i].x + nx * halfSeparation,
+                y: points[i].y + ny * halfSeparation
               });
             }
             
@@ -541,11 +626,32 @@ export function initializeAdvancedDecorations(f3Chart, allData) {
               .attr('data-chain-link', 'true');
             
             const line = d3.line().x(d => d.x).y(d => d.y);
-            const parallelPathString = line(offsetPoints);
+            const pathString1 = line(offsetPoints1);
+            const pathString2 = line(offsetPoints2);
             
-            if (parallelPathString) {
+            // Hide the original chained link completely - we'll replace it with two parallel lines
+            linkPath.style('opacity', 0);
+            
+            // Create both parallel lines as overlays to ensure clean rendering
+            if (pathString1) {
               overlayGroup.append('path')
-                .attr('d', parallelPathString)
+                .attr('d', pathString1)
+                .attr('class', 'link married-line-1')
+                .style('stroke', '#090909')
+                .style('stroke-width', strokeWidth)
+                .style('stroke-linecap', 'round')
+                .style('stroke-linejoin', 'round')
+                .style('fill', 'none')
+                .style('opacity', 0)
+                .transition()
+                .duration(transitionTime)
+                .style('opacity', 1);
+            }
+            
+            if (pathString2) {
+              overlayGroup.append('path')
+                .attr('d', pathString2)
+                .attr('class', 'link married-line-2')
                 .style('stroke', '#090909')
                 .style('stroke-width', strokeWidth)
                 .style('stroke-linecap', 'round')

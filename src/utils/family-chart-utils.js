@@ -435,7 +435,7 @@ export function createCardRenderer(f3Chart) {
       }
       
       card.outerHTML = (`
-      <div class="card ${genderClass} ${isMain ? 'card-main' : ''} ${isDeceased ? 'card-deceased' : ''}">
+      <div class="card ${genderClass} ${isMain ? 'card-main' : ''} ${isDeceased ? 'card-deceased' : ''}" data-person-id="${personId}">
         <div class="card-avatar" style="border: 6px solid ${borderColor}; box-sizing: border-box;">
           ${isDeceased ? '<div class="card-avatar-deceased-overlay"></div>' : ''}
           <div class="card-avatar-white-ring"></div>
