@@ -4,13 +4,13 @@
     "main": true,
     "data": {
       "first_name": "Philip",
-      "last_name": "Stevens",
+      "last_name": "Unknown",
       "preferred_name": "Philip",
       "suffix": "Jr.",
       "gender": "M",
       "birthday": "1985-04-18",
       "birth_place": "Los Angeles, CA",
-      "bio": "Philip Jr. comes from the complex Stevens family, where his grandmother Elena had 8 children with 3 different partners. This unique family structure has taught him the importance of family bonds regardless of biological relationships. Philip works as a social worker, helping families navigate complex situations similar to his own family background. He values all of his aunts, uncles, and cousins, recognizing that family is defined by love and connection rather than just genetics. Philip enjoys reading, playing basketball, and spending time with his extended family.",
+      "bio": "Philip Jr. comes from the complex Stevens family, where his grandmother Elena had 8 children with 3 different partners. His mother Maria kept her maiden name Stevens, while his father's last name is unknown. This unique family structure has taught him the importance of family bonds regardless of biological relationships. Philip works as a social worker, helping families navigate complex situations similar to his own family background. He values all of his aunts, uncles, and cousins, recognizing that family is defined by love and connection rather than just genetics.",
       "nationality": "American",
       "ethnicity": "Hispanic",
       "religion": "Catholic",
@@ -53,10 +53,7 @@
     "rels": {
       "parents": [
         "mom-philip",
-        "alfred-sr"
-      ],
-      "siblings": [
-        "alfred-uncle"
+        "philip-sr"
       ]
     }
   },
@@ -153,15 +150,59 @@
     }
   },
   {
+    "id": "philip-sr",
+    "data": {
+      "first_name": "Philip",
+      "last_name": "Unknown",
+      "preferred_name": "Philip",
+      "suffix": "Sr.",
+      "gender": "M",
+      "birthday": "1960-01-15",
+      "birth_place": "Los Angeles, CA",
+      "bio": "Philip Sr., father of Philip Jr. He married Maria Stevens. His last name is unknown.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Teacher",
+      "employer": "Los Angeles School District",
+      "email": null,
+      "phone": null,
+      "address": null,
+      "work_entries": [
+        {
+          "title": "High School Teacher",
+          "organization": "Los Angeles School District",
+          "from_year": 1985,
+          "to_year": null,
+          "description": "Teach history and social studies to high school students."
+        }
+      ],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "mom-philip"
+      ],
+      "children": [
+        "philip-jr"
+      ]
+    }
+  },
+  {
     "id": "mom-philip",
     "data": {
-      "first_name": "Unknown",
+      "first_name": "Maria",
       "last_name": "Stevens",
-      "preferred_name": "Mom",
+      "preferred_name": "Maria",
       "gender": "F",
       "birthday": "1962-06-10",
       "birth_place": "Los Angeles, CA",
-      "bio": "Philip's mother, the oldest daughter of Elena and Alfred Sr. She worked as a nurse and was a devoted mother to Philip. She passed away when Philip was young, but her memory lives on.",
+      "bio": "Maria Stevens, mother of Philip Jr. She kept her maiden name Stevens when she married Philip (whose last name is unknown). She is the oldest daughter of Elena and Alfred Sr. She worked as a nurse and was a devoted mother. She passed away when Philip Jr. was young, but her memory lives on.",
       "nationality": "American",
       "ethnicity": "Hispanic",
       "religion": "Catholic",
@@ -193,6 +234,9 @@
       ],
       "children": [
         "philip-jr"
+      ],
+      "spouses": [
+        "philip-sr"
       ],
       "siblings": [
         "alfred-uncle"
