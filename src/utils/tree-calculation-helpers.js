@@ -153,7 +153,86 @@ export function preventSiblingOverlaps(sorted_siblings, main, node_separation, x
     return aFirstIdx - bFirstIdx
   })
   
-  // Position main person's group on the LEFT, all other groups on the RIGHT
+  // Special case: If there are exactly 2 groups total, justify them in opposite directions (left/right)
+  // This handles cases like Mary I where her group and half-siblings' groups would overlap
+  // Main person's group (same parent pair as main person) goes LEFT, other groups go RIGHT
+  const totalGroups = groupsArray.length;
+  
+  if (totalGroups === 2) {
+    // Exactly 2 groups: identify which one matches the main person's parent pair
+    // That group (Henry's kids with same parents as main person) goes LEFT
+    // The other group (half-siblings with different parent pairs) goes RIGHT
+    let leftGroup, rightGroup;
+    
+    if (mainPairKey) {
+      // Find group that matches main person's parent pair - this goes RIGHT
+      const matchingGroup = groupsArray.find(g => g.pairKey === mainPairKey);
+      if (matchingGroup) {
+        // Main person's group found - put it RIGHT, others LEFT
+        rightGroup = matchingGroup;
+        leftGroup = groupsArray.find(g => g.pairKey !== mainPairKey);
+        console.log(`[preventSiblingOverlaps] 2-group case: Found main person's group (${mainPairKey}) - will position RIGHT`);
+      } else {
+        // Main person's parent pair not in groups (main person is not a sibling, like Mary I)
+        // Put ALL sibling groups to the RIGHT, leaving main person (and her ancestry link) on the LEFT
+        // This means: no leftGroup, both groups go RIGHT
+        leftGroup = null;
+        rightGroup = null; // Will handle both groups going RIGHT
+        console.log(`[preventSiblingOverlaps] 2-group case: Main person's group (${mainPairKey}) not in sibling groups - all sibling groups will go RIGHT`);
+      }
+    } else {
+      // No main pair key - use isMainGroup flag or fallback
+      const mainGroup = groupsArray.find(g => g.isMainGroup);
+      if (mainGroup) {
+        leftGroup = mainGroup;
+        rightGroup = groupsArray.find(g => g !== mainGroup);
+      } else {
+        // Fallback: first group LEFT, second group RIGHT
+        leftGroup = groupsArray[0];
+        rightGroup = groupsArray[1];
+      }
+    }
+    
+    if (leftGroup && rightGroup) {
+      // Other groups (half-siblings with different parent pairs) go LEFT
+      let left_x = (x_range[0] ?? main.x) - node_separation;
+      for (let j = leftGroup.siblings.length - 1; j >= 0; j--) {
+        const sib = leftGroup.siblings[j];
+        sib.x = left_x;
+        left_x -= node_separation;
+      }
+      console.log(`[preventSiblingOverlaps] 2-group case: Other group (${leftGroup.pairKey}) positioned to LEFT`);
+      
+      // Main person's group (Henry's kids with same parents) goes RIGHT
+      let right_x = (x_range[1] ?? main.x) + node_separation;
+      rightGroup.siblings.forEach((sib) => {
+        sib.x = right_x;
+        right_x += node_separation;
+      });
+      console.log(`[preventSiblingOverlaps] 2-group case: Main person's group (${rightGroup.pairKey}) positioned to RIGHT`);
+      
+      console.log(`[preventSiblingOverlaps] 2-group justification: other groups LEFT, main person's group RIGHT`);
+      return; // Early return for 2-group case
+    } else if (!leftGroup && mainPairKey) {
+      // Main person's group not in sibling groups - put ALL sibling groups to the LEFT
+      // This leaves the main person (and her ancestry link) on the RIGHT side
+      let left_x = (x_range[0] ?? main.x) - node_separation;
+      // Process groups in reverse order to position leftmost first
+      for (let i = groupsArray.length - 1; i >= 0; i--) {
+        const group = groupsArray[i];
+        for (let j = group.siblings.length - 1; j >= 0; j--) {
+          const sib = group.siblings[j];
+          sib.x = left_x;
+          left_x -= node_separation;
+        }
+        console.log(`[preventSiblingOverlaps] 2-group case: Group ${i} (${group.pairKey}) positioned to LEFT (main person's group not in siblings)`);
+      }
+      console.log(`[preventSiblingOverlaps] 2-group justification: all sibling groups LEFT (main person stays RIGHT)`);
+      return; // Early return for 2-group case
+    }
+  }
+  
+  // Default behavior: Position main person's group on the LEFT, all other groups on the RIGHT
   const leftGroups = groupsArray.filter(g => g.isMainGroup)
   const rightGroups = groupsArray.filter(g => !g.isMainGroup)
   
@@ -187,6 +266,102 @@ export function preventSiblingOverlaps(sorted_siblings, main, node_separation, x
   }
   
   console.log(`[preventSiblingOverlaps] Positioned ${leftGroups.length} group(s) on left, ${rightGroups.length} group(s) on right`)
+}
+
+/**
+ * Justify child groups in opposite directions when there are exactly 2 groups.
+ * When a parent pair has exactly 2 child groups (detected by having both ancestry and progeny children),
+ * they should be justified left/right instead of centered to prevent link collisions.
+ * 
+ * This handles cases like when Mary I is selected:
+ * - Group 1: Mary I (has ancestry link going up to parents)
+ * - Group 2: Elizabeth I, Edward VI (progeny links going down from parents)
+ * 
+ * @param {Array} tree - Array of tree data nodes
+ * @param {number} node_separation - Horizontal spacing between nodes
+ */
+export function justifyTwoChildGroups(tree, node_separation) {
+  // Group children by their parent pairs
+  // We need to detect when a parent pair has children in BOTH directions (ancestry and progeny)
+  const parentPairGroups = new Map();
+  
+  tree.forEach(node => {
+    const parentIds = node.data?.rels?.parents || [];
+    if (parentIds.length === 0) return;
+    
+    const pairKey = [...parentIds].sort().join('-');
+    if (!parentPairGroups.has(pairKey)) {
+      parentPairGroups.set(pairKey, {
+        hasAncestryChild: false,  // Has at least one child with ancestry link
+        hasProgenyChild: false,   // Has at least one child with progeny link
+        ancestryChildren: [],     // Nodes that are children via ancestry links
+        progenyChildren: []       // Nodes that are children via progeny links
+      });
+    }
+    
+    const group = parentPairGroups.get(pairKey);
+    
+    // Check if this node is a child of the parent pair
+    // If node has parents matching this pair, it's a child
+    const nodeParentIds = [...(node.data?.rels?.parents || [])].sort();
+    if (nodeParentIds.join('-') === pairKey) {
+      // This node is a child of the parent pair
+      // Check if it has an ancestry link (going up) or progeny link (going down)
+      // by checking if it's in the ancestry or progeny side of the tree
+      if (node.is_ancestry) {
+        group.hasAncestryChild = true;
+        group.ancestryChildren.push(node);
+      } else {
+        group.hasProgenyChild = true;
+        group.progenyChildren.push(node);
+      }
+    }
+  });
+  
+  // For each parent pair with exactly 2 groups (both ancestry and progeny children), justify them left/right
+  parentPairGroups.forEach((groups, pairKey) => {
+    const numGroups = (groups.hasAncestryChild ? 1 : 0) + (groups.hasProgenyChild ? 1 : 0);
+    
+    if (numGroups === 2) {
+      console.log(`[justifyTwoChildGroups] Found 2 child groups for parent pair ${pairKey}: ancestry=${groups.ancestryChildren.length}, progeny=${groups.progenyChildren.length}`);
+      
+      // Find the parent nodes to get their X position
+      const parentIds = pairKey.split('-');
+      const parents = tree.filter(n => parentIds.includes(n.data.id));
+      if (parents.length === 0) return;
+      
+      // Calculate parent midpoint X
+      const parentX = parents.reduce((sum, p) => sum + (p.x || 0), 0) / parents.length;
+      
+      // Justify groups in opposite directions
+      // Ancestry children (going up) go LEFT, progeny children (going down) go RIGHT
+      if (groups.hasAncestryChild && groups.ancestryChildren.length > 0) {
+        // Calculate average X of ancestry children, then shift left
+        const avgAncestryX = groups.ancestryChildren.reduce((sum, n) => sum + (n.x || 0), 0) / groups.ancestryChildren.length;
+        const targetX = parentX - node_separation * 1.5; // Shift left
+        const offset = targetX - avgAncestryX;
+        
+        groups.ancestryChildren.forEach(node => {
+          node.x = (node.x || 0) + offset;
+          console.log(`[justifyTwoChildGroups] Moved ancestry child ${node.data.id} to left: ${node.x.toFixed(1)}`);
+        });
+      }
+      
+      if (groups.hasProgenyChild && groups.progenyChildren.length > 0) {
+        // Calculate average X of progeny children, then shift right
+        const avgProgenyX = groups.progenyChildren.reduce((sum, n) => sum + (n.x || 0), 0) / groups.progenyChildren.length;
+        const targetX = parentX + node_separation * 1.5; // Shift right
+        const offset = targetX - avgProgenyX;
+        
+        groups.progenyChildren.forEach(node => {
+          node.x = (node.x || 0) + offset;
+          console.log(`[justifyTwoChildGroups] Moved progeny child ${node.data.id} to right: ${node.x.toFixed(1)}`);
+        });
+      }
+      
+      console.log(`[justifyTwoChildGroups] Justified 2 groups for ${pairKey}: ancestry left, progeny right`);
+    }
+  });
 }
 
 

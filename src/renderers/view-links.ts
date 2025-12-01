@@ -5,13 +5,25 @@ import { ViewProps } from "./view"
 import { Tree } from "../layout/calculate-tree"
 import { Link } from "../layout/create-links"
 import { LinkSelection } from "../types/view"
+import { adjustOverlappingLinkBreaks } from "../utils/link-overlap-adjuster"
 
 export default function updateLinks(svg: SVGElement, tree: Tree, props: ViewProps = {}) {
   const links_data_dct = tree.data.reduce((acc: Record<string, Link>, d) => {
     createLinks(d, tree.is_horizontal).forEach(l => acc[l.id] = l)
     return acc
   }, {})
-  const links_data: Link[] = Object.values(links_data_dct)
+  let links_data: Link[] = Object.values(links_data_dct)
+  
+  // Apply overlap adjustment to prevent link collisions
+  // This handles cases where links from different parent groups collide
+  // (e.g., Maria's ancestry link colliding with Elena's other children's progeny links)
+  // This runs on every tree update, including when clicking on a person to change the main person
+  try {
+    links_data = adjustOverlappingLinkBreaks(links_data, tree)
+  } catch (error) {
+    console.error('[updateLinks] Error in adjustOverlappingLinkBreaks, using original links:', error)
+    // Continue with original links if adjuster fails
+  }
   const link: LinkSelection = d3
     .select(svg)
     .select(".links_view")

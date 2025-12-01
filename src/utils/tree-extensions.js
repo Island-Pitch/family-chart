@@ -521,7 +521,7 @@ export function removeDuplicateNodes(tree) {
  * Main extension function that applies all tree extensions
  * Call this after the tree is calculated but before it's used for rendering
  */
-import { adjustAncestryDepths } from "./tree-calculation-helpers.js"
+import { adjustAncestryDepths, justifyTwoChildGroups } from "./tree-calculation-helpers.js"
 
 export function extendTree(
   treeResult,
@@ -536,6 +536,10 @@ export function extendTree(
   // 1. Adjust ancestry depths (needs to happen after setupChildrenAndParents, before setupSpouses)
   // This is called here because it needs to run after the tree structure is set up
   adjustAncestryDepths(treeResult.data, treeResult.data_stash, level_separation)
+  
+  // 1.5. Justify 2 child groups in opposite directions (left/right) to prevent link collisions
+  // This runs after node positioning to adjust X positions for 2-group cases
+  justifyTwoChildGroups(treeResult.data, node_separation)
   
   // 2. Add spouses for ancestry nodes
   extendSpousesForAncestryNodes(
