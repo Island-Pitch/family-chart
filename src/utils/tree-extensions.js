@@ -14,6 +14,11 @@ export function extendSpousesForAncestryNodes(
   node_separation,
   one_level_rels = false
 ) {
+  // Skip if this tree has already been processed
+  if (tree._spousesExtended) {
+    return; // Already processed, skip to avoid duplicate work
+  }
+  
   for (let i = tree.length; i--;) {
     const d = tree[i]
     // Only process ancestry nodes (parents)
@@ -542,6 +547,11 @@ export function extendTree(
   
   // 4. Remove any duplicate nodes that were created
   removeDuplicateNodes(treeResult.data)
+  
+  // Mark tree as extended to prevent duplicate processing
+  if (treeResult.data) {
+    treeResult.data._spousesExtended = true
+  }
   
   // Removed stepsibling parent links extension - using base behavior only
   

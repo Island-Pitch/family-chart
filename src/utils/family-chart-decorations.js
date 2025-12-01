@@ -239,6 +239,22 @@ export function initializeAdvancedDecorations(f3Chart, allData) {
     // If no status is found, the link will render as a normal single line
   }
   
+  // Debug: Log relationship status detection for married links
+  if (sourceId === 'elena' && targetId === 'alfred-sr' || sourceId === 'alfred-sr' && targetId === 'elena') {
+    const sourcePerson = allData.find(p => p.id === sourceId);
+    const targetPerson = allData.find(p => p.id === targetId);
+    console.log('[addDecorationForLink] Elena-Alfred debug:', {
+      sourceId,
+      targetId,
+      relationshipStatus,
+      sourcePersonFound: !!sourcePerson,
+      targetPersonFound: !!targetPerson,
+      sourceRelStatuses: sourcePerson?.data?.relationshipStatuses,
+      targetRelStatuses: targetPerson?.data?.relationshipStatuses,
+      allDataLength: allData?.length
+    });
+  }
+  
   // Check if this is a coparent relationship (they share children)
   // Even without relationshipStatus, coparents should show a line
   const sourcePerson = allData.find(p => p.id === sourceId);
@@ -571,7 +587,15 @@ export function initializeAdvancedDecorations(f3Chart, allData) {
     return false;
   }
   
-  // For spouse links, sx is helpful but not required
+  // For spouse links, require both x and y to be defined (not just "some positions")
+  // This ensures the nodes are fully positioned before we try to create decorations
+  if (nodeData.spouse) {
+    const hasFullPositions = sourceX !== undefined && sourceY !== undefined &&
+                            targetX !== undefined && targetY !== undefined;
+    return hasFullPositions;
+  }
+  
+  // For parent-child links, sx is helpful but not required
   if (nodeData.spouse) {
     const spouse = nodeData.target;
     const sx = spouse.sx;
@@ -671,16 +695,20 @@ export function initializeAdvancedDecorations(f3Chart, allData) {
     });
   });
 
-  // Create chained links between ALL consecutive partners (not just past partners)
-  // But exclude married partners from the chain since they have double lines
+  // Create chained links between ALL consecutive past partners
+  // Only show direct link to FIRST/MOST CURRENT partner (married/partnered)
+  // Hide ALL direct links to past partners and chain them together
   allPartnersByPerson.forEach((allPartners, mainPersonId) => {
-    // Filter out married partners - they don't need chained links
-    const partnersToChain = allPartners.filter(p => !p.isCurrent);
+    // Separate current partners (married/partnered) from past partners
+    const currentPartners = allPartners.filter(p => p.isCurrent);
+    const pastPartners = allPartners.filter(p => !p.isCurrent);
     
-    if (partnersToChain.length < 2) return;
+    // If there are no past partners, nothing to chain
+    if (pastPartners.length === 0) return;
     
-    // Sort partners by their order in the spouses array (or by x position)
-    partnersToChain.sort((a, b) => {
+    // Sort past partners by their order in the spouses array (or by x position)
+    // Most recent past partner first, oldest last
+    pastPartners.sort((a, b) => {
       if (a.spouseOrder !== b.spouseOrder && a.spouseOrder !== 999 && b.spouseOrder !== 999) {
         return a.spouseOrder - b.spouseOrder;
       }
@@ -689,61 +717,23 @@ export function initializeAdvancedDecorations(f3Chart, allData) {
       return (a.node.x || 0) - (b.node.x || 0);
     });
     
-    // Create links between consecutive partners
-    for (let i = 0; i < partnersToChain.length - 1; i++) {
-      const partner1 = partnersToChain[i];
-      const partner2 = partnersToChain[i + 1];
-      // Use 'separated' as default status for chained links between partners without explicit status
-      const chainStatus = partner1.status || partner2.status || 'separated';
-      
-      // Check if link already exists (either as a spouse link or chained link)
-      const existingLink = d3.select(svg).selectAll('path.link').filter(function(d) {
-        if (!d || !d.source || !d.target) return false;
-        const sId = d.source?.data?.id || d.source?.id;
-        const tId = d.target?.data?.id || d.target?.id;
-        return (sId === partner1.id && tId === partner2.id) ||
-               (sId === partner2.id && tId === partner1.id);
-      });
-      
-      if (!existingLink.empty()) {
-        existingLink.each(function(d) {
-          d.chainedRelationshipStatus = chainStatus;
-          d.isChainLink = true;
-          // Mark as chain link so it gets proper styling
-          const linkEl = d3.select(this);
-          linkEl.attr('data-chain-link', 'true');
-        });
-        continue;
-      }
-      
-      // Keep the link from main person to the FIRST partner in the chain (partner1)
-      // This ensures the main person is connected to the chain
-      // Only hide links to subsequent partners (partner2, partner3, etc.)
-      const mainToPartner2Link = d3.select(svg).selectAll('path.link').filter(function(d) {
+    // Hide ALL direct links from main person to past partners
+    // Only the current partner (married/partnered) should have a direct link
+    pastPartners.forEach(pastPartner => {
+      const mainToPastPartnerLink = d3.select(svg).selectAll('path.link').filter(function(d) {
         if (!d || !d.spouse || !d.source || !d.target) return false;
         const sId = d.source?.data?.id || d.source?.id;
         const tId = d.target?.data?.id || d.target?.id;
-        return (sId === mainPersonId && tId === partner2.id) ||
-               (sId === partner2.id && tId === mainPersonId);
+        return (sId === mainPersonId && tId === pastPartner.id) ||
+               (sId === pastPartner.id && tId === mainPersonId);
       });
       
-      // Hide the link from main person to partner2 (and all subsequent partners)
-      // since they're now connected via the chain: main -> partner1 -> partner2 -> ...
-      // BUT: Keep the link visible if it's a coparent relationship (they share children)
-      mainToPartner2Link.each(function(d) {
+      mainToPastPartnerLink.each(function(d) {
         const linkEl = d3.select(this);
         const relationshipStatus = getRelationshipStatus(d.source, d.target, allData);
         
-        // Check if this is a coparent relationship
-        const sourcePerson = allData.find(p => p.id === (d.source?.data?.id || d.source?.id));
-        const targetPerson = allData.find(p => p.id === (d.target?.data?.id || d.target?.id));
-        const isCoparent = sourcePerson && targetPerson && 
-          sourcePerson.rels?.children && targetPerson.rels?.children &&
-          sourcePerson.rels.children.some(childId => targetPerson.rels.children.includes(childId));
-        
-        // Only hide if not married AND not a coparent
-        // Coparents should show a line even if chained
-        if (relationshipStatus !== 'married' && relationshipStatus !== 'partnered' && !isCoparent) {
+        // Only hide if not married (married links are replaced by double lines)
+        if (relationshipStatus !== 'married' && relationshipStatus !== 'partnered') {
           linkEl
             .classed('replaced-by-chain-link', true)
             .attr('data-replaced-by-chain-link', 'true')
@@ -754,99 +744,93 @@ export function initializeAdvancedDecorations(f3Chart, allData) {
             .style('pointer-events', 'none');
         }
       });
-      
-      // Also hide links from main person to all partners after partner2
-      for (let j = i + 2; j < partnersToChain.length; j++) {
-        const laterPartner = partnersToChain[j];
-        const mainToLaterPartnerLink = d3.select(svg).selectAll('path.link').filter(function(d) {
-          if (!d || !d.spouse || !d.source || !d.target) return false;
+    });
+    
+    // If there are 2+ past partners, create chain links between them
+    if (pastPartners.length >= 2) {
+      // Create links between consecutive past partners
+      for (let i = 0; i < pastPartners.length - 1; i++) {
+        const partner1 = pastPartners[i];
+        const partner2 = pastPartners[i + 1];
+        // Use 'separated' as default status for chained links between partners without explicit status
+        const chainStatus = partner1.status || partner2.status || 'separated';
+        
+        // Check if link already exists (either as a spouse link or chained link)
+        const existingLink = d3.select(svg).selectAll('path.link').filter(function(d) {
+          if (!d || !d.source || !d.target) return false;
           const sId = d.source?.data?.id || d.source?.id;
           const tId = d.target?.data?.id || d.target?.id;
-          return (sId === mainPersonId && tId === laterPartner.id) ||
-                 (sId === laterPartner.id && tId === mainPersonId);
+          return (sId === partner1.id && tId === partner2.id) ||
+                 (sId === partner2.id && tId === partner1.id);
         });
         
-        mainToLaterPartnerLink.each(function(d) {
-          const linkEl = d3.select(this);
-          const relationshipStatus = getRelationshipStatus(d.source, d.target, allData);
-          
-          // Check if this is a coparent relationship
-          const sourcePerson = allData.find(p => p.id === (d.source?.data?.id || d.source?.id));
-          const targetPerson = allData.find(p => p.id === (d.target?.data?.id || d.target?.id));
-          const isCoparent = sourcePerson && targetPerson && 
-            sourcePerson.rels?.children && targetPerson.rels?.children &&
-            sourcePerson.rels.children.some(childId => targetPerson.rels.children.includes(childId));
-          
-          // Only hide if not married AND not a coparent
-          if (relationshipStatus !== 'married' && relationshipStatus !== 'partnered' && !isCoparent) {
-            linkEl
-              .classed('replaced-by-chain-link', true)
-              .attr('data-replaced-by-chain-link', 'true')
-              .style('opacity', '0')
-              .style('display', 'none')
-              .style('visibility', 'hidden')
-              .style('stroke', 'none')
-              .style('pointer-events', 'none');
-          }
-        });
-      }
-      
-      // Create a new chained link
-      const linkId = `chain-${partner1.id}-${partner2.id}`;
-      const x1 = partner1.node.x || 0;
-      const y1 = partner1.node.y || 0;
-      const x2 = partner2.node.x || 0;
-      const y2 = partner2.node.y || 0;
-      const pathData = [[x1, y1], [x2, y2]];
-      
-      const isPastRelationship = ['divorced', 'separated', 'widowed'].includes(chainStatus);
-      const isMarried = chainStatus === 'married' || chainStatus === 'partnered';
-      const strokeColor = isPastRelationship ? '#AEB8C7' : '#090909';
-      const strokeWidth = 6;
-      
-      const linkPath = linksView
-        .append('path')
-        .attr('class', 'link')
-        .attr('data-link-type', 'spouse')
-        .attr('data-chain-link', 'true')
-        .attr('data-marriage-status', chainStatus)
-        .style('stroke', strokeColor)
-        .style('stroke-width', strokeWidth)
-        .style('stroke-linecap', 'round')
-        .style('stroke-linejoin', 'round')
-        .style('fill', 'none')
-        .style('opacity', 0);
-      
-      const linkDatum = {
-        d: pathData,
-        _d: () => [[x1, y1], [x1, y1]],
-        curve: false,
-        source: partner1.node,
-        target: partner2.node,
-        spouse: true,
-        isChainLink: true,
-        chainedRelationshipStatus: chainStatus,
-        id: linkId,
-        depth: partner1.node.depth || 0
-      };
-      
-      linkPath.datum(linkDatum);
-      
-      const line = d3.line();
-      const pathString = line(pathData);
-      if (pathString) {
-        linkPath.attr('d', pathString);
-      } else {
-        linkPath.attr('d', `M ${x1} ${y1} L ${x2} ${y2}`);
-      }
-      
-      const transitionTime = 1000;
-      linkPath.transition()
-        .duration(transitionTime)
-        .style('opacity', 1);
-      
-      // For married chained links, create double parallel lines
-      if (isMarried) {
+        if (!existingLink.empty()) {
+          existingLink.each(function(d) {
+            d.chainedRelationshipStatus = chainStatus;
+            d.isChainLink = true;
+            // Mark as chain link so it gets proper styling
+            const linkEl = d3.select(this);
+            linkEl.attr('data-chain-link', 'true');
+          });
+          continue;
+        }
+        
+        // Create a new chained link
+        const linkId = `chain-${partner1.id}-${partner2.id}`;
+        const x1 = partner1.node.x || 0;
+        const y1 = partner1.node.y || 0;
+        const x2 = partner2.node.x || 0;
+        const y2 = partner2.node.y || 0;
+        const pathData = [[x1, y1], [x2, y2]];
+        
+        const isPastRelationship = ['divorced', 'separated', 'widowed'].includes(chainStatus);
+        const isMarried = chainStatus === 'married' || chainStatus === 'partnered';
+        const strokeColor = isPastRelationship ? '#AEB8C7' : '#090909';
+        const strokeWidth = 6;
+        
+        const linkPath = linksView
+          .append('path')
+          .attr('class', 'link')
+          .attr('data-link-type', 'spouse')
+          .attr('data-chain-link', 'true')
+          .attr('data-marriage-status', chainStatus)
+          .style('stroke', strokeColor)
+          .style('stroke-width', strokeWidth)
+          .style('stroke-linecap', 'round')
+          .style('stroke-linejoin', 'round')
+          .style('fill', 'none')
+          .style('opacity', 0);
+        
+        const linkDatum = {
+          d: pathData,
+          _d: () => [[x1, y1], [x1, y1]],
+          curve: false,
+          source: partner1.node,
+          target: partner2.node,
+          spouse: true,
+          isChainLink: true,
+          chainedRelationshipStatus: chainStatus,
+          id: linkId,
+          depth: partner1.node.depth || 0
+        };
+        
+        linkPath.datum(linkDatum);
+        
+        const line = d3.line();
+        const pathString = line(pathData);
+        if (pathString) {
+          linkPath.attr('d', pathString);
+        } else {
+          linkPath.attr('d', `M ${x1} ${y1} L ${x2} ${y2}`);
+        }
+        
+        const transitionTime = 1000;
+        linkPath.transition()
+          .duration(transitionTime)
+          .style('opacity', 1);
+        
+        // For married chained links, create double parallel lines
+        if (isMarried) {
         requestAnimationFrame(() => {
           requestAnimationFrame(() => {
             const pathNode = linkPath.node();
@@ -956,6 +940,7 @@ export function initializeAdvancedDecorations(f3Chart, allData) {
             }
           });
         });
+        }
       }
     }
   });
@@ -998,35 +983,73 @@ export function initializeAdvancedDecorations(f3Chart, allData) {
     f3Chart._activeDecorationProcess = processInfo;
     activeDecorationProcess = processInfo;
     
-    // Immediate pass: Process married links first (they're most important and should appear quickly)
-    // This gives instant feedback for married relationships
-    links.each(function(d) {
-      if (!d || !d.source || !d.target) return;
-      const sourceId = d.source?.data?.id || d.source?.id;
-      const targetId = d.target?.data?.id || d.target?.id;
-      if (!sourceId || !targetId) return;
-      
-      const relationshipStatus = getRelationshipStatus(d.source, d.target, allData);
-      const isMarriedLink = relationshipStatus === 'married' || relationshipStatus === 'partnered';
-      
-      if (isMarriedLink) {
-        const linkElement = d3.select(this);
-        if (linkElement.node() && linkElement.node().parentNode) {
-          const linkId = d.id || `${sourceId}-${targetId}`;
-          const linkIdReverse = `${targetId}-${sourceId}`;
-          
-          // Try to process immediately - don't wait for stability
-          const pathData = linkElement.attr('d');
-          const hasPath = pathData && pathData !== 'M0,0' && pathData.length > 10;
-          
-          if (hasPath) {
-            addDecorationForLink(linkElement, d);
-            processedLinks.add(linkId);
-            processedLinks.add(linkIdReverse);
+    // Delayed immediate pass: Process married links after initial render completes
+    // Use setTimeout with a small delay to ensure links are fully rendered and positioned
+    // This fixes the issue where married lines don't appear on initial page load
+    setTimeout(() => {
+      // Process married links first (they're most important and should appear quickly)
+      // This gives instant feedback for married relationships
+      const currentLinks = d3.select(svg).selectAll('path.link');
+      currentLinks.each(function(d) {
+        if (!d || !d.source || !d.target) return;
+        const sourceId = d.source?.data?.id || d.source?.id;
+        const targetId = d.target?.data?.id || d.target?.id;
+        if (!sourceId || !targetId) return;
+        
+        const relationshipStatus = getRelationshipStatus(d.source, d.target, allData);
+        const isMarriedLink = relationshipStatus === 'married' || relationshipStatus === 'partnered';
+        
+        if (isMarriedLink) {
+          const linkElement = d3.select(this);
+          if (linkElement.node() && linkElement.node().parentNode) {
+            const linkId = d.id || `${sourceId}-${targetId}`;
+            const linkIdReverse = `${targetId}-${sourceId}`;
+            
+            // Check if already processed
+            if (processedLinks.has(linkId) || processedLinks.has(linkIdReverse)) return;
+            
+            // Try to process - check if link is visible and has valid path
+            // Use computed style for more accurate visibility detection (D3 transitions might not set inline opacity)
+            const pathData = linkElement.attr('d');
+            const hasPath = pathData && pathData !== 'M0,0' && pathData.length > 10;
+            const linkNode = linkElement.node();
+            let opacity = 1; // Default to visible
+            if (linkNode) {
+              try {
+                const inlineOpacity = linkElement.style('opacity');
+                const computedStyle = window.getComputedStyle(linkNode);
+                const computedOpacity = computedStyle.opacity;
+                // Prefer computed style (more accurate during transitions)
+                opacity = parseFloat(computedOpacity || inlineOpacity || '1');
+                // If opacity is NaN or invalid, default to 1 (visible)
+                if (isNaN(opacity) || opacity < 0) opacity = 1;
+              } catch (e) {
+                // If we can't get computed style, assume visible
+                opacity = 1;
+              }
+            }
+            // For married links, be very lenient with visibility (they might be transitioning)
+            const isVisible = opacity >= 0.1;
+            
+            // Also check if nodes have valid positions
+            const sourceX = d.source.x;
+            const sourceY = d.source.y;
+            const targetX = d.target.x;
+            const targetY = d.target.y;
+            const hasValidPositions = sourceX !== undefined && sourceY !== undefined && 
+                                     targetX !== undefined && targetY !== undefined &&
+                                     !isNaN(sourceX) && !isNaN(sourceY) && 
+                                     !isNaN(targetX) && !isNaN(targetY);
+            
+            if (hasPath && isVisible && hasValidPositions) {
+              addDecorationForLink(linkElement, d);
+              processedLinks.add(linkId);
+              processedLinks.add(linkIdReverse);
+            }
           }
         }
-      }
-    });
+      });
+    }, 100); // Small delay to ensure links are fully rendered
     
     // Poll for link AND node completion - check every 30ms for faster response
     processInfo.interval = setInterval(() => {
@@ -1107,11 +1130,45 @@ export function initializeAdvancedDecorations(f3Chart, allData) {
           }
         }
         
-        const opacity = parseFloat(linkElement.style('opacity') || '0');
-        const isVisible = opacity >= 0.99;
+        // Check if this is a married link - process it faster
+        // Calculate relationship status FIRST so we can use it for visibility check
+        const relationshipStatus = getRelationshipStatus(d.source, d.target, allData);
+        const isMarriedLink = relationshipStatus === 'married' || relationshipStatus === 'partnered';
         
+        // Check visibility - use computed style for more accurate detection
+        // For married links, be more lenient since they might be transitioning
+        const linkNode = linkElement.node();
+        let opacity = 1; // Default to visible
+        if (linkNode) {
+          try {
+            const inlineOpacity = linkElement.style('opacity');
+            const computedStyle = window.getComputedStyle(linkNode);
+            const computedOpacity = computedStyle.opacity;
+            // Prefer computed style (more accurate during transitions)
+            opacity = parseFloat(computedOpacity || inlineOpacity || '1');
+            // If opacity is NaN or invalid, default to 1 (visible)
+            if (isNaN(opacity) || opacity < 0) opacity = 1;
+          } catch (e) {
+            // If we can't get computed style, assume visible
+            opacity = 1;
+          }
+        }
         const pathData = linkElement.attr('d');
         const hasPath = pathData && pathData !== 'M0,0' && pathData.length > 10;
+        
+        const nodesComplete = isNodeTransitionComplete(d);
+        
+        // For married links, if they have a path and nodes are complete, process them regardless of opacity
+        // (D3 transitions might set opacity to 0 initially, but the link is still there)
+        // For other links, require opacity >= 0.99
+        let isVisible;
+        if (isMarriedLink) {
+          // For married links, if path exists and nodes are complete, consider it visible
+          // Opacity might be 0 during transitions, but the link element exists
+          isVisible = hasPath && nodesComplete;
+        } else {
+          isVisible = opacity >= 0.99;
+        }
         
         const previousPath = linkPathHistory.get(linkId);
         const pathStable = !previousPath || previousPath === pathData;
@@ -1125,11 +1182,38 @@ export function initializeAdvancedDecorations(f3Chart, allData) {
         
         linkPathHistory.set(linkId, pathData);
         
-        const nodesComplete = isNodeTransitionComplete(d);
-        
-        // Check if this is a married link - process it faster
-        const relationshipStatus = getRelationshipStatus(d.source, d.target, allData);
-        const isMarriedLink = relationshipStatus === 'married' || relationshipStatus === 'partnered';
+        // Debug: Log Elena-Alfred link processing
+        if ((sourceId === 'elena' && targetId === 'alfred-sr') || (sourceId === 'alfred-sr' && targetId === 'elena')) {
+          const sourceX = d.source.x;
+          const sourceY = d.source.y;
+          const targetX = d.target.x;
+          const targetY = d.target.y;
+          const linkNode = linkElement.node();
+          let debugOpacity = 'unknown';
+          if (linkNode) {
+            try {
+              const inlineOpacity = linkElement.style('opacity');
+              const computedStyle = window.getComputedStyle(linkNode);
+              const computedOpacity = computedStyle.opacity;
+              debugOpacity = `inline:${inlineOpacity || 'none'}, computed:${computedOpacity}`;
+            } catch (e) {
+              debugOpacity = `error:${e.message}`;
+            }
+          }
+          console.log('[hookIntoLinkTransitions] Elena-Alfred link check:', {
+            linkId,
+            relationshipStatus,
+            isMarriedLink,
+            isVisible,
+            opacity: debugOpacity,
+            hasPath,
+            nodesComplete,
+            sourcePos: { x: sourceX, y: sourceY },
+            targetPos: { x: targetX, y: targetY },
+            elapsedTime: Date.now() - processInfo.startTime,
+            stabilityCount: linkStabilityCount.get(linkId) || 0
+          });
+        }
         
         const stabilityCount = linkStabilityCount.get(linkId) || 0;
         const elapsedTime = Date.now() - processInfo.startTime;
@@ -1140,7 +1224,38 @@ export function initializeAdvancedDecorations(f3Chart, allData) {
         const useLenientCheck = isMarriedLink ? elapsedTime > 50 : elapsedTime > 200;
         const needsStability = isMarriedLink ? true : isStableEnough; // Married links don't need stability check
         
-        const shouldProceed = isVisible && hasPath && (needsStability || useLenientCheck) && nodesComplete;
+        // For married links, also check if nodes have valid positions
+        let hasValidPositions = true;
+        if (isMarriedLink) {
+          const sourceX = d.source.x;
+          const sourceY = d.source.y;
+          const targetX = d.target.x;
+          const targetY = d.target.y;
+          hasValidPositions = sourceX !== undefined && sourceY !== undefined && 
+                             targetX !== undefined && targetY !== undefined &&
+                             !isNaN(sourceX) && !isNaN(sourceY) && 
+                             !isNaN(targetX) && !isNaN(targetY);
+        }
+        
+        const shouldProceed = isVisible && hasPath && (needsStability || useLenientCheck) && nodesComplete && hasValidPositions;
+        
+        // Debug: Log why Elena-Alfred link is not proceeding
+        if ((sourceId === 'elena' && targetId === 'alfred-sr') || (sourceId === 'alfred-sr' && targetId === 'elena')) {
+          if (!shouldProceed) {
+            console.log('[hookIntoLinkTransitions] Elena-Alfred link NOT proceeding:', {
+              isVisible,
+              hasPath,
+              needsStability,
+              useLenientCheck,
+              nodesComplete,
+              hasValidPositions,
+              elapsedTime,
+              stabilityCount
+            });
+          } else {
+            console.log('[hookIntoLinkTransitions] Elena-Alfred link WILL proceed');
+          }
+        }
         
         if (shouldProceed) {
           if (linkElement.node() && linkElement.node().parentNode) {

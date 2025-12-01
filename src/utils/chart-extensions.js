@@ -8,6 +8,12 @@ import { extendTree } from "./tree-extensions.js"
  * after it's calculated but before it's used for rendering.
  */
 export function extendChart(chart) {
+  // Track which trees we've already extended using a WeakMap
+  // This persists even if the tree object is recreated
+  if (!chart._extendedTrees) {
+    chart._extendedTrees = new WeakMap()
+  }
+  
   // Hook into the Chart's beforeUpdate to extend the tree before it's rendered
   // This ensures the extended tree is used for rendering
   const originalBeforeUpdate = chart.beforeUpdate
@@ -15,7 +21,7 @@ export function extendChart(chart) {
   chart.beforeUpdate = function(props) {
     // Get the tree from the store (it was just calculated)
     const tree = chart.store.getTree()
-    if (tree && !tree._extended) {
+    if (tree && !chart._extendedTrees.has(tree)) {
       // Extend the tree with our customizations
       extendTree(tree, {
         node_separation: chart.store.state.node_separation || 250,
@@ -24,7 +30,10 @@ export function extendChart(chart) {
         show_siblings_of_main: chart.store.state.show_siblings_of_main || false,
       })
       
-      // Mark as extended to avoid re-extending
+      // Mark this tree as extended using WeakMap (persists even if tree object is recreated)
+      chart._extendedTrees.set(tree, true)
+      
+      // Also set flag on tree for backwards compatibility
       tree._extended = true
     }
     
