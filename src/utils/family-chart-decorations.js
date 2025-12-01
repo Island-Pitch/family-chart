@@ -26,15 +26,23 @@ export function initializeAdvancedDecorations(f3Chart, allData) {
     d3.select(svg).selectAll('g.link-decoration').remove();
     
     // Remove status classes from links
-    d3.select(svg).selectAll('path.link.edge--married').classed('edge--married', false).classed('married-line-1', false);
-    d3.select(svg).selectAll('path.link.edge--divorced').classed('edge--divorced', false);
-    d3.select(svg).selectAll('path.link.edge--separated').classed('edge--separated', false);
-    d3.select(svg).selectAll('path.link.edge--widowed').classed('edge--widowed', false);
-    d3.select(svg).selectAll('path.link.edge--unknown').classed('edge--unknown', false);
-    d3.select(svg).selectAll('path.link.edge--adopted').classed('edge--adopted', false);
-    
-    // Remove unused __marriedLine property from nodes
+    // NOTE: We do NOT reset stroke attributes here because:
+    // 1. The base library will set stroke="#fff" in linkEnter anyway
+    // 2. Resetting to null can cause issues with transitions
+    // 3. applyDecorations will set the correct stroke after links are rendered
     d3.select(svg).selectAll('path.link').each(function() {
+      const link = d3.select(this);
+      
+      // Remove status classes only
+      link.classed('edge--married', false)
+          .classed('married-line-1', false)
+          .classed('edge--divorced', false)
+          .classed('edge--separated', false)
+          .classed('edge--widowed', false)
+          .classed('edge--unknown', false)
+          .classed('edge--adopted', false);
+      
+      // Remove unused __marriedLine property
       if (this.__marriedLine) {
         delete this.__marriedLine;
       }
@@ -45,22 +53,34 @@ export function initializeAdvancedDecorations(f3Chart, allData) {
   
   // Override updateTree to apply decorations after links are rendered
   const originalUpdateTree = f3Chart.updateTree.bind(f3Chart);
+  let decorationTimeout = null;
+  
   f3Chart.updateTree = function(props) {
     if (props && props.data) {
       f3Chart._allData = props.data;
     }
     
+    // Clear any pending decoration application to prevent race conditions
+    if (decorationTimeout) {
+      clearTimeout(decorationTimeout);
+      decorationTimeout = null;
+    }
+    
+    // Clean up decorations IMMEDIATELY and SYNCHRONOUSLY before tree update
+    // This ensures old decorations are removed before new ones are applied
     cleanupDecorations();
+    
     const result = originalUpdateTree(props);
     
     // Apply decorations after links are rendered and transitions complete
     // For initial load, wait for transition_time to complete
-    // For updates, use shorter delay
+    // For updates, use longer delay to ensure all transitions complete
     const transitionTime = f3Chart.transition_time || 1000;
-    const delay = props?.initial ? transitionTime + 100 : 200;
+    const delay = props?.initial ? transitionTime + 100 : transitionTime + 50;
     
-    setTimeout(() => {
+    decorationTimeout = setTimeout(() => {
       applyDecorations();
+      decorationTimeout = null;
     }, delay);
     
     return result;
@@ -71,49 +91,45 @@ export function initializeAdvancedDecorations(f3Chart, allData) {
    */
   function applyDecorations() {
     const svg = f3Chart.svg;
-    if (!svg) return;
+    if (!svg) {
+      console.warn('[applyDecorations] No SVG found');
+      return;
+    }
     
-    // Check if links view exists
-    if (d3.select(svg).select('.links_view').empty()) return;
-    
-    const allLinks = d3.select(svg).selectAll('path.link');
+    // Get the data to use for relationship lookups
     const dataToUse = getAllData();
     
-    allLinks.each(function(d) {
-      if (!d || !d.source || !d.target) return;
-      
-      const source = d.source;
-      const target = d.target;
-      const sourceId = source.data?.id || source.id;
-      const targetId = target.data?.id || target.id;
-      
-      if (!sourceId || !targetId) return;
-      
+    const linksView = d3.select(svg).select('.links_view');
+    if (linksView.empty()) return;
+    
+    // Get all links, not just spouse links
+    const allLinks = linksView.selectAll('path.link');
+    
+    allLinks.each(function() {
       const linkElement = d3.select(this);
-      const linkPath = linkElement.node();
+      const linkPath = this;
+      const d = linkElement.datum();
       
-      if (!linkPath || !linkPath.getTotalLength) return;
+      // CRITICAL: Set default black stroke for ALL links first
+      // This ensures parent-child and other non-spouse links are black
+      linkElement
+        .interrupt('stroke') // Stop any ongoing stroke transitions
+        .attr('stroke', '#090909') // Default black color - override base library's #fff
+        .style('stroke', '#090909') // Also set via style to ensure it's applied
+        .attr('stroke-width', '6')
+        .style('stroke-width', '6')
+        .attr('stroke-linecap', 'round')
+        .style('stroke-linecap', 'round')
+        .attr('stroke-linejoin', 'round')
+        .style('stroke-linejoin', 'round')
+        .attr('fill', 'none')
+        .style('fill', 'none');
       
-      // Skip if already processed as married (has the class and second line exists)
-      if (linkElement.classed('edge--married')) {
-        // Check if second line still exists as a sibling, if not, reapply
-        const parentNode = linkPath.parentNode;
-        if (parentNode) {
-          // Check for second line in the same parent (sibling check)
-          const siblings = Array.from(parentNode.children);
-          const hasSecondLine = siblings.some(sibling => {
-            const siblingEl = d3.select(sibling);
-            return siblingEl.classed('married-line-2') && siblingEl.classed('edge--married');
-          });
-          if (hasSecondLine) return; // Already fully processed
-        }
-      }
-      
-      // Handle parent-child links for adoption styling
+      // Handle parent-child links (adoption styling)
       if (!d.spouse) {
-        const childData = target.data || target;
-        const childPersonData = childData.data || childData;
-        const childId = childData.id || target.id || target.data?.id;
+        const childData = d.target?.data || d.target;
+        const childPersonData = childData?.data || childData;
+        const childId = childData?.id || d.target?.id || d.target?.data?.id;
         const childInAllData = dataToUse.find(p => p.id === childId);
         const adoptedFromData = childInAllData?.data?.adopted === true;
         const isAdopted = childPersonData?.adopted === true || 
@@ -121,28 +137,32 @@ export function initializeAdvancedDecorations(f3Chart, allData) {
                          childPersonData?.data?.adopted === true ||
                          adoptedFromData;
         
+        // Stroke is already set to black above, just add adoption styling if needed
         if (isAdopted) {
           linkElement.classed('edge--adopted', true)
-            .attr('stroke', '#090909')
-            .attr('stroke-width', '6')
             .attr('stroke-dasharray', '12 12')
-            .attr('stroke-linecap', 'round')
-            .attr('stroke-linejoin', 'round');
+            .style('stroke-dasharray', '12 12');
         }
+        // Parent-child links are done - they have black stroke now
         return;
       }
       
+      // Handle spouse links (married lines, past relationships, etc.)
       // Get relationship status from metadata for spouse links
       // Check for chained relationship status first (for chain links between past partners)
       let relationshipStatus = d.chainedRelationshipStatus;
       
       if (!relationshipStatus) {
         // For direct spouse links, getRelationshipStatus already checks both directions
-        relationshipStatus = getRelationshipStatus(source, target, dataToUse) ||
-                            getPastPartnerRelationshipStatus(source, target, dataToUse);
+        relationshipStatus = getRelationshipStatus(d.source, d.target, dataToUse) ||
+                            getPastPartnerRelationshipStatus(d.source, d.target, dataToUse);
       }
       
-      if (!relationshipStatus) return;
+      // If no relationship status found, stroke is already set to black above, just return
+      // (spouse links without status should still be black, not white)
+      if (!relationshipStatus) {
+        return;
+      }
       
       // Check link visibility
       let linkOpacity = 1;
@@ -177,13 +197,27 @@ export function initializeAdvancedDecorations(f3Chart, allData) {
       // Apply CSS class and handle decorations based on status
       if (relationshipStatus === 'married' || relationshipStatus === 'partnered') {
         // Married: Replace single line with two parallel lines
+        console.log(`[applyDecorations] Applying married lines for ${d.source.data?.id || d.source.id} <-> ${d.target.data?.id || d.target.id}`);
         applyMarriedLines(linkElement, linkPath, linkData, startPoint, endPoint);
       } else if (relationshipStatus === 'divorced' || relationshipStatus === 'separated' || relationshipStatus === 'widowed') {
-        // Other statuses: Add CSS class and create decoration (X, /, or //)
-        linkElement.classed(`edge--${relationshipStatus}`, true);
+        // Other statuses: Add CSS class, set stroke color, and create decoration (X, /, or //)
+        console.log(`[applyDecorations] Applying ${relationshipStatus} decoration for ${d.source.data?.id || d.source.id} <-> ${d.target.data?.id || d.target.id}`);
+        linkElement
+          .interrupt('stroke') // Stop any ongoing stroke transitions
+          .classed(`edge--${relationshipStatus}`, true)
+          .attr('stroke', '#AEB8C7') // Grey color for past relationships (matches example page)
+          .style('stroke', '#AEB8C7') // Also set via style to ensure it's applied
+          .attr('stroke-width', '6')
+          .style('stroke-width', '6')
+          .attr('stroke-linecap', 'round')
+          .style('stroke-linecap', 'round')
+          .attr('stroke-linejoin', 'round')
+          .style('stroke-linejoin', 'round')
+          .attr('fill', 'none')
+          .style('fill', 'none');
         applyStatusDecoration(linkElement, linkPath, linkData, startPoint, endPoint, relationshipStatus);
       } else {
-        // Unknown or other statuses: Just add CSS class
+        // Unknown or other statuses: Stroke is already set to black above
         linkElement.classed(`edge--${relationshipStatus}`, true);
       }
     });
@@ -236,8 +270,19 @@ export function initializeAdvancedDecorations(f3Chart, allData) {
       // Interrupt any ongoing transitions to prevent D3 from overwriting
       linkElement
         .interrupt('path') // Stop any ongoing path transitions
+        .interrupt('stroke') // Stop any ongoing stroke transitions
         .classed('edge--married', true)
         .classed('married-line-1', true)
+        .attr('stroke', '#090909') // Explicitly set stroke to override base library's #fff
+        .style('stroke', '#090909') // Also set via style to ensure it's applied
+        .attr('stroke-width', '6')
+        .style('stroke-width', '6')
+        .attr('stroke-linecap', 'round')
+        .style('stroke-linecap', 'round')
+        .attr('stroke-linejoin', 'round')
+        .style('stroke-linejoin', 'round')
+        .attr('fill', 'none')
+        .style('fill', 'none')
         .datum(modifiedLinkData1) // Update datum to prevent D3 from overwriting
         .attr('d', line([start1, end1])); // Offset original path to one side
       
@@ -246,11 +291,22 @@ export function initializeAdvancedDecorations(f3Chart, allData) {
       const parentNode = linkNode.parentNode;
       const nextSibling = linkNode.nextSibling;
       
-      // Create second path element - styled purely with CSS classes
+      // Create second path element - styled with explicit attributes to match first line
       const secondPath = d3.select(parentNode).insert('path', nextSibling ? () => nextSibling : null)
         .datum(modifiedLinkData2) // Set datum to prevent D3 from overwriting
         .attr('d', line([start2, end2]))
-        .attr('class', 'link edge--married married-line-2');
+        .attr('class', 'link edge--married married-line-2')
+        .attr('stroke', '#090909') // Explicitly set stroke to match first line
+        .style('stroke', '#090909') // Also set via style to ensure it's applied (overrides any CSS)
+        .attr('stroke-width', '6')
+        .style('stroke-width', '6')
+        .attr('stroke-linecap', 'round')
+        .style('stroke-linecap', 'round')
+        .attr('stroke-linejoin', 'round')
+        .style('stroke-linejoin', 'round')
+        .attr('fill', 'none')
+        .style('fill', 'none')
+        .style('opacity', '1'); // Ensure it's visible
     } else {
       // For curved links (non-spouse links), we can't easily create parallel lines
       // Just apply the married class for CSS styling - the actual double line
@@ -267,7 +323,8 @@ export function initializeAdvancedDecorations(f3Chart, allData) {
   
   /**
    * Apply CSS-based decorations for relationship statuses (X, /, //)
-   * Creates SVG elements positioned at the midpoint of the link
+   * Creates SVG elements positioned uniformly at the link midpoint
+   * Uses same positioning logic as married lines for consistency
    */
   function applyStatusDecoration(linkElement, linkPath, linkData, startPoint, endPoint, status) {
     // Check if already processed
@@ -285,10 +342,23 @@ export function initializeAdvancedDecorations(f3Chart, allData) {
     });
     if (hasDecoration) return;
     
+    // Get source and target nodes for consistent Y positioning (same as married lines)
+    const source = linkData.source;
+    const target = linkData.target;
+    const nodeSourceY = source?.y;
+    const nodeTargetY = target?.y;
+    
     // Calculate midpoint for decoration placement
+    // For horizontal links, use node Y for consistency (same as married lines)
+    const avgNodeY = (nodeSourceY !== undefined && nodeTargetY !== undefined && !isNaN(nodeSourceY) && !isNaN(nodeTargetY))
+      ? (nodeSourceY + nodeTargetY) / 2
+      : (startPoint.y + endPoint.y) / 2;
+    const useNodeY = Math.abs((startPoint.y + endPoint.y) / 2) < 1 && avgNodeY !== undefined && !isNaN(avgNodeY) && Math.abs(avgNodeY) > 1;
+    const decorationY = useNodeY ? avgNodeY : (startPoint.y + endPoint.y) / 2;
+    
     const midPoint = {
       x: (startPoint.x + endPoint.x) / 2,
-      y: (startPoint.y + endPoint.y) / 2
+      y: decorationY
     };
     
     // Calculate link angle for proper decoration orientation

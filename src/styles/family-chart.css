@@ -528,52 +528,53 @@
   outline: 4px solid rgba(255, 255, 255, 1);
 }
 
-.f3 .link {
+/* Use higher specificity to override base library's inline stroke="#fff" */
+.f3 svg .link {
   transition: stroke-width 0.2s ease-in-out;
+  stroke: #090909 !important; /* Black - matches sc25.html */
+  stroke-width: 6px !important;
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
+  fill: none !important;
 }
 
-.f3 .link.f3-path-to-main {
-  stroke-width: 4px;
+.f3 svg .link.f3-path-to-main {
+  stroke-width: 4px !important;
 }
 
 /* Married relationship styling - double parallel lines */
-/* Both lines styled identically with CSS - no inline styles */
-.f3 .link.edge--married,
-.f3 .link.married-line-1,
-.f3 .link.married-line-2 {
-  stroke: #090909;
-  stroke-width: 6px;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  fill: none;
+.f3 svg .link.edge--married,
+.f3 svg .link.married-line-1,
+.f3 svg .link.married-line-2 {
+  stroke: #090909 !important; /* Black - matches sc25.html */
+  stroke-width: 6px !important;
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
+  fill: none !important;
 }
 
 /* Relationship status decorations - X, /, // */
-/* Positioned uniformly at link midpoint using CSS transforms */
 .f3 .link-decoration {
-  pointer-events: none; /* Don't interfere with link interactions */
+  pointer-events: none;
 }
 
 .f3 .link-decoration .status-decoration,
 .f3 .link-decoration .link-overlay.slash {
-  stroke: #AEB8C7; /* Grey color for past relationships */
-  stroke-linecap: round;
-  stroke-linejoin: round;
+  stroke: #AEB8C7 !important; /* Grey color for past relationships */
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
 }
 
-/* Divorced, separated, widowed link styling */
-.f3 .link.edge--divorced,
-.f3 .link.edge--separated,
-.f3 .link.edge--widowed {
-  stroke: #AEB8C7; /* Grey color for past relationships */
-  stroke-width: 6px;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  fill: none;
+/* Divorced, separated, widowed link styling - use higher specificity */
+.f3 svg .link.edge--divorced,
+.f3 svg .link.edge--separated,
+.f3 svg .link.edge--widowed {
+  stroke: #AEB8C7 !important; /* Grey color for past relationships */
+  stroke-width: 6px !important;
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
+  fill: none !important;
 }
-
-
-
 
 
 .f3-form-cont {
