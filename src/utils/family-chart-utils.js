@@ -522,9 +522,9 @@ export function createCardRenderer(f3Chart) {
       const deathDate = d.data?.death_date || d.data?.data?.death_date || personData.death_date || personData.deathDate;
       const isDeceased = deceasedValue === true || deceasedValue === 'true' || deceasedValue === 1 || deceasedValue === '1' || !!deathDate;
       
-      // Debug logging for deceased status (check for Donna specifically)
-      if (process.env.NODE_ENV === 'development' && (fullName.toLowerCase().includes('donna') || personId.includes('24d54b28-8409-407e-b913-878a6c8cae3f'))) {
-        console.log('🔴 [CardRenderer] Deceased check for Donna:', {
+      // Debug logging for deceased status (check all deceased people)
+      if (process.env.NODE_ENV === 'development' && isDeceased) {
+        console.log('🔴 [CardRenderer] Deceased person detected:', {
           personId,
           fullName,
           'd.data.deceased': d.data?.deceased,
@@ -534,7 +534,8 @@ export function createCardRenderer(f3Chart) {
           deathDate,
           isDeceased,
           hasDataData: !!d.data?.data,
-          hasData: !!d.data
+          hasData: !!d.data,
+          willRenderOverlay: isDeceased
         });
       }
       
