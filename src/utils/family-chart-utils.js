@@ -97,12 +97,14 @@ export function configureCardOffsets(f3Chart, offsets = {}) {
  * Normalize gender values to M, F, or NB
  */
 export function normalizeGender(gender) {
-  if (!gender) return 'M'; // Default to M if not specified
+  // Preserve null/undefined for unspecified gender (will show grey/blue in chart)
+  if (gender === null || gender === undefined || gender === '') return null;
   const g = String(gender).trim().toUpperCase();
   if (g === 'M' || g === 'MALE') return 'M';
   if (g === 'F' || g === 'FEMALE') return 'F';
   if (g === 'NB' || g === 'NON-BINARY' || g === 'NONBINARY' || g === 'X' || g === 'N') return 'NB';
-  return 'M'; // Default fallback
+  // If gender value exists but doesn't match known values, preserve null instead of defaulting to M
+  return null;
 }
 
 /**
@@ -205,11 +207,38 @@ export function transformScenarioData(scenarioData) {
                                  {};
     
     // Determine gender - normalize from multiple possible sources
-    let gender = normalizeGender(personData.gender || person.data?.gender || 'M');
+    // Check all possible paths: person.data.data.gender, person.data.gender, personData.gender
+    // Preserve null/undefined for unspecified gender (will show grey/blue)
+    // Use explicit null checks to avoid using empty strings or other falsy values
+    let genderValue = null;
+    if (person.data?.data?.gender !== null && person.data?.data?.gender !== undefined && person.data?.data?.gender !== '') {
+      genderValue = person.data.data.gender;
+    } else if (person.data?.gender !== null && person.data?.gender !== undefined && person.data?.gender !== '') {
+      genderValue = person.data.gender;
+    } else if (personData.gender !== null && personData.gender !== undefined && personData.gender !== '') {
+      genderValue = personData.gender;
+    }
+    let gender = normalizeGender(genderValue);
     
-    // Determine if deceased - auto-true if death_date exists
-    let deceased = personData.deceased || false;
-    const deathDate = personData.death_date || personData.deathDate || personData.died || personData.deceased_date;
+    // Determine if deceased - check all possible paths and auto-true if death_date exists
+    const deceasedValue = person.data?.data?.deceased || 
+                         person.data?.deceased || 
+                         personData.deceased || 
+                         false;
+    const deathDate = person.data?.data?.death_date || 
+                     person.data?.data?.deathDate || 
+                     person.data?.data?.died || 
+                     person.data?.data?.deceased_date ||
+                     person.data?.death_date || 
+                     person.data?.deathDate || 
+                     person.data?.died || 
+                     person.data?.deceased_date ||
+                     personData.death_date || 
+                     personData.deathDate || 
+                     personData.died || 
+                     personData.deceased_date ||
+                     null;
+    let deceased = deceasedValue;
     if (deathDate && !deceased) {
       deceased = true;
     }
