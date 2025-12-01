@@ -27,7 +27,7 @@ export default function updateCardsHtml(svg: SVGElement, tree: Tree, Card: any, 
     d3.select(this)
       .style('position', 'absolute')
       .style('top', '0').style('left', '0')
-      .style("transform", `translate(${d._x + offsetX}px, ${d._y + offsetY}px)`)
+      .style("transform", `translate(${(d._x ?? 0) + offsetX}px, ${(d._y ?? 0) + offsetY}px)`)
       .style("opacity", 0)
 
     Card.call(this, d)
@@ -49,7 +49,7 @@ export default function updateCardsHtml(svg: SVGElement, tree: Tree, Card: any, 
     const tree_datum = d as TreeDatum
     const offsetX = props.cardOffsetX || 0;
     const offsetY = props.cardOffsetY || 0;
-    const pos = tree_datum ? [tree_datum._x + offsetX, tree_datum._y + offsetY] : [offsetX, offsetY]
+    const pos = tree_datum ? [(tree_datum._x ?? 0) + offsetX, (tree_datum._y ?? 0) + offsetY] : [offsetX, offsetY]
     const g = d3.select(this)
     g.transition().duration(props.transition_time!)
       .style("opacity", 0)

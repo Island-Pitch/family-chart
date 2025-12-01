@@ -28,7 +28,7 @@ export default function updateCardsSvg(svg: SVGElement, tree: Tree, Card: any, p
     const offsetX = props.cardOffsetX || 0;
     const offsetY = props.cardOffsetY || 0;
     d3.select(this)
-      .attr("transform", `translate(${d._x + offsetX}, ${d._y + offsetY})`)
+      .attr("transform", `translate(${(d._x ?? 0) + offsetX}, ${(d._y ?? 0) + offsetY})`)
       .style("opacity", 0)
 
     Card.call(this, d)
@@ -50,7 +50,7 @@ export default function updateCardsSvg(svg: SVGElement, tree: Tree, Card: any, p
     const tree_datum = d as TreeDatum
     const offsetX = props.cardOffsetX || 0;
     const offsetY = props.cardOffsetY || 0;
-    const pos = tree_datum ? [tree_datum._x + offsetX, tree_datum._y + offsetY] : [offsetX, offsetY]
+    const pos = tree_datum ? [(tree_datum._x ?? 0) + offsetX, (tree_datum._y ?? 0) + offsetY] : [offsetX, offsetY]
     const g = d3.select(this)
     g.transition().duration(props.transition_time!)
       .style("opacity", 0)
