@@ -155,9 +155,11 @@ export function preventSiblingOverlaps(sorted_siblings, main, node_separation, x
   
   // Special case: If there are exactly 2 groups total, justify them in opposite directions (left/right)
   // This handles cases like Mary I where her group and half-siblings' groups would overlap
+  // Neither group should be centered - both should be justified left/right
   // Main person's group (same parent pair as main person) goes LEFT, other groups go RIGHT
   const totalGroups = groupsArray.length;
   
+  // Handle 2-group case: always justify both groups left/right, never center
   if (totalGroups === 2) {
     // Exactly 2 groups: identify which one matches the main person's parent pair
     // That group (Henry's kids with same parents as main person) goes LEFT
@@ -165,13 +167,13 @@ export function preventSiblingOverlaps(sorted_siblings, main, node_separation, x
     let leftGroup, rightGroup;
     
     if (mainPairKey) {
-      // Find group that matches main person's parent pair - this goes RIGHT
+      // Find group that matches main person's parent pair - this goes LEFT
       const matchingGroup = groupsArray.find(g => g.pairKey === mainPairKey);
       if (matchingGroup) {
-        // Main person's group found - put it RIGHT, others LEFT
-        rightGroup = matchingGroup;
-        leftGroup = groupsArray.find(g => g.pairKey !== mainPairKey);
-        console.log(`[preventSiblingOverlaps] 2-group case: Found main person's group (${mainPairKey}) - will position RIGHT`);
+        // Main person's group found - put it LEFT, others RIGHT
+        leftGroup = matchingGroup;
+        rightGroup = groupsArray.find(g => g.pairKey !== mainPairKey);
+        console.log(`[preventSiblingOverlaps] 2-group case: Found main person's group (${mainPairKey}) - will position LEFT`);
       } else {
         // Main person's parent pair not in groups (main person is not a sibling, like Mary I)
         // Put ALL sibling groups to the RIGHT, leaving main person (and her ancestry link) on the LEFT
@@ -194,29 +196,32 @@ export function preventSiblingOverlaps(sorted_siblings, main, node_separation, x
     }
     
     if (leftGroup && rightGroup) {
-      // Other groups (half-siblings with different parent pairs) go LEFT
-      let left_x = (x_range[0] ?? main.x) - node_separation;
+      // Main person's group (Henry's kids with same parents) goes LEFT
+      const leftStartX = (x_range[0] ?? main.x) - node_separation;
+      let left_x = leftStartX;
       for (let j = leftGroup.siblings.length - 1; j >= 0; j--) {
         const sib = leftGroup.siblings[j];
         sib.x = left_x;
         left_x -= node_separation;
       }
-      console.log(`[preventSiblingOverlaps] 2-group case: Other group (${leftGroup.pairKey}) positioned to LEFT`);
+      console.log(`[preventSiblingOverlaps] 2-group case: Main person's group (${leftGroup.pairKey}) positioned to LEFT starting at ${leftStartX.toFixed(1)}`);
       
-      // Main person's group (Henry's kids with same parents) goes RIGHT
-      let right_x = (x_range[1] ?? main.x) + node_separation;
+      // Other groups (half-siblings with different parent pairs) go RIGHT
+      const rightStartX = (x_range[1] ?? main.x) + node_separation;
+      let right_x = rightStartX;
       rightGroup.siblings.forEach((sib) => {
         sib.x = right_x;
         right_x += node_separation;
       });
-      console.log(`[preventSiblingOverlaps] 2-group case: Main person's group (${rightGroup.pairKey}) positioned to RIGHT`);
+      console.log(`[preventSiblingOverlaps] 2-group case: Other group (${rightGroup.pairKey}) positioned to RIGHT starting at ${rightStartX.toFixed(1)}`);
       
-      console.log(`[preventSiblingOverlaps] 2-group justification: other groups LEFT, main person's group RIGHT`);
+      console.log(`[preventSiblingOverlaps] 2-group justification: main person's group LEFT, other groups RIGHT`);
       return; // Early return for 2-group case
     } else if (!leftGroup && mainPairKey) {
       // Main person's group not in sibling groups - put ALL sibling groups to the LEFT
       // This leaves the main person (and her ancestry link) on the RIGHT side
-      let left_x = (x_range[0] ?? main.x) - node_separation;
+      const leftStartX = (x_range[0] ?? main.x) - node_separation;
+      let left_x = leftStartX;
       // Process groups in reverse order to position leftmost first
       for (let i = groupsArray.length - 1; i >= 0; i--) {
         const group = groupsArray[i];
@@ -225,20 +230,40 @@ export function preventSiblingOverlaps(sorted_siblings, main, node_separation, x
           sib.x = left_x;
           left_x -= node_separation;
         }
-        console.log(`[preventSiblingOverlaps] 2-group case: Group ${i} (${group.pairKey}) positioned to LEFT (main person's group not in siblings)`);
+        console.log(`[preventSiblingOverlaps] 2-group case: Group ${i} (${group.pairKey}) positioned to LEFT starting at ${leftStartX.toFixed(1)} (main person's group not in siblings)`);
       }
       console.log(`[preventSiblingOverlaps] 2-group justification: all sibling groups LEFT (main person stays RIGHT)`);
       return; // Early return for 2-group case
     }
   }
   
-  // Default behavior: Position main person's group on the LEFT, all other groups on the RIGHT
+  // Default behavior for 3+ groups: Position main person's group on the LEFT, all other groups on the RIGHT
   const leftGroups = groupsArray.filter(g => g.isMainGroup)
   const rightGroups = groupsArray.filter(g => !g.isMainGroup)
   
+  // If main person's group is not found in sibling groups, put ALL groups to the LEFT
+  // This leaves the main person (and her ancestry link) on the RIGHT side
+  if (leftGroups.length === 0 && mainPairKey) {
+    // Main person's group not in sibling groups - put ALL sibling groups to the LEFT
+    const leftStartX = (x_range[0] ?? main.x) - node_separation;
+    let left_x = leftStartX;
+    // Process groups in reverse order to position leftmost first
+    for (let i = groupsArray.length - 1; i >= 0; i--) {
+      const group = groupsArray[i];
+      for (let j = group.siblings.length - 1; j >= 0; j--) {
+        const sib = group.siblings[j];
+        sib.x = left_x;
+        left_x -= node_separation;
+      }
+      console.log(`[preventSiblingOverlaps] Group ${i} (${group.pairKey}) positioned to LEFT starting at ${leftStartX.toFixed(1)} (main person's group not in siblings)`);
+    }
+    console.log(`[preventSiblingOverlaps] All groups LEFT (main person stays RIGHT)`);
+    return;
+  }
+  
   // Position left groups (main person's group) - from right to left
   if (leftGroups.length > 0) {
-    let current_x = (x_range[0] ?? main.x) - node_separation
+    let current_x = (x_range[0] ?? main.x) - node_separation;
     // Process in reverse order to position leftmost first
     for (let i = leftGroups.length - 1; i >= 0; i--) {
       const group = leftGroups[i]
@@ -255,7 +280,7 @@ export function preventSiblingOverlaps(sorted_siblings, main, node_separation, x
   
   // Position right groups (all other groups) - from left to right
   if (rightGroups.length > 0) {
-    let current_x = (x_range[1] ?? main.x) + node_separation
+    let current_x = (x_range[1] ?? main.x) + node_separation;
     rightGroups.forEach((group, groupIdx) => {
       group.siblings.forEach((sib) => {
         sib.x = current_x

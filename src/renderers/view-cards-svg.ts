@@ -25,8 +25,10 @@ export default function updateCardsSvg(svg: SVGElement, tree: Tree, Card: any, p
   card_update.each(cardUpdate)
 
   function cardEnter(this: SVGGElement, d: TreeDatum) {
+    const offsetX = props.cardOffsetX || 0;
+    const offsetY = props.cardOffsetY || 0;
     d3.select(this)
-      .attr("transform", `translate(${d._x}, ${d._y})`)
+      .attr("transform", `translate(${d._x + offsetX}, ${d._y + offsetY})`)
       .style("opacity", 0)
 
     Card.call(this, d)
@@ -37,12 +39,18 @@ export default function updateCardsSvg(svg: SVGElement, tree: Tree, Card: any, p
   function cardUpdate(this: SVGGElement, d: TreeDatum) {
     Card.call(this, d)
     const delay = props.initial ? calculateDelay(tree, d, props.transition_time!) : 0;
-    d3.select(this).transition().duration(props.transition_time!).delay(delay).attr("transform", `translate(${d.x}, ${d.y})`).style("opacity", 1)
+    const offsetX = props.cardOffsetX || 0;
+    const offsetY = props.cardOffsetY || 0;
+    d3.select(this).transition().duration(props.transition_time!).delay(delay)
+      .attr("transform", `translate(${d.x + offsetX}, ${d.y + offsetY})`)
+      .style("opacity", 1)
   }
 
   function cardExit(this: SVGGElement, d: unknown | TreeDatum) {
     const tree_datum = d as TreeDatum
-    const pos = tree_datum ? [tree_datum._x, tree_datum._y] : [0, 0]
+    const offsetX = props.cardOffsetX || 0;
+    const offsetY = props.cardOffsetY || 0;
+    const pos = tree_datum ? [tree_datum._x + offsetX, tree_datum._y + offsetY] : [offsetX, offsetY]
     const g = d3.select(this)
     g.transition().duration(props.transition_time!)
       .style("opacity", 0)

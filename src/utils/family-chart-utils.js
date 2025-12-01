@@ -23,6 +23,8 @@ export const DEFAULT_CHART_SPACING = {
   cardYSpacing: 1, // Vertical spacing: 1 unit = 1 card width gap between people
   transitionTime: 1000, // Animation transition time in milliseconds
   progenyDepth: 10, // Maximum depth to show descendants
+  cardOffsetX: 10, // Horizontal offset for card positioning (pixels, positive = right, negative = left)
+  cardOffsetY: 10, // Vertical offset for card positioning (pixels, positive = down, negative = up)
 };
 
 /**
@@ -43,12 +45,52 @@ export function configureChartSpacing(f3Chart, options = {}) {
     cardYSpacing: spacing.cardYSpacing,
     xSpacingPx: xSpacing,
     ySpacingPx: ySpacing,
-    cardWidth: CARD_WIDTH
+    cardWidth: CARD_WIDTH,
+    cardOffsetX: spacing.cardOffsetX,
+    cardOffsetY: spacing.cardOffsetY
   });
-  return f3Chart
+  
+  const chart = f3Chart
     .setTransitionTime(spacing.transitionTime)
     .setCardXSpacing(xSpacing)
     .setCardYSpacing(ySpacing);
+  
+  // Store card offsets on chart for use in updateTree calls
+  chart._cardOffsetX = spacing.cardOffsetX;
+  chart._cardOffsetY = spacing.cardOffsetY;
+  
+  return chart;
+}
+
+/**
+ * Configure card position offsets for fine-tuning alignment with link lines
+ * @param {Object} f3Chart - The f3 chart instance
+ * @param {Object} offsets - Offset values in pixels
+ * @param {number} offsets.x - Horizontal offset (positive = right, negative = left)
+ * @param {number} offsets.y - Vertical offset (positive = down, negative = up)
+ * @returns {Object} The configured chart instance
+ */
+export function configureCardOffsets(f3Chart, offsets = {}) {
+  const offsetX = offsets.x !== undefined ? offsets.x : (f3Chart._cardOffsetX || 0);
+  const offsetY = offsets.y !== undefined ? offsets.y : (f3Chart._cardOffsetY || 0);
+  
+  f3Chart._cardOffsetX = offsetX;
+  f3Chart._cardOffsetY = offsetY;
+  
+  console.log('[configureCardOffsets] Setting card offsets:', {
+    offsetX,
+    offsetY
+  });
+  
+  // Apply offsets to the current tree
+  if (f3Chart.updateTree) {
+    f3Chart.updateTree({
+      cardOffsetX: offsetX,
+      cardOffsetY: offsetY
+    });
+  }
+  
+  return f3Chart;
 }
 
 /**

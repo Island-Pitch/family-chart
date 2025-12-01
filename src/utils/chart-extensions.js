@@ -41,6 +41,20 @@ export function extendChart(chart) {
     if (originalBeforeUpdate) originalBeforeUpdate.call(this, props)
   }
   
+  // Hook into updateTree to automatically apply card offsets if they're stored on the chart
+  const originalUpdateTree = chart.updateTree
+  chart.updateTree = function(props = {}) {
+    // Merge in card offsets if they're stored on the chart
+    if (chart._cardOffsetX !== undefined || chart._cardOffsetY !== undefined) {
+      props = {
+        ...props,
+        cardOffsetX: props.cardOffsetX !== undefined ? props.cardOffsetX : chart._cardOffsetX,
+        cardOffsetY: props.cardOffsetY !== undefined ? props.cardOffsetY : chart._cardOffsetY,
+      }
+    }
+    return originalUpdateTree.call(this, props)
+  }
+  
   return chart
 }
 

@@ -22,10 +22,12 @@ export default function updateCardsHtml(svg: SVGElement, tree: Tree, Card: any, 
   card_update.each(cardUpdate)
 
   function cardEnter(this: HTMLDivElement, d: TreeDatum) {
+    const offsetX = props.cardOffsetX || 0;
+    const offsetY = props.cardOffsetY || 0;
     d3.select(this)
       .style('position', 'absolute')
       .style('top', '0').style('left', '0')
-      .style("transform", `translate(${d._x}px, ${d._y}px)`)
+      .style("transform", `translate(${d._x + offsetX}px, ${d._y + offsetY}px)`)
       .style("opacity", 0)
 
     Card.call(this, d)
@@ -36,12 +38,18 @@ export default function updateCardsHtml(svg: SVGElement, tree: Tree, Card: any, 
   function cardUpdate(this: HTMLDivElement, d: TreeDatum) {
     Card.call(this, d)
     const delay = props.initial ? calculateDelay(tree, d, props.transition_time!) : 0;
-    d3.select(this).transition().duration(props.transition_time!).delay(delay).style("transform", `translate(${d.x}px, ${d.y}px)`).style("opacity", 1)
+    const offsetX = props.cardOffsetX || 0;
+    const offsetY = props.cardOffsetY || 0;
+    d3.select(this).transition().duration(props.transition_time!).delay(delay)
+      .style("transform", `translate(${d.x + offsetX}px, ${d.y + offsetY}px)`)
+      .style("opacity", 1)
   }
 
   function cardExit(this: HTMLDivElement, d: unknown | TreeDatum) {
     const tree_datum = d as TreeDatum
-    const pos = tree_datum ? [tree_datum._x, tree_datum._y] : [0, 0]
+    const offsetX = props.cardOffsetX || 0;
+    const offsetY = props.cardOffsetY || 0;
+    const pos = tree_datum ? [tree_datum._x + offsetX, tree_datum._y + offsetY] : [offsetX, offsetY]
     const g = d3.select(this)
     g.transition().duration(props.transition_time!)
       .style("opacity", 0)
