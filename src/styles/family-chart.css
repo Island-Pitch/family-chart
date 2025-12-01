@@ -536,6 +536,42 @@
   stroke-width: 4px;
 }
 
+/* Married relationship styling - double parallel lines */
+/* Both lines styled identically with CSS - no inline styles */
+.f3 .link.edge--married,
+.f3 .link.married-line-1,
+.f3 .link.married-line-2 {
+  stroke: #090909;
+  stroke-width: 6px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+}
+
+/* Relationship status decorations - X, /, // */
+/* Positioned uniformly at link midpoint using CSS transforms */
+.f3 .link-decoration {
+  pointer-events: none; /* Don't interfere with link interactions */
+}
+
+.f3 .link-decoration .status-decoration,
+.f3 .link-decoration .link-overlay.slash {
+  stroke: #AEB8C7; /* Grey color for past relationships */
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Divorced, separated, widowed link styling */
+.f3 .link.edge--divorced,
+.f3 .link.edge--separated,
+.f3 .link.edge--widowed {
+  stroke: #AEB8C7; /* Grey color for past relationships */
+  stroke-width: 6px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+}
+
 
 
 

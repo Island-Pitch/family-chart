@@ -74,7 +74,42 @@ export function createLinks(d: TreeDatum, is_horizontal: boolean = false) {
 
   function handleSpouse(d: TreeDatum) {
     if (d.spouses) {
-      d.spouses.forEach(spouse => links.push(createSpouseLink(d, spouse)))
+      // For ANY person with multiple partners: create a chain of links
+      // - First spouse connects to the person (current relationship)
+      // - Subsequent spouses connect to previous spouse (former relationships)
+      // This avoids overlapping lines for former partners
+      
+      if (d.spouses && d.spouses.length > 1) {
+        // Chain pattern for ANY person with multiple partners
+        d.spouses.forEach((spouse, index) => {
+          if (index === 0) {
+            // First spouse (most recent) connects to the person
+            links.push(createSpouseLink(d, spouse))
+          } else {
+            // Former spouses connect to the previous spouse in the chain
+            // Pass relationship status from the person to the chain link
+            const previousSpouse = d.spouses![index - 1]
+            const chainLink = createSpouseLink(previousSpouse, spouse)
+            
+            // Add relationship status metadata to the chain link
+            // The status is between spouse and the person (d)
+            const personData = d.data && d.data.data;
+            const spouseId = spouse.data && spouse.data.id;
+            
+            if (personData && personData.relationshipStatuses && spouseId) {
+              const status = personData.relationshipStatuses[spouseId];
+              if (status) {
+                (chainLink as any).chainedRelationshipStatus = status.status;
+              }
+            }
+            
+            links.push(chainLink)
+          }
+        })
+      } else {
+        // Single spouse: use standard star pattern
+        d.spouses.forEach(spouse => links.push(createSpouseLink(d, spouse)))
+      }
     } else if (d.coparent) {
       links.push(createSpouseLink(d, d.coparent))
     }
