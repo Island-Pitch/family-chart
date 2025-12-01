@@ -220,6 +220,20 @@ export function transformScenarioData(scenarioData) {
     }
     let gender = normalizeGender(genderValue);
     
+    // Debug logging for gender extraction in transformScenarioData (only log for unknown genders)
+    if (gender === null && personData.id) {
+      console.log('🔍 [transformScenarioData] Gender extraction debug:', {
+        personId: personData.id,
+        hasDataData: !!person.data?.data,
+        hasData: !!person.data,
+        genderInDataData: person.data?.data?.gender,
+        genderInData: person.data?.gender,
+        genderInPersonData: personData.gender,
+        genderValue,
+        normalizedGender: gender
+      });
+    }
+    
     // Determine if deceased - check all possible paths and auto-true if death_date exists
     const deceasedValue = person.data?.data?.deceased || 
                          person.data?.deceased || 
@@ -453,10 +467,36 @@ export function createCardRenderer(f3Chart) {
       const personId = d.data?.id || d.id || d.data?.data?.id || 'unknown';
       const personData = d.data?.data || d.data || {};
       
-      let gender = normalizeGender(personData.gender || d.data?.gender || 'M');
-      let deceasedFromData = personData.deceased !== undefined ? personData.deceased : (d.data?.deceased !== undefined ? d.data.deceased : false);
+      // Determine gender - normalize from multiple possible sources
+      // Check all possible paths: d.data.data.gender, d.data.gender, personData.gender
+      // Preserve null/undefined for unspecified gender (will show grey/blue)
+      // Use explicit null checks to avoid using empty strings or other falsy values
+      let genderValue = null;
+      if (d.data?.data?.gender !== null && d.data?.data?.gender !== undefined && d.data?.data?.gender !== '') {
+        genderValue = d.data.data.gender;
+      } else if (d.data?.gender !== null && d.data?.gender !== undefined && d.data?.gender !== '') {
+        genderValue = d.data.gender;
+      } else if (personData.gender !== null && personData.gender !== undefined && personData.gender !== '') {
+        genderValue = personData.gender;
+      }
+      let gender = normalizeGender(genderValue);
       
-      gender = normalizeGender(gender);
+      // Debug logging for gender extraction (only log for unknown genders to avoid spam)
+      if (gender === null && personId !== 'unknown') {
+        console.log('🔍 [CardRenderer] Gender extraction debug:', {
+          personId,
+          hasDataData: !!d.data?.data,
+          hasData: !!d.data,
+          genderInDataData: d.data?.data?.gender,
+          genderInData: d.data?.gender,
+          genderInPersonData: personData.gender,
+          genderValue,
+          normalizedGender: gender,
+          genderClass: getGenderClass(gender)
+        });
+      }
+      
+      let deceasedFromData = personData.deceased !== undefined ? personData.deceased : (d.data?.deceased !== undefined ? d.data.deceased : false);
       
       // Check for preferred_name first, then full_name/label, then fall back to first_name + last_name
       let fullName = personData.preferred_name || personData['preferred name'] || 
