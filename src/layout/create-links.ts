@@ -26,26 +26,45 @@ export function createLinks(d: TreeDatum, is_horizontal: boolean = false) {
   return links;
 
   function handleAncestrySide(d: TreeDatum) {
-    if (!d.parents) return
+    if (!d.parents || d.parents.length === 0) return
     const p1 = d.parents[0]
-    const p2 = d.parents[1] || p1
+    // Only use p2 if it actually exists - don't create placeholders for missing parents
+    const p2 = d.parents[1] || null
 
-    const p = {x: getMid(p1, p2, 'x'), y: getMid(p1, p2, 'y')}
-
-    links.push({
-      d: Link(d, p),
-      _d: () => {
-        const _d = {x: d.x, y: d.y},
-          _p = {x: d.x, y: d.y}
-        return Link(_d, _p)
-      },
-      curve: true, 
-      id: linkId(d, p1, p2), 
-      depth: d.depth+1, 
-      is_ancestry: true,
-      source: d,
-      target: [p1, p2]
-    })
+    // If only one parent, link directly to that parent (no pair)
+    if (!p2) {
+      links.push({
+        d: Link(d, p1),
+        _d: () => {
+          const _d = {x: d.x, y: d.y},
+            _p = {x: d.x, y: d.y}
+          return Link(_d, _p)
+        },
+        curve: true, 
+        id: linkId(d, p1), 
+        depth: d.depth+1, 
+        is_ancestry: true,
+        source: d,
+        target: [p1]  // Only one parent, no placeholder
+      })
+    } else {
+      // Two parents - link to the midpoint
+      const p = {x: getMid(p1, p2, 'x'), y: getMid(p1, p2, 'y')}
+      links.push({
+        d: Link(d, p),
+        _d: () => {
+          const _d = {x: d.x, y: d.y},
+            _p = {x: d.x, y: d.y}
+          return Link(_d, _p)
+        },
+        curve: true, 
+        id: linkId(d, p1, p2), 
+        depth: d.depth+1, 
+        is_ancestry: true,
+        source: d,
+        target: [p1, p2]
+      })
+    }
   }
 
 

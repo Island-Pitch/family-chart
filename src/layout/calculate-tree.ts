@@ -294,45 +294,11 @@ export default function calculateTree(data: Data, {
   }
 
   function createRelsToAdd(data:Data) {
-    const to_add_spouses:Datum[] = [];
-    for (let i = 0; i < data.length; i++) {
-      const d = data[i];
-      if (d.rels.children && d.rels.children.length > 0) {
-        if (!d.rels.spouses) d.rels.spouses = []
-        let to_add_spouse:Datum | undefined
-
-        d.rels.children.forEach(d0 => {
-          const child = data.find(d1 => d1.id === d0) as Datum
-          if (child.rels.parents.length === 2) return
-          if (!to_add_spouse) {
-            to_add_spouse = findOrCreateToAddSpouse(d)
-          }
-          if (!to_add_spouse.rels.children) to_add_spouse.rels.children = []
-          to_add_spouse.rels.children.push(child.id)
-          if (child.rels.parents.length !== 1) throw new Error('child has more than 1 parent')
-          child.rels.parents.push(to_add_spouse.id)
-        })
-      }
-    }
-    to_add_spouses.forEach(d => data.push(d))
-    return data
-
-    function findOrCreateToAddSpouse(d:Datum) {
-      const spouses = (d.rels.spouses || []).map(sp_id => data.find(d0 => d0.id === sp_id)).filter(d => d !== undefined)
-      return spouses.find(sp => sp.to_add) || createToAddSpouse(d)
-    }
-
-    function createToAddSpouse(d:Datum) {
-      const spouse = createNewPerson({
-        data: {gender: d.data.gender === "M" ? "F" : "M"},
-        rels: {spouses: [d.id]}
-      }) as Datum
-      spouse.to_add = true;
-      to_add_spouses.push(spouse);
-      if (!d.rels.spouses) d.rels.spouses = []
-      d.rels.spouses.push(spouse.id)
-      return spouse
-    }
+    // ✅ TRUST THE JSON - Don't create placeholder spouses for missing parents
+    // This function previously created "Unknown" persons when children had missing parents
+    // Now we trust the JSON data and don't create placeholders
+    console.log('[createRelsToAdd] Trusting JSON data - not creating placeholder spouses');
+    return data;
   }
 
   function trimTree(root:HN, is_ancestry:boolean) {
