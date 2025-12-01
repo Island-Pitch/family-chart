@@ -496,8 +496,6 @@ export function createCardRenderer(f3Chart) {
         });
       }
       
-      let deceasedFromData = personData.deceased !== undefined ? personData.deceased : (d.data?.deceased !== undefined ? d.data.deceased : false);
-      
       // Check for preferred_name first, then full_name/label, then fall back to first_name + last_name
       let fullName = personData.preferred_name || personData['preferred name'] || 
                       personData.full_name || personData.label ||
@@ -516,9 +514,29 @@ export function createCardRenderer(f3Chart) {
       const genderClass = getGenderClass(gender);
       const isMain = d.data?.main || d.main || false;
       
-      const deceasedValue = d.data?.deceased !== undefined ? d.data.deceased : (personData.deceased !== undefined ? personData.deceased : deceasedFromData);
-      const deathDate = d.data?.death_date || personData.death_date || personData.deathDate;
-      const isDeceased = deceasedValue === true || deceasedValue === 'true' || deceasedValue === 1 || !!deathDate;
+      // Check deceased status from all possible locations
+      // Priority: d.data.deceased > d.data.data.deceased > personData.deceased
+      const deceasedValue = d.data?.deceased !== undefined ? d.data.deceased : 
+                           (d.data?.data?.deceased !== undefined ? d.data.data.deceased : 
+                           (personData.deceased !== undefined ? personData.deceased : false));
+      const deathDate = d.data?.death_date || d.data?.data?.death_date || personData.death_date || personData.deathDate;
+      const isDeceased = deceasedValue === true || deceasedValue === 'true' || deceasedValue === 1 || deceasedValue === '1' || !!deathDate;
+      
+      // Debug logging for deceased status (check for Donna specifically)
+      if (process.env.NODE_ENV === 'development' && (fullName.toLowerCase().includes('donna') || personId.includes('24d54b28-8409-407e-b913-878a6c8cae3f'))) {
+        console.log('🔴 [CardRenderer] Deceased check for Donna:', {
+          personId,
+          fullName,
+          'd.data.deceased': d.data?.deceased,
+          'd.data.data.deceased': d.data?.data?.deceased,
+          'personData.deceased': personData.deceased,
+          deceasedValue,
+          deathDate,
+          isDeceased,
+          hasDataData: !!d.data?.data,
+          hasData: !!d.data
+        });
+      }
       
       let avatarUrl = personData.avatar || personData.avatarUrl || personData.image || personData.photo || null;
       
