@@ -127,21 +127,252 @@ export function initializeAdvancedDecorations(f3Chart, allData) {
       
       // Handle parent-child links (adoption styling)
       if (!d.spouse) {
-        const childData = d.target?.data || d.target;
+        // Link structure varies:
+        // - Progeny (parent->child): source=parent TreeDatum, target=child TreeDatum
+        // - Ancestry (child->parent): source=child TreeDatum, target=parent TreeDatum or [parent1, parent2]
+        
+        // Extract IDs from source and target, handling arrays
+        const getNodeId = (node) => {
+          if (Array.isArray(node)) {
+            // If array, get first element
+            const firstNode = node[0];
+            return firstNode?.data?.id || firstNode?.id || firstNode?.data?.data?.id;
+          }
+          return node?.data?.id || node?.id || node?.data?.data?.id;
+        };
+        
+        const sourceId = getNodeId(d.source);
+        const targetId = getNodeId(d.target);
+        
+        if (!sourceId || !targetId) {
+          // Can't determine IDs, skip
+          return;
+        }
+        
+        // Get both nodes from allData
+        const sourceInAllData = dataToUse.find(p => p.id === sourceId);
+        const targetInAllData = dataToUse.find(p => p.id === targetId);
+        
+        // Check both directions to find adoption and determine parent/child
+        // We'll check relationshipStatuses in both directions
+        let parentId, childId, parentInAllData, childInAllData;
+        let adoptedFromParentRelationship = false;
+        let adoptedFromChildRelationship = false;
+        
+        if (sourceInAllData && targetInAllData) {
+          // Get relationshipStatuses from both nodes
+          let sourceRelStatuses = sourceInAllData.data?.relationshipStatuses || 
+                                  sourceInAllData.data?.data?.relationshipStatuses;
+          let targetRelStatuses = targetInAllData.data?.relationshipStatuses || 
+                                  targetInAllData.data?.data?.relationshipStatuses;
+          
+          // Parse if strings
+          if (typeof sourceRelStatuses === 'string') {
+            try { sourceRelStatuses = JSON.parse(sourceRelStatuses); } catch (e) { sourceRelStatuses = null; }
+          }
+          if (typeof targetRelStatuses === 'string') {
+            try { targetRelStatuses = JSON.parse(targetRelStatuses); } catch (e) { targetRelStatuses = null; }
+          }
+          
+          // Check if source has target as child (source is parent, target is child)
+          if (sourceRelStatuses && typeof sourceRelStatuses === 'object' && sourceRelStatuses[targetId]) {
+            const relStatus = sourceRelStatuses[targetId];
+            if (relStatus?.side === 'child' || relStatus?.relation_type) {
+              parentId = sourceId;
+              childId = targetId;
+              parentInAllData = sourceInAllData;
+              childInAllData = targetInAllData;
+              
+              // Check for adoption
+              if (relStatus?.relation_type === 'adoptive' || relStatus?.relation_type === 'adopted') {
+                adoptedFromParentRelationship = true;
+              }
+            }
+          }
+          
+          // Check if target has source as child (target is parent, source is child)
+          if (!parentId && targetRelStatuses && typeof targetRelStatuses === 'object' && targetRelStatuses[sourceId]) {
+            const relStatus = targetRelStatuses[sourceId];
+            if (relStatus?.side === 'child' || relStatus?.relation_type) {
+              parentId = targetId;
+              childId = sourceId;
+              parentInAllData = targetInAllData;
+              childInAllData = sourceInAllData;
+              
+              // Check for adoption
+              if (relStatus?.relation_type === 'adoptive' || relStatus?.relation_type === 'adopted') {
+                adoptedFromParentRelationship = true;
+              }
+            }
+          }
+          
+          // Also check child's view of parent (child has parent with adoptive relation_type)
+          if (childInAllData && parentId) {
+            let childRelStatuses = childInAllData.data?.relationshipStatuses || 
+                                   childInAllData.data?.data?.relationshipStatuses;
+            if (typeof childRelStatuses === 'string') {
+              try { childRelStatuses = JSON.parse(childRelStatuses); } catch (e) { childRelStatuses = null; }
+            }
+            
+            if (childRelStatuses && typeof childRelStatuses === 'object' && childRelStatuses[parentId]) {
+              const parentRelStatus = childRelStatuses[parentId];
+              if (parentRelStatus?.relation_type === 'adoptive' || parentRelStatus?.relation_type === 'adopted') {
+                adoptedFromChildRelationship = true;
+              }
+            }
+          }
+        }
+        
+        // Fallback: if we couldn't determine parent/child from relationshipStatuses, use default assumption
+        if (!parentId || !childId) {
+          // Default: source is child, target is parent (common for progeny links)
+          childId = sourceId;
+          parentId = targetId;
+          childInAllData = sourceInAllData;
+          parentInAllData = targetInAllData;
+          
+          // After fallback, check for adoption in relationshipStatuses
+          if (parentInAllData && childId) {
+            let parentRelStatuses = parentInAllData.data?.relationshipStatuses || 
+                                    parentInAllData.data?.data?.relationshipStatuses;
+            if (typeof parentRelStatuses === 'string') {
+              try { parentRelStatuses = JSON.parse(parentRelStatuses); } catch (e) { parentRelStatuses = null; }
+            }
+            
+            if (parentRelStatuses && typeof parentRelStatuses === 'object' && parentRelStatuses[childId]) {
+              const childRelStatus = parentRelStatuses[childId];
+              if (childRelStatus?.relation_type === 'adoptive' || childRelStatus?.relation_type === 'adopted') {
+                adoptedFromParentRelationship = true;
+              }
+            }
+          }
+          
+          if (childInAllData && parentId) {
+            let childRelStatuses = childInAllData.data?.relationshipStatuses || 
+                                  childInAllData.data?.data?.relationshipStatuses;
+            if (typeof childRelStatuses === 'string') {
+              try { childRelStatuses = JSON.parse(childRelStatuses); } catch (e) { childRelStatuses = null; }
+            }
+            
+            if (childRelStatuses && typeof childRelStatuses === 'object' && childRelStatuses[parentId]) {
+              const parentRelStatus = childRelStatuses[parentId];
+              if (parentRelStatus?.relation_type === 'adoptive' || parentRelStatus?.relation_type === 'adopted') {
+                adoptedFromChildRelationship = true;
+              }
+            }
+          }
+        }
+        
+        // If we still don't have valid IDs, skip this link
+        if (!parentId || !childId || !parentInAllData || !childInAllData) {
+          return;
+        }
+        
+        // Extract child data structures for adoption flag checks
+        const childData = childInAllData?.data || {};
         const childPersonData = childData?.data || childData;
-        const childId = childData?.id || d.target?.id || d.target?.data?.id;
-        const childInAllData = dataToUse.find(p => p.id === childId);
-        const adoptedFromData = childInAllData?.data?.adopted === true;
-        const isAdopted = childPersonData?.adopted === true || 
-                         childData?.adopted === true ||
-                         childPersonData?.data?.adopted === true ||
-                         adoptedFromData;
+        
+        // Check adoption status from multiple possible locations
+        // Use truthy check (not just === true) to handle various data formats
+        // Also handle string "true" values
+        
+        // Helper to check if a value indicates adoption
+        const checkAdopted = (val) => {
+          if (val === true || val === 'true' || val === 1 || val === '1') return true;
+          return false;
+        };
+        
+        // 1. From the child's own adopted flag in data
+        const adoptedFromTarget = checkAdopted(childPersonData?.adopted) || 
+                                 checkAdopted(childData?.adopted) ||
+                                 checkAdopted(childPersonData?.data?.adopted);
+        
+        // 2. From the allData array (child's own adopted flag in transformed data)
+        const adoptedFromAllData = checkAdopted(childInAllData?.data?.adopted);
+        
+        // 3. Also check if childInAllData exists and has the adoption flag anywhere
+        const adoptedFromNested = checkAdopted(childInAllData?.data?.data?.adopted) ||
+                                 checkAdopted(childInAllData?.adopted);
+        
+        // Note: adoptedFromParentRelationship and adoptedFromChildRelationship are already set above
+        // when we determined parent/child from relationshipStatuses
+        
+        const isAdopted = adoptedFromTarget || adoptedFromAllData || adoptedFromNested || 
+                         adoptedFromParentRelationship || adoptedFromChildRelationship;
+        
+        // Debug logging for adoption detection (check all parent-child links)
+        if (process.env.NODE_ENV === 'development') {
+          const childName = childInAllData?.data?.full_name || childPersonData?.full_name || childData?.full_name || 'unknown';
+          if (childName.toLowerCase().includes('addy') || childName.toLowerCase().includes('girl')) {
+            // Get relationship statuses for debugging (check both locations)
+            let debugParentRelStatuses = parentInAllData?.data?.relationshipStatuses || 
+                                        parentInAllData?.data?.data?.relationshipStatuses;
+            let debugChildRelStatuses = childInAllData?.data?.relationshipStatuses || 
+                                       childInAllData?.data?.data?.relationshipStatuses;
+            
+            // Parse if string
+            if (typeof debugParentRelStatuses === 'string') {
+              try {
+                debugParentRelStatuses = JSON.parse(debugParentRelStatuses);
+              } catch (e) {
+                debugParentRelStatuses = null;
+              }
+            }
+            if (typeof debugChildRelStatuses === 'string') {
+              try {
+                debugChildRelStatuses = JSON.parse(debugChildRelStatuses);
+              } catch (e) {
+                debugChildRelStatuses = null;
+              }
+            }
+            
+            const parentChildRelStatus = debugParentRelStatuses && typeof debugParentRelStatuses === 'object' ? debugParentRelStatuses[childId] : null;
+            const childParentRelStatus = debugChildRelStatuses && typeof debugChildRelStatuses === 'object' ? debugChildRelStatuses[parentId] : null;
+            
+            console.log('[applyDecorations] Adoption check for child:', {
+              childId,
+              childName,
+              parentId,
+              parentName: parentInAllData?.data?.full_name || 'unknown',
+              childPersonDataAdopted: childPersonData?.adopted,
+              childDataAdopted: childData?.adopted,
+              childPersonDataDataAdopted: childPersonData?.data?.adopted,
+              adoptedFromTarget,
+              adoptedFromAllData,
+              adoptedFromNested,
+              adoptedFromParentRelationship,
+              adoptedFromChildRelationship,
+              isAdopted,
+              hasChildInAllData: !!childInAllData,
+              hasParentInAllData: !!parentInAllData,
+              childInAllDataAdopted: childInAllData?.data?.adopted,
+              parentChildRelStatus: parentChildRelStatus, // Parent's view of relationship
+              childParentRelStatus: childParentRelStatus, // Child's view of relationship
+              parentRelStatusesType: typeof debugParentRelStatuses,
+              childRelStatusesType: typeof debugChildRelStatuses,
+              parentHasRelStatuses: !!debugParentRelStatuses,
+              childHasRelStatuses: !!debugChildRelStatuses,
+              parentRelStatusesKeys: debugParentRelStatuses && typeof debugParentRelStatuses === 'object' ? Object.keys(debugParentRelStatuses) : [],
+              childRelStatusesKeys: debugChildRelStatuses && typeof debugChildRelStatuses === 'object' ? Object.keys(debugChildRelStatuses) : [],
+              childInAllDataDataKeys: childInAllData?.data ? Object.keys(childInAllData.data) : []
+            });
+          }
+        }
         
         // Stroke is already set to black above, just add adoption styling if needed
         if (isAdopted) {
           linkElement.classed('edge--adopted', true)
-            .attr('stroke-dasharray', '12 12')
-            .style('stroke-dasharray', '12 12');
+            .interrupt('stroke') // Stop any ongoing stroke transitions
+            .attr('stroke', '#090909') // Dark color matching Figma design
+            .style('stroke', '#090909') // Also set via style to ensure it's applied
+            .attr('stroke-width', '6')
+            .style('stroke-width', '6')
+            .attr('stroke-dasharray', '12 12') // Dotted pattern matching Figma design
+            .style('stroke-dasharray', '12 12')
+            .attr('stroke-linecap', 'round')
+            .style('stroke-linecap', 'round')
+            .attr('stroke-linejoin', 'round')
+            .style('stroke-linejoin', 'round');
         }
         // Parent-child links are done - they have black stroke now
         return;
