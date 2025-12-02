@@ -197,6 +197,151 @@ export function getGenderBorderColor(gender) {
 }
 
 /**
+ * Default sort function for siblings/children: age (oldest first), then alphabetical
+ * Used within parent pair groups for sibling ordering
+ * 
+ * @param {Object} a - First person data (TreeDatum.data or Datum)
+ * @param {Object} b - Second person data (TreeDatum.data or Datum)
+ * @returns {number} Sort comparison result
+ */
+export function defaultSortByAge(a, b) {
+  // Handle both TreeDatum format (a.data) and Datum format (a directly)
+  const aData = a.data?.data || a.data || a;
+  const bData = b.data?.data || b.data || b;
+  
+  // Extract birth year/date
+  const getBirthYear = (data) => {
+    if (data.birthday) {
+      try {
+        const date = new Date(data.birthday);
+        if (!isNaN(date.getTime())) return date.getFullYear();
+      } catch {}
+    }
+    if (data.birth_year) {
+      const year = parseInt(data.birth_year, 10);
+      if (!isNaN(year)) return year;
+    }
+    if (data.birthYear) {
+      const year = parseInt(data.birthYear, 10);
+      if (!isNaN(year)) return year;
+    }
+    return null;
+  };
+  
+  const aYear = getBirthYear(aData);
+  const bYear = getBirthYear(bData);
+  
+  // Both have ages: sort by age (oldest first = smaller year first)
+  if (aYear && bYear) {
+    return aYear - bYear;
+  }
+  
+  // Only one has age: age comes first
+  if (aYear && !bYear) return -1;
+  if (!aYear && bYear) return 1;
+  
+  // Neither has age: alphabetical by first name, then last name
+  const getFirstName = (data) => {
+    return (data.first_name || data['first name'] || data.full_name || '').split(/\s+/)[0] || '';
+  };
+  const getLastName = (data) => {
+    const lastName = data.last_name || data['last name'] || data.maiden_name || data['maiden name'] || '';
+    return lastName.split(/\s+/)[0] || '';
+  };
+  
+  const aFirstName = getFirstName(aData);
+  const bFirstName = getFirstName(bData);
+  const nameCompare = aFirstName.localeCompare(bFirstName);
+  if (nameCompare !== 0) return nameCompare;
+  
+  // If first names are same, compare last names
+  const aLastName = getLastName(aData);
+  const bLastName = getLastName(bData);
+  return aLastName.localeCompare(bLastName);
+}
+
+/**
+ * Sort partners by recency: most recent closest to person, least recent farthest away
+ * Priority: manual_sequence > relationship_sequence > status > dates
+ * 
+ * @param {string} partnerIdA - First partner ID
+ * @param {string} partnerIdB - Second partner ID
+ * @param {Object} relationshipStatuses - Relationship statuses object keyed by partner ID
+ * @returns {number} Sort comparison result (negative = A before B, positive = B before A)
+ */
+export function defaultSortPartnersByRecency(partnerIdA, partnerIdB, relationshipStatuses) {
+  const statusA = relationshipStatuses[partnerIdA] || {};
+  const statusB = relationshipStatuses[partnerIdB] || {};
+  
+  // PRIORITY 1: Manual sequence (user overrides via drag-and-drop)
+  // HIGHER numbers = more recent = closer to person
+  if (statusA.manual_sequence != null && statusB.manual_sequence != null) {
+    return statusB.manual_sequence - statusA.manual_sequence; // DESCENDING (higher first)
+  }
+  if (statusA.manual_sequence != null) return -1; // A has sequence, B doesn't → A first
+  if (statusB.manual_sequence != null) return 1;  // B has sequence, A doesn't → B first
+  
+  // PRIORITY 2: AI-extracted relationship_sequence (from temporal language)
+  // HIGHER numbers = more recent = closer to person
+  if (statusA.relationship_sequence != null && statusB.relationship_sequence != null) {
+    return statusB.relationship_sequence - statusA.relationship_sequence; // DESCENDING
+  }
+  if (statusA.relationship_sequence != null) return -1;
+  if (statusB.relationship_sequence != null) return 1;
+  
+  // PRIORITY 3: Status-based sorting (current partners first, then former)
+  const statusTextA = statusA.status || '';
+  const statusTextB = statusB.status || '';
+  
+  // Current relationships (NOT widowed/divorced/annulled/former)
+  const isCurrentA = ['married', 'current', 'partner-current', 'committed', 'domestic-partnership', 
+                      'civil-union', 'engaged', 'dating', 'cohabiting', 'separated'].includes(statusTextA);
+  const isCurrentB = ['married', 'current', 'partner-current', 'committed', 'domestic-partnership', 
+                      'civil-union', 'engaged', 'dating', 'cohabiting', 'separated'].includes(statusTextB);
+  
+  // Current relationships come FIRST (closest to person)
+  if (isCurrentA && !isCurrentB) return -1;
+  if (!isCurrentA && isCurrentB) return 1;
+  
+  // PRIORITY 4: Date-based sorting (most recent first)
+  const getDateValue = (status) => {
+    // Try start_date, then end_date, then created_at
+    if (status.start_date) {
+      try {
+        const date = new Date(status.start_date);
+        if (!isNaN(date.getTime())) return date.getTime();
+      } catch {}
+    }
+    if (status.end_date) {
+      try {
+        const date = new Date(status.end_date);
+        if (!isNaN(date.getTime())) return date.getTime();
+      } catch {}
+    }
+    if (status.created_at) {
+      try {
+        const date = new Date(status.created_at);
+        if (!isNaN(date.getTime())) return date.getTime();
+      } catch {}
+    }
+    return null;
+  };
+  
+  const dateA = getDateValue(statusA);
+  const dateB = getDateValue(statusB);
+  
+  if (dateA && dateB) {
+    // Most recent date first (higher timestamp = closer to person)
+    return dateB - dateA; // DESCENDING
+  }
+  if (dateA && !dateB) return -1;
+  if (!dateA && dateB) return 1;
+  
+  // PRIORITY 5: Maintain original order if no sorting criteria
+  return 0;
+}
+
+/**
  * Get CSS class based on gender
  */
 export function getGenderClass(gender) {

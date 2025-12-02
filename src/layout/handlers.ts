@@ -3,6 +3,7 @@ import { TreeDatum } from "../types/treeData"
 import { Data, Datum } from "../types/data"
 import { CalculateTreeOptions } from "./calculate-tree"
 import { preventSiblingOverlaps } from "../utils/tree-calculation-helpers"
+import { defaultSortByAge } from "../utils/family-chart-utils"
 
 export function sortChildrenWithSpouses(children: Datum[], datum: Datum, data: Data) {
   if (!datum.rels.children) return
@@ -220,6 +221,19 @@ export function setupSiblings({
       }
       parentPairGroups.get(pairKey).push(sib)
     })
+    
+    // Sort siblings WITHIN each parent pair group by age (oldest leftmost)
+    parentPairGroups.forEach((siblings, pairKey) => {
+      siblings.sort((a, b) => {
+        // First apply custom sort function if provided
+        if (sortChildrenFunction) {
+          const customResult = sortChildrenFunction(a.data, b.data);
+          if (customResult !== 0) return customResult;
+        }
+        // Then apply default age-based sort
+        return defaultSortByAge(a, b);
+      });
+    });
     
     // If multiple groups exist, use overlap prevention from utils
     if (parentPairGroups.size > 1) {

@@ -4,6 +4,8 @@
  * to avoid modifying the core library files
  */
 
+import { defaultSortByAge } from './family-chart-utils';
+
 /**
  * Check if two hierarchy nodes share the same child (descendant)
  * For ancestry nodes, this determines if they're from the same branch or different branches
@@ -134,15 +136,18 @@ export function preventSiblingOverlaps(sorted_siblings, main, node_separation, x
   
   // Convert groups map to array and sort groups by the first sibling's original position
   // This maintains the original order of groups while keeping siblings within each group together
-  const groupsArray = Array.from(parentPairGroups.entries()).map(([pairKey, siblings]) => ({
-    pairKey,
-    siblings: siblings.sort((a, b) => {
-      const aIdx = sorted_siblings.findIndex(s => s === a)
-      const bIdx = sorted_siblings.findIndex(s => s === b)
-      return aIdx - bIdx
-    }),
-    isMainGroup: pairKey === mainGroupKey
-  }))
+  const groupsArray = Array.from(parentPairGroups.entries()).map(([pairKey, siblings]) => {
+    // Sort siblings within this group by age (oldest leftmost)
+    const sortedGroupSiblings = [...siblings].sort((a, b) => {
+      return defaultSortByAge(a, b);
+    });
+    
+    return {
+      pairKey,
+      siblings: sortedGroupSiblings, // Use sorted siblings
+      isMainGroup: pairKey === mainGroupKey
+    };
+  })
   
   // Sort groups: main person's group first, then others by their first sibling's position
   groupsArray.sort((a, b) => {

@@ -4,6 +4,7 @@ import { createNewPerson } from "../store/new-person";
 import { isAllRelativeDisplayed } from "../handlers/general";
 import { handleDuplicateSpouseToggle, handleDuplicateHierarchyProgeny } from "../features/duplicates-toggle/duplicates-progeny";
 import { handleDuplicateHierarchyAncestry } from "../features/duplicates-toggle/duplicates-ancestry";
+import { defaultSortPartnersByRecency } from "../utils/family-chart-utils";
 import type { Datum, Data } from "../types/data";
 import type { TreeDatum, TreeData } from "../types/treeData";
 
@@ -173,6 +174,13 @@ export default function calculateTree(data: Data, {
         if (d._ignore_spouses) spouses = spouses.filter(sp_id => !d._ignore_spouses!.includes(sp_id))
         if (spouses.length > 0) {
           if (one_level_rels && d.depth > 0) continue
+          
+          // Sort partners by recency (most recent closest to person)
+          const relationshipStatuses = d.data?.relationshipStatuses || d.data?.data?.relationshipStatuses || {};
+          spouses = [...spouses].sort((a, b) => {
+            return defaultSortPartnersByRecency(a, b, relationshipStatuses);
+          });
+          
           const side = d.data.data.gender === "M" ? -1 : 1;  // female on right
           d.x += spouses.length/2*node_separation*side;
           spouses.forEach((sp_id, i) => {
