@@ -210,7 +210,7 @@ export function setupSiblings({
     
     // Check if there are multiple sibling groups (siblings with different parent pairs)
     // If so, use the overlap prevention function from utils to position all siblings on the same side
-    const parentPairGroups = new Map()
+    const parentPairGroups = new Map<string, TreeDatum[]>()
     sorted_siblings.forEach((sib, idx) => {
       if (idx === main_sorted_index) return
       const parentIds = sib.data?.rels?.parents || []
@@ -219,12 +219,12 @@ export function setupSiblings({
       if (!parentPairGroups.has(pairKey)) {
         parentPairGroups.set(pairKey, [])
       }
-      parentPairGroups.get(pairKey).push(sib)
+      parentPairGroups.get(pairKey)!.push(sib)
     })
     
     // Sort siblings WITHIN each parent pair group by age (oldest leftmost)
     parentPairGroups.forEach((siblings, pairKey) => {
-      siblings.sort((a, b) => {
+      siblings.sort((a: TreeDatum, b: TreeDatum) => {
         // First apply custom sort function if provided
         if (sortChildrenFunction) {
           const customResult = sortChildrenFunction(a.data, b.data);
