@@ -426,12 +426,12 @@ export function initializeAdvancedDecorations(f3Chart, allData) {
       }
       
       // Apply CSS class and handle decorations based on status
-      if (relationshipStatus === 'married' || relationshipStatus === 'partnered') {
-        // Married: Replace single line with two parallel lines
+      if (relationshipStatus === 'married') {
+        // ONLY married gets double lines (not partnered)
         console.log(`[applyDecorations] Applying married lines for ${d.source.data?.id || d.source.id} <-> ${d.target.data?.id || d.target.id}`);
         applyMarriedLines(linkElement, linkPath, linkData, startPoint, endPoint);
       } else if (relationshipStatus === 'divorced' || relationshipStatus === 'separated' || relationshipStatus === 'widowed') {
-        // Other statuses: Add CSS class, set stroke color, and create decoration (X, /, or //)
+        // Special statuses: Add CSS class, set stroke color, and create decoration (X, /, or //)
         console.log(`[applyDecorations] Applying ${relationshipStatus} decoration for ${d.source.data?.id || d.source.id} <-> ${d.target.data?.id || d.target.id}`);
         linkElement
           .interrupt('stroke') // Stop any ongoing stroke transitions
@@ -448,8 +448,56 @@ export function initializeAdvancedDecorations(f3Chart, allData) {
           .style('fill', 'none');
         applyStatusDecoration(linkElement, linkPath, linkData, startPoint, endPoint, relationshipStatus);
       } else {
-        // Unknown or other statuses: Stroke is already set to black above
-        linkElement.classed(`edge--${relationshipStatus}`, true);
+        // Standard links: Check confirmed flag for color
+        // Get relationship status object to check confirmed flag
+        const sourceId = d.source?.data?.id || d.source?.id;
+        const targetId = d.target?.data?.id || d.target?.id;
+        
+        let isConfirmed = false;
+        if (sourceId && targetId) {
+          const sourcePerson = dataToUse.find(p => p.id === sourceId);
+          const targetPerson = dataToUse.find(p => p.id === targetId);
+          
+          if (sourcePerson) {
+            let sourceRelStatuses = sourcePerson.data?.relationshipStatuses || {};
+            if (typeof sourceRelStatuses === 'string') {
+              try { sourceRelStatuses = JSON.parse(sourceRelStatuses); } catch (e) { sourceRelStatuses = {}; }
+            }
+            const relStatus = sourceRelStatuses[targetId];
+            if (relStatus && relStatus.confirmed === true) {
+              isConfirmed = true;
+            }
+          }
+          
+          // Also check target's view of the relationship
+          if (!isConfirmed && targetPerson) {
+            let targetRelStatuses = targetPerson.data?.relationshipStatuses || {};
+            if (typeof targetRelStatuses === 'string') {
+              try { targetRelStatuses = JSON.parse(targetRelStatuses); } catch (e) { targetRelStatuses = {}; }
+            }
+            const relStatus = targetRelStatuses[sourceId];
+            if (relStatus && relStatus.confirmed === true) {
+              isConfirmed = true;
+            }
+          }
+        }
+        
+        // Set color based on confirmed flag
+        const strokeColor = isConfirmed ? '#090909' : '#AEB8C7'; // Black if confirmed, grey if not
+        
+        linkElement
+          .interrupt('stroke')
+          .classed(`edge--${relationshipStatus || 'standard'}`, true)
+          .attr('stroke', strokeColor)
+          .style('stroke', strokeColor)
+          .attr('stroke-width', '6')
+          .style('stroke-width', '6')
+          .attr('stroke-linecap', 'round')
+          .style('stroke-linecap', 'round')
+          .attr('stroke-linejoin', 'round')
+          .style('stroke-linejoin', 'round')
+          .attr('fill', 'none')
+          .style('fill', 'none');
       }
     });
   }

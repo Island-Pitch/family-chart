@@ -411,10 +411,18 @@ export function getRelationshipStatus(source, target, allData) {
 
     let relationshipStatus = null;
     if (sourceRelStatuses[targetId] && sourceRelStatuses[targetId].status) {
-      relationshipStatus = sourceRelStatuses[targetId].status;
+      const status = sourceRelStatuses[targetId].status;
+      // Filter out deprecated statuses: current, former, partner-current
+      if (status !== 'current' && status !== 'former' && status !== 'partner-current') {
+        relationshipStatus = status;
+      }
     }
     if (!relationshipStatus && targetRelStatuses[sourceId] && targetRelStatuses[sourceId].status) {
-      relationshipStatus = targetRelStatuses[sourceId].status;
+      const status = targetRelStatuses[sourceId].status;
+      // Filter out deprecated statuses: current, former, partner-current
+      if (status !== 'current' && status !== 'former' && status !== 'partner-current') {
+        relationshipStatus = status;
+      }
     }
 
     return relationshipStatus;
