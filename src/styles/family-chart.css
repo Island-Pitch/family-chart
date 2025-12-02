@@ -926,6 +926,7 @@
   height: 80px !important;
 }
 
+/* Generic deceased gradient (for non-binary/unspecified gender) */
 .f3 div.card.card-deceased .card-avatar-deceased-overlay {
   position: absolute !important;
   /* Position to cover the entire 80px circle including the 6px border */
@@ -955,6 +956,35 @@
   display: block !important;
   visibility: visible !important;
 }
+
+/* Female deceased: red-to-black gradient */
+/* Female color: #e91e63 (rgba(233, 30, 99)) */
+.f3 div.card.card-deceased.card-female .card-avatar-deceased-overlay {
+  background: radial-gradient(
+    circle at 30% 30%,
+    rgba(233, 30, 99, 0.3) 0%,    /* Start with red at 30% opacity */
+    rgba(233, 30, 99, 0.5) 30%,   /* More red at 30% */
+    rgba(233, 30, 99, 0.3) 50%,   /* Fade red at 50% */
+    rgba(0, 0, 0, 0.4) 70%,       /* Transition to black at 70% */
+    rgba(0, 0, 0, 0.85) 100%      /* End with black at 100% */
+  ) !important;
+}
+
+/* Male deceased: blue-to-black gradient */
+/* Male color: #03a9f4 (rgba(3, 169, 244)) */
+.f3 div.card.card-deceased.card-male .card-avatar-deceased-overlay {
+  background: radial-gradient(
+    circle at 30% 30%,
+    rgba(3, 169, 244, 0.3) 0%,    /* Start with blue at 30% opacity */
+    rgba(3, 169, 244, 0.5) 30%,   /* More blue at 30% */
+    rgba(3, 169, 244, 0.3) 50%,   /* Fade blue at 50% */
+    rgba(0, 0, 0, 0.4) 70%,       /* Transition to black at 70% */
+    rgba(0, 0, 0, 0.85) 100%      /* End with black at 100% */
+  ) !important;
+}
+
+/* Non-binary and genderless deceased: keep generic black gradient */
+/* These will use the base .card-deceased rule above */
 
 /* White ring - matching tree-viewer exactly, no gaps, filled with white */
 /* Must completely fill gap between colored border (inner edge at 34px) and center circle (32px) */

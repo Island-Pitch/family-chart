@@ -108,23 +108,75 @@ export function normalizeGender(gender) {
 }
 
 /**
- * Generate initials from a full name
+ * Generate initials from structured name data
+ * Rules:
+ * - First letter of first word in first name
+ * - First letter of first word in last name (or maiden name if present)
+ * - Maiden names take precedence over other last names
+ * - For hyphenated last names: only first part before hyphen
+ * - If no last name: first initial only (duplicated)
+ * - No middle names, suffixes, or nicknames
+ * 
+ * @param {Object|string} nameData - Either structured object with firstName/lastName/maidenName, or string (legacy fallback)
+ * @param {string} [nameData.firstName] - First name
+ * @param {string} [nameData.lastName] - Last name
+ * @param {string} [nameData.maidenName] - Maiden name (takes precedence over lastName)
+ * @param {string} [nameData.fullName] - Full name (fallback only)
+ * @returns {string} Two-letter initials in uppercase
  */
-export function generateInitials(name) {
-  if (!name || name.trim() === '') return '??';
-  const trimmed = name.trim();
-  const parts = trimmed.split(/\s+/).filter(p => p.length > 0);
-  if (parts.length >= 2) {
-    // First letter of first name + first letter of last name
-    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
-  } else if (parts.length === 1 && parts[0].length >= 2) {
-    // Single name with 2+ characters: use first 2 letters
-    return (parts[0][0] + parts[0][1]).toUpperCase();
-  } else if (parts.length === 1 && parts[0].length === 1) {
-    // Single character: duplicate it
-    return (parts[0][0] + parts[0][0]).toUpperCase();
+export function generateInitials(nameData) {
+  // Legacy support: if string is passed, try to parse it
+  if (typeof nameData === 'string') {
+    const trimmed = nameData.trim();
+    if (!trimmed) return '??';
+    const parts = trimmed.split(/\s+/).filter(p => p.length > 0);
+    if (parts.length >= 2) {
+      // First letter of first word + first letter of last word
+      return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+    } else if (parts.length === 1) {
+      // Single name: use first initial only (not duplicated)
+      return parts[0][0].toUpperCase();
+    }
+    return '??';
   }
-  // Fallback
+  
+  // Structured data approach
+  if (!nameData || (typeof nameData !== 'object')) {
+    return '??';
+  }
+  
+  const firstName = (nameData.firstName || nameData['first name'] || nameData.first_name || '').trim();
+  const lastName = (nameData.lastName || nameData['last name'] || nameData.last_name || '').trim();
+  const maidenName = (nameData.maidenName || nameData['maiden name'] || nameData.maiden_name || '').trim();
+  
+  // Get first word of first name (ignore middle names, suffixes, etc.)
+  const firstWord = firstName ? firstName.split(/\s+/).filter(Boolean)[0] : '';
+  const firstInitial = firstWord ? firstWord[0].toUpperCase() : '';
+  
+  // Priority: maiden name > last name > none
+  const lastSource = maidenName || lastName;
+  
+  if (!lastSource) {
+    // No last name: use first initial only (not duplicated)
+    return firstInitial || '??';
+  }
+  
+  // Get first word of last name (handle hyphenated names: use first part only)
+  const lastFirstPart = lastSource.split('-')[0].trim();
+  const lastWord = lastFirstPart ? lastFirstPart.split(/\s+/).filter(Boolean)[0] : '';
+  const lastInitial = lastWord ? lastWord[0].toUpperCase() : '';
+  
+  // If we have both initials, combine them
+  if (firstInitial && lastInitial) {
+    return `${firstInitial}${lastInitial}`;
+  }
+  
+  // Fallback: if we only have first initial, return it (not duplicated)
+  if (firstInitial) {
+    return firstInitial;
+  }
+  
+  // Final fallback
   return '??';
 }
 
@@ -181,13 +233,19 @@ export function transformScenarioData(scenarioData) {
     // Normalize field names - handle both "first name" and "first_name" formats
     const firstName = personData.first_name || personData["first name"] || '';
     const lastName = personData.last_name || personData["last name"] || '';
+    const maidenName = personData.maiden_name || personData["maiden name"] || '';
     const preferredName = personData.preferred_name || personData["preferred name"] || '';
     const suffix = personData.suffix || personData["suffix"] || '';
     const fullName = personData.full_name || 
                      (firstName && lastName ? `${firstName} ${lastName}` : firstName || lastName || 'Unknown');
     
-    // Generate initials from full_name
-    const initials = generateInitials(fullName);
+    // Generate initials from structured fields (maiden name takes precedence)
+    const initials = generateInitials({
+      firstName: firstName,
+      lastName: lastName,
+      maidenName: maidenName,
+      fullName: fullName // fallback only
+    });
     
     // Build parents array from father/mother if needed
     const parents = [];
@@ -509,7 +567,18 @@ export function createCardRenderer(f3Chart) {
         fullName = `${fullName} ${suffix.trim()}`;
       }
       
-      const initials = personData.initials || generateInitials(fullName);
+      // Extract structured name fields for initials (don't use fullName which may include suffixes)
+      const firstName = personData.first_name || personData['first name'] || '';
+      const lastName = personData.last_name || personData['last name'] || '';
+      const maidenName = personData.maiden_name || personData['maiden name'] || '';
+      
+      // Generate initials from structured fields (maiden name takes precedence)
+      const initials = personData.initials || generateInitials({
+        firstName: firstName,
+        lastName: lastName,
+        maidenName: maidenName,
+        fullName: fullName // fallback only
+      });
       const borderColor = getGenderBorderColor(gender);
       const genderClass = getGenderClass(gender);
       const isMain = d.data?.main || d.main || false;
@@ -581,7 +650,14 @@ export function createCardRenderer(f3Chart) {
       `);
       
       // Create debounced click handler
+      // Note: On mobile, touch events handle interactions, so this mainly handles desktop clicks
       const clickHandler = (e) => {
+        // Skip if this click was triggered by a touch event (mobile)
+        // Touch events are handled separately in FamilyTreeChartV2
+        if (e.sourceCapabilities && e.sourceCapabilities.firesTouchEvents) {
+          return;
+        }
+        
         e.stopPropagation();
         
         const now = Date.now();
