@@ -178,7 +178,6 @@ export function setupSiblings({
   if (siblings.length > 0 && !main.parents) throw new Error('no parents')
   const siblings_added = addSiblingsToTree(main)
   positionSiblings(main)
-  setSiblingDropPoints(main, siblings_added, node_separation)
 
 
   function findSiblings(main: TreeDatum) {
@@ -209,9 +208,6 @@ export function setupSiblings({
       if (p1) sib.parents!.push(p1)
       if (p2) sib.parents!.push(p2)
       
-      // Store the sibling's actual parent IDs for later use in link positioning
-      sib._siblingParentIds = sib.data.rels.parents
-      
       tree.push(sib)
       siblings_added.push(sib)  
     }
@@ -221,153 +217,88 @@ export function setupSiblings({
 
   function positionSiblings(main: TreeDatum) {
     const sorted_siblings = [main, ...siblings_added]
-    if (sortChildrenFunction) sorted_siblings.sort((a: TreeDatum, b: TreeDatum) => sortChildrenFunction(a.data, b.data))  // first sort by custom function if provided
-
-    // Determine which parent is on the left vs right based on their X positions in the tree
-    // This is crucial for the left-center-right rule: children with only the left parent go left,
-    // children with both parents go center, children with only the right parent go right
-    const leftParent = main.parents && main.parents.length >= 2 
-      ? (main.parents[0].x < main.parents[1].x ? main.parents[0] : main.parents[1])
-      : (main.parents && main.parents.length === 1 ? main.parents[0] : null);
-    const rightParent = main.parents && main.parents.length >= 2
-      ? (main.parents[0].x < main.parents[1].x ? main.parents[1] : main.parents[0])
-      : null;
-    
-    const leftParentId = leftParent?.data.id;
-    const rightParentId = rightParent?.data.id;
-
-    sorted_siblings.sort((a: TreeDatum, b: TreeDatum) => {
-      // Get the parents each sibling has (that are in the tree)
-      const a_parents = a.data.rels.parents.filter(pId => 
-        main.parents!.some(p => p.data.id === pId)
-      );
-      const b_parents = b.data.rels.parents.filter(pId => 
-        main.parents!.some(p => p.data.id === pId)
-      );
-      
-      const a_hasBoth = a_parents.length === 2 || (a_parents.includes(leftParentId!) && a_parents.includes(rightParentId!));
-      const b_hasBoth = b_parents.length === 2 || (b_parents.includes(leftParentId!) && b_parents.includes(rightParentId!));
-      const a_hasOnlyLeft = a_parents.length === 1 && a_parents.includes(leftParentId!);
-      const b_hasOnlyLeft = b_parents.length === 1 && b_parents.includes(leftParentId!);
-      const a_hasOnlyRight = a_parents.length === 1 && a_parents.includes(rightParentId!);
-      const b_hasOnlyRight = b_parents.length === 1 && b_parents.includes(rightParentId!);
-      
-      // Left-center-right rule:
-      // - Children with only left parent go LEFT (sort first)
-      // - Children with both parents go CENTER (sort middle)
-      // - Children with only right parent go RIGHT (sort last)
-      
-      // a has only left parent
-      if (a_hasOnlyLeft && !b_hasOnlyLeft) return -1;
-      if (!a_hasOnlyLeft && b_hasOnlyLeft) return 1;
-      
-      // a has only right parent
-      if (a_hasOnlyRight && !b_hasOnlyRight) return 1;
-      if (!a_hasOnlyRight && b_hasOnlyRight) return -1;
-      
-      // Both have same parent configuration, maintain original order
-      return 0
-    })
+    if (sortChildrenFunction) sorted_siblings.sort((a: TreeDatum, b: TreeDatum) => sortChildrenFunction(a.data, b.data))
 
     const main_x = main.x
     const spouses_x = (main.spouses || []).map(d => d.x)
     const x_range = d3.extent([main_x, ...spouses_x])
 
+    // Helper to calculate drop point X for a sibling
+    const getDropPointX = (sib: TreeDatum): number => {
+      const sibParentIds = sib.data?.rels?.parents || [];
+      const visibleSibParents = sibParentIds.filter((pId: string) => 
+        main.parents?.some(p => p.data.id === pId)
+      );
+      
+      if (main.parents && main.parents.length >= 2) {
+        if (visibleSibParents.length === 2) {
+          // Has both parents - drop point is center
+          return (main.parents[0].x + main.parents[1].x) / 2;
+        } else if (visibleSibParents.length === 1) {
+          // Has only one parent - drop point is at that parent
+          const sibParent = main.parents.find(p => visibleSibParents.includes(p.data.id));
+          return sibParent ? sibParent.x : sib.x;
+        }
+      } else if (main.parents && main.parents.length === 1) {
+        return main.parents[0].x;
+      }
+      return sib.x;
+    };
+
+    // Get main's drop point
+    const mainDropPointX = getDropPointX(main);
+    
+    // Check if there are siblings with different drop points
+    const siblingDropPoints = sorted_siblings.map(sib => ({
+      sib,
+      dropPointX: getDropPointX(sib)
+    }));
+    
+    // Find if main's drop point is the leftmost, rightmost, or somewhere in between
+    const allDropPointXs = siblingDropPoints.map(s => s.dropPointX);
+    const minDropPointX = Math.min(...allDropPointXs);
+    const maxDropPointX = Math.max(...allDropPointXs);
+    
+    const mainIsLeftmost = mainDropPointX <= minDropPointX;
+    const mainIsRightmost = mainDropPointX >= maxDropPointX;
+
+    // Find main person's index in the sorted siblings
     const main_sorted_index = sorted_siblings.findIndex(d => d.data.id === main.data.id)
     
-    // Check if there are multiple sibling groups (siblings with different parent pairs)
-    // If so, use the overlap prevention function from utils to position all siblings on the same side
-    const parentPairGroups = new Map<string, TreeDatum[]>()
-    sorted_siblings.forEach((sib, idx) => {
-      if (idx === main_sorted_index) return
-      const parentIds = sib.data?.rels?.parents || []
-      if (parentIds.length === 0) return
-      const pairKey = [...parentIds].sort().join('-')
-      if (!parentPairGroups.has(pairKey)) {
-        parentPairGroups.set(pairKey, [])
-      }
-      parentPairGroups.get(pairKey)!.push(sib)
-    })
+    // Position siblings based on drop point relationships
+    // If main's drop point is leftmost, main goes left, others to the right
+    // If main's drop point is rightmost, main goes right, others to the left
+    // If main's drop point is in the middle, use normal distribution
     
-    // Sort siblings WITHIN each parent pair group by age (oldest leftmost)
-    parentPairGroups.forEach((siblings, pairKey) => {
-      siblings.sort((a: TreeDatum, b: TreeDatum) => {
-        // First apply custom sort function if provided
-        if (sortChildrenFunction) {
-          const customResult = sortChildrenFunction(a.data, b.data);
-          if (customResult !== 0) return customResult;
-        }
-        // Then apply default age-based sort
-        return defaultSortByAge(a, b);
-      });
-    });
-    
-    // If multiple groups exist, use overlap prevention from utils
-    if (parentPairGroups.size > 1) {
-      preventSiblingOverlaps(sorted_siblings, main, node_separation, x_range, main_sorted_index)
-    } else {
-      // Single group - use original positioning logic
+    if (mainIsLeftmost && !mainIsRightmost) {
+      // Main's drop point is leftmost - position main on left, others to the right
+      let current_x = (x_range[1] ?? main_x) + node_separation;
       for (let i = 0; i < sorted_siblings.length; i++) {
-        if (i === main_sorted_index) continue
-        const sib = sorted_siblings[i]
+        if (i === main_sorted_index) continue;
+        const sib = sorted_siblings[i];
+        sib.x = current_x;
+        current_x += node_separation;
+      }
+    } else if (mainIsRightmost && !mainIsLeftmost) {
+      // Main's drop point is rightmost - position main on right, others to the left
+      let current_x = (x_range[0] ?? main_x) - node_separation;
+      for (let i = sorted_siblings.length - 1; i >= 0; i--) {
+        if (i === main_sorted_index) continue;
+        const sib = sorted_siblings[i];
+        sib.x = current_x;
+        current_x -= node_separation;
+      }
+    } else {
+      // Main's drop point is center (or all same) - use normal distribution
+      for (let i = 0; i < sorted_siblings.length; i++) {
+        if (i === main_sorted_index) continue;
+        const sib = sorted_siblings[i];
         if (i < main_sorted_index) {
-          sib.x = (x_range[0] ?? 0) - node_separation*(main_sorted_index - i)
+          sib.x = (x_range[0] ?? 0) - node_separation * (main_sorted_index - i);
         } else {
-          sib.x = (x_range[1] ?? 0) + node_separation*(i - main_sorted_index)
+          sib.x = (x_range[1] ?? 0) + node_separation * (i - main_sorted_index);
         }
       }
     }
-  }
-
-  /**
-   * Set drop points (psx) for sibling groups so each group has its own link drop point.
-   * This prevents link collisions when siblings have different parent pairs.
-   * 
-   * For siblings with only ONE parent in the tree (step-siblings), their link goes
-   * to that parent. Without separate drop points, all step-sibling groups would
-   * share the same link horizontal bar, causing overlaps.
-   * 
-   * Solution: Calculate a drop point for each sibling group based on the group's
-   * center position. This creates separate horizontal link segments for each group.
-   */
-  function setSiblingDropPoints(main: TreeDatum, siblings_added: TreeDatum[], node_separation: number) {
-    if (siblings_added.length === 0) return
-    if (!main.parents || main.parents.length === 0) return
-
-    // Group siblings by their parent pair (using actual parent IDs, not just tree parents)
-    const siblingGroups = new Map<string, TreeDatum[]>()
-    
-    siblings_added.forEach(sib => {
-      const parentIds = sib._siblingParentIds || sib.data?.rels?.parents || []
-      const pairKey = [...parentIds].sort().join('-')
-      
-      if (!siblingGroups.has(pairKey)) {
-        siblingGroups.set(pairKey, [])
-      }
-      siblingGroups.get(pairKey)!.push(sib)
-    })
-
-    // If only one group, no need for separate drop points
-    if (siblingGroups.size <= 1) return
-
-    // For each sibling group, calculate the drop point based on group center
-    siblingGroups.forEach((groupSiblings, pairKey) => {
-      // Calculate the center X of this group
-      const groupXs = groupSiblings.map(s => s.x)
-      const groupMinX = Math.min(...groupXs)
-      const groupMaxX = Math.max(...groupXs)
-      const groupCenterX = (groupMinX + groupMaxX) / 2
-
-      // Set psx for each sibling in this group to the group's center
-      // This creates a single drop point for the entire group
-      groupSiblings.forEach(sib => {
-        // Only set psx if the sibling has exactly one parent in the tree
-        // (step-siblings who link to a single parent)
-        if (sib.parents && sib.parents.length === 1) {
-          sib.psx = groupCenterX
-          sib.psy = sib.parents[0].y  // Use parent's y position
-        }
-      })
-    })
   }
 }
