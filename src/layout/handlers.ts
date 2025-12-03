@@ -188,17 +188,49 @@ export function setupSiblings({
     const sorted_siblings = [main, ...siblings_added]
     if (sortChildrenFunction) sorted_siblings.sort((a: TreeDatum, b: TreeDatum) => sortChildrenFunction(a.data, b.data))  // first sort by custom function if provided
 
-    sorted_siblings.sort((a: TreeDatum, b: TreeDatum) => {
-      const a_p1 = main.parents!.find(d => d.data.id === a.data.rels.parents[0])
-      const a_p2 = main.parents!.find(d => d.data.id === a.data.rels.parents[1])
-      const b_p1 = main.parents!.find(d => d.data.id === b.data.rels.parents[0])
-      const b_p2 = main.parents!.find(d => d.data.id === b.data.rels.parents[1])
+    // Determine which parent is on the left vs right based on their X positions in the tree
+    // This is crucial for the left-center-right rule: children with only the left parent go left,
+    // children with both parents go center, children with only the right parent go right
+    const leftParent = main.parents && main.parents.length >= 2 
+      ? (main.parents[0].x < main.parents[1].x ? main.parents[0] : main.parents[1])
+      : (main.parents && main.parents.length === 1 ? main.parents[0] : null);
+    const rightParent = main.parents && main.parents.length >= 2
+      ? (main.parents[0].x < main.parents[1].x ? main.parents[1] : main.parents[0])
+      : null;
+    
+    const leftParentId = leftParent?.data.id;
+    const rightParentId = rightParent?.data.id;
 
-      if (!a_p2 && b_p2) return -1
-      if (a_p2 && !b_p2) return 1
-      if (!a_p1 && b_p1) return 1
-      if (a_p1 && !b_p1) return -1
-      // If both have same parents or both missing same parent, maintain original order
+    sorted_siblings.sort((a: TreeDatum, b: TreeDatum) => {
+      // Get the parents each sibling has (that are in the tree)
+      const a_parents = a.data.rels.parents.filter(pId => 
+        main.parents!.some(p => p.data.id === pId)
+      );
+      const b_parents = b.data.rels.parents.filter(pId => 
+        main.parents!.some(p => p.data.id === pId)
+      );
+      
+      const a_hasBoth = a_parents.length === 2 || (a_parents.includes(leftParentId!) && a_parents.includes(rightParentId!));
+      const b_hasBoth = b_parents.length === 2 || (b_parents.includes(leftParentId!) && b_parents.includes(rightParentId!));
+      const a_hasOnlyLeft = a_parents.length === 1 && a_parents.includes(leftParentId!);
+      const b_hasOnlyLeft = b_parents.length === 1 && b_parents.includes(leftParentId!);
+      const a_hasOnlyRight = a_parents.length === 1 && a_parents.includes(rightParentId!);
+      const b_hasOnlyRight = b_parents.length === 1 && b_parents.includes(rightParentId!);
+      
+      // Left-center-right rule:
+      // - Children with only left parent go LEFT (sort first)
+      // - Children with both parents go CENTER (sort middle)
+      // - Children with only right parent go RIGHT (sort last)
+      
+      // a has only left parent
+      if (a_hasOnlyLeft && !b_hasOnlyLeft) return -1;
+      if (!a_hasOnlyLeft && b_hasOnlyLeft) return 1;
+      
+      // a has only right parent
+      if (a_hasOnlyRight && !b_hasOnlyRight) return 1;
+      if (!a_hasOnlyRight && b_hasOnlyRight) return -1;
+      
+      // Both have same parent configuration, maintain original order
       return 0
     })
 
