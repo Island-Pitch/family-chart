@@ -108,7 +108,8 @@ export default function calculateTree(data: Data, {
         if (!one_level_rels) {
           if (someSpouses(a,b)) offset+=offsetOnPartners(a,b)
         }
-        if (sameParent(a, b) && !sameBothParents(a,b)) offset+=.125
+        // Removed extra offset for step-siblings - they share a parent and should be close together
+        // Previous: if (sameParent(a, b) && !sameBothParents(a,b)) offset+=.125
       }
       return offset
     }
