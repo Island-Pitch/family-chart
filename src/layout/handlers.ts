@@ -3,29 +3,35 @@ import { TreeDatum } from "../types/treeData"
 import { Data, Datum } from "../types/data"
 import { CalculateTreeOptions } from "./calculate-tree"
 import { preventSiblingOverlaps } from "../utils/tree-calculation-helpers"
-import { defaultSortByAge } from "../utils/family-chart-utils"
+import { defaultSortByAge, defaultSortPartnersByRecency } from "../utils/family-chart-utils"
 
 export function sortChildrenWithSpouses(children: Datum[], datum: Datum, data: Data) {
   if (!datum.rels.children) return
   const spouses = datum.rels.spouses || []
   
-  // Sort spouses by recency (same order as setupSpouses uses for positioning)
-  // This ensures children are grouped under their biological parent's position
+  // Sort spouses using the SAME sorting function as setupSpouses in calculate-tree.ts
+  // REGULAR recency: newest relationships at index 0 (closest to person)
+  // Oldest relationships at highest index (farthest from person)
   const relationshipStatuses = datum.data?.relationshipStatuses || datum.data?.data?.relationshipStatuses || {};
   const sortedSpouses = [...spouses].sort((a, b) => {
-    // Same recency sort as in setupSpouses
-    const statusA = relationshipStatuses[a];
-    const statusB = relationshipStatuses[b];
-    const orderA = getStatusOrder(statusA?.status);
-    const orderB = getStatusOrder(statusB?.status);
-    return orderA - orderB;
+    return defaultSortPartnersByRecency(a, b, relationshipStatuses);
   });
   
-  // For females, spouses are positioned to the LEFT (decreasing x)
-  // So first spouse in sorted array is closest to the person (rightmost spouse position)
-  // Children should be sorted so they appear under their biological parent
-  // Female: spouses go left, so children of first spouse should be rightmost
-  // Male: spouses go right, so children of first spouse should be leftmost
+  // Children are sorted left-to-right by their biological parent's position:
+  // - Index 0 spouse = newest relationship = closest to person
+  // - Index N spouse = oldest relationship = farthest from person
+  // 
+  // For FEMALE main person: spouses are positioned to the LEFT (decreasing x)
+  //   Index 0 spouse → closest to person (rightmost spouse position)
+  //   Index N spouse → farthest from person (leftmost spouse position)
+  //   Children of oldest spouse (highest index) should be LEFTMOST
+  //   So: sort DESCENDING by index (higher index = leftmost)
+  // 
+  // For MALE main person: spouses are positioned to the RIGHT (increasing x)
+  //   Index 0 spouse → closest to person (leftmost spouse position)
+  //   Index N spouse → farthest from person (rightmost spouse position)
+  //   Children of oldest spouse (highest index) should be RIGHTMOST
+  //   So: sort ASCENDING by index (lower index = leftmost)
   
   return children.sort((a, b) => {
     const a_p2 = otherParent(a, datum, data)
@@ -33,31 +39,15 @@ export function sortChildrenWithSpouses(children: Datum[], datum: Datum, data: D
     const a_i = a_p2 ? sortedSpouses.indexOf(a_p2.id) : -1
     const b_i = b_p2 ? sortedSpouses.indexOf(b_p2.id) : -1
 
-    // For both genders: sort by spouse index in the recency-sorted array
-    // Lower index = closer to the main person = should be positioned closer to center
-    // For female: spouses go left, so lower index spouse is on the right
-    //   Children of lower index spouse should be on the right (higher x)
-    //   So we want descending order: b_i - a_i
-    // For male: spouses go right, so lower index spouse is on the left
-    //   Children of lower index spouse should be on the left (lower x)
-    //   So we want ascending order: a_i - b_i
+    // Children with no other parent (single parent) go to the end
+    if (a_i === -1 && b_i !== -1) return 1
+    if (a_i !== -1 && b_i === -1) return -1
+    
+    // For female: higher index = leftmost (descending sort)
+    // For male: lower index = leftmost (ascending sort)
     if (datum.data.gender === "M") return a_i - b_i
     else return b_i - a_i
   })
-}
-
-// Helper function to get status order for sorting (same as in family-chart-utils)
-function getStatusOrder(status: string | undefined): number {
-  switch (status) {
-    case 'married': return 0;
-    case 'engaged': return 1;
-    case 'partner': return 2;
-    case 'dating': return 3;
-    case 'separated': return 4;
-    case 'divorced': return 5;
-    case 'widowed': return 6;
-    default: return 7;
-  }
 }
 
 export function sortAddNewChildren(children: Datum[]) {
@@ -188,6 +178,7 @@ export function setupSiblings({
   if (siblings.length > 0 && !main.parents) throw new Error('no parents')
   const siblings_added = addSiblingsToTree(main)
   positionSiblings(main)
+  setSiblingDropPoints(main, siblings_added, node_separation)
 
 
   function findSiblings(main: TreeDatum) {
@@ -217,6 +208,9 @@ export function setupSiblings({
       const p2 = main.parents!.find(d => d.data.id === sib.data.rels.parents[1])
       if (p1) sib.parents!.push(p1)
       if (p2) sib.parents!.push(p2)
+      
+      // Store the sibling's actual parent IDs for later use in link positioning
+      sib._siblingParentIds = sib.data.rels.parents
       
       tree.push(sib)
       siblings_added.push(sib)  
@@ -323,5 +317,57 @@ export function setupSiblings({
         }
       }
     }
+  }
+
+  /**
+   * Set drop points (psx) for sibling groups so each group has its own link drop point.
+   * This prevents link collisions when siblings have different parent pairs.
+   * 
+   * For siblings with only ONE parent in the tree (step-siblings), their link goes
+   * to that parent. Without separate drop points, all step-sibling groups would
+   * share the same link horizontal bar, causing overlaps.
+   * 
+   * Solution: Calculate a drop point for each sibling group based on the group's
+   * center position. This creates separate horizontal link segments for each group.
+   */
+  function setSiblingDropPoints(main: TreeDatum, siblings_added: TreeDatum[], node_separation: number) {
+    if (siblings_added.length === 0) return
+    if (!main.parents || main.parents.length === 0) return
+
+    // Group siblings by their parent pair (using actual parent IDs, not just tree parents)
+    const siblingGroups = new Map<string, TreeDatum[]>()
+    
+    siblings_added.forEach(sib => {
+      const parentIds = sib._siblingParentIds || sib.data?.rels?.parents || []
+      const pairKey = [...parentIds].sort().join('-')
+      
+      if (!siblingGroups.has(pairKey)) {
+        siblingGroups.set(pairKey, [])
+      }
+      siblingGroups.get(pairKey)!.push(sib)
+    })
+
+    // If only one group, no need for separate drop points
+    if (siblingGroups.size <= 1) return
+
+    // For each sibling group, calculate the drop point based on group center
+    siblingGroups.forEach((groupSiblings, pairKey) => {
+      // Calculate the center X of this group
+      const groupXs = groupSiblings.map(s => s.x)
+      const groupMinX = Math.min(...groupXs)
+      const groupMaxX = Math.max(...groupXs)
+      const groupCenterX = (groupMinX + groupMaxX) / 2
+
+      // Set psx for each sibling in this group to the group's center
+      // This creates a single drop point for the entire group
+      groupSiblings.forEach(sib => {
+        // Only set psx if the sibling has exactly one parent in the tree
+        // (step-siblings who link to a single parent)
+        if (sib.parents && sib.parents.length === 1) {
+          sib.psx = groupCenterX
+          sib.psy = sib.parents[0].y  // Use parent's y position
+        }
+      })
+    })
   }
 }
