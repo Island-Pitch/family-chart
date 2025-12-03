@@ -215,90 +215,164 @@ export function setupSiblings({
     return siblings_added
   }
 
+  /**
+   * Position siblings based on their drop points (parent pairs).
+   * 
+   * COMPREHENSIVE SIBLING POSITIONING ALGORITHM:
+   * 
+   * 1. Group siblings by their "drop point" - the X coordinate where their link
+   *    connects to the parent level. This is determined by which parent(s) they have:
+   *    - Both visible parents → drop at center between parents
+   *    - Only left parent → drop at left parent's X
+   *    - Only right parent → drop at right parent's X
+   * 
+   * 2. Sort groups by drop point X (left to right)
+   * 
+   * 3. Position groups based on count:
+   *    - 1 group: CENTER (normal distribution around main)
+   *    - 2 groups: LEFT-RIGHT justification
+   *    - 3+ groups: LEFT-CENTER-RIGHT distribution
+   * 
+   * 4. Main person stays at their current position; their group positions around them
+   */
   function positionSiblings(main: TreeDatum) {
     const sorted_siblings = [main, ...siblings_added]
     if (sortChildrenFunction) sorted_siblings.sort((a: TreeDatum, b: TreeDatum) => sortChildrenFunction(a.data, b.data))
 
     const main_x = main.x
     const spouses_x = (main.spouses || []).map(d => d.x)
-    const x_range = d3.extent([main_x, ...spouses_x])
+    const main_x_range = d3.extent([main_x, ...spouses_x])
 
-    // Helper to calculate drop point X for a sibling
+    // Get visible parent positions
+    const visibleParents = main.parents || [];
+    const parentXs = visibleParents.map(p => p.x).sort((a, b) => a - b);
+    const leftParentX = parentXs[0] ?? main_x;
+    const rightParentX = parentXs[parentXs.length - 1] ?? main_x;
+    const parentsCenterX = (leftParentX + rightParentX) / 2;
+
+    // Helper to get a sibling's drop point X
     const getDropPointX = (sib: TreeDatum): number => {
       const sibParentIds = sib.data?.rels?.parents || [];
-      const visibleSibParents = sibParentIds.filter((pId: string) => 
-        main.parents?.some(p => p.data.id === pId)
-      );
       
-      if (main.parents && main.parents.length >= 2) {
-        if (visibleSibParents.length === 2) {
-          // Has both parents - drop point is center
-          return (main.parents[0].x + main.parents[1].x) / 2;
-        } else if (visibleSibParents.length === 1) {
-          // Has only one parent - drop point is at that parent
-          const sibParent = main.parents.find(p => visibleSibParents.includes(p.data.id));
-          return sibParent ? sibParent.x : sib.x;
-        }
-      } else if (main.parents && main.parents.length === 1) {
-        return main.parents[0].x;
+      // Find which visible parents this sibling has
+      const sibVisibleParents = visibleParents.filter(p => sibParentIds.includes(p.data.id));
+      
+      if (sibVisibleParents.length === 0) {
+        // No visible parents - shouldn't happen, but fallback to center
+        return parentsCenterX;
+      } else if (sibVisibleParents.length === 1) {
+        // One visible parent - drop at that parent's X
+        return sibVisibleParents[0].x;
+      } else {
+        // Multiple visible parents - drop at their midpoint
+        const xs = sibVisibleParents.map(p => p.x);
+        return (Math.min(...xs) + Math.max(...xs)) / 2;
       }
-      return sib.x;
     };
 
-    // Get main's drop point
-    const mainDropPointX = getDropPointX(main);
-    
-    // Check if there are siblings with different drop points
-    const siblingDropPoints = sorted_siblings.map(sib => ({
-      sib,
-      dropPointX: getDropPointX(sib)
-    }));
-    
-    // Find if main's drop point is the leftmost, rightmost, or somewhere in between
-    const allDropPointXs = siblingDropPoints.map(s => s.dropPointX);
-    const minDropPointX = Math.min(...allDropPointXs);
-    const maxDropPointX = Math.max(...allDropPointXs);
-    
-    const mainIsLeftmost = mainDropPointX <= minDropPointX;
-    const mainIsRightmost = mainDropPointX >= maxDropPointX;
+    // Group siblings by their drop point X (rounded to avoid float issues)
+    const dropPointGroups = new Map<number, TreeDatum[]>();
+    sorted_siblings.forEach(sib => {
+      const dropX = Math.round(getDropPointX(sib));
+      if (!dropPointGroups.has(dropX)) {
+        dropPointGroups.set(dropX, []);
+      }
+      dropPointGroups.get(dropX)!.push(sib);
+    });
 
-    // Find main person's index in the sorted siblings
-    const main_sorted_index = sorted_siblings.findIndex(d => d.data.id === main.data.id)
-    
-    // Position siblings based on drop point relationships
-    // If main's drop point is leftmost, main goes left, others to the right
-    // If main's drop point is rightmost, main goes right, others to the left
-    // If main's drop point is in the middle, use normal distribution
-    
-    if (mainIsLeftmost && !mainIsRightmost) {
-      // Main's drop point is leftmost - position main on left, others to the right
-      let current_x = (x_range[1] ?? main_x) + node_separation;
-      for (let i = 0; i < sorted_siblings.length; i++) {
-        if (i === main_sorted_index) continue;
-        const sib = sorted_siblings[i];
-        sib.x = current_x;
-        current_x += node_separation;
-      }
-    } else if (mainIsRightmost && !mainIsLeftmost) {
-      // Main's drop point is rightmost - position main on right, others to the left
-      let current_x = (x_range[0] ?? main_x) - node_separation;
-      for (let i = sorted_siblings.length - 1; i >= 0; i--) {
-        if (i === main_sorted_index) continue;
-        const sib = sorted_siblings[i];
-        sib.x = current_x;
-        current_x -= node_separation;
-      }
-    } else {
-      // Main's drop point is center (or all same) - use normal distribution
+    // Get unique drop points sorted left to right
+    const uniqueDropPoints = Array.from(dropPointGroups.keys()).sort((a, b) => a - b);
+    const numGroups = uniqueDropPoints.length;
+
+    // Find which group contains the main person
+    const mainDropPointX = Math.round(getDropPointX(main));
+    const mainGroupIndex = uniqueDropPoints.indexOf(mainDropPointX);
+
+    // CASE 1: Single drop point - all siblings share same parent pair
+    if (numGroups === 1) {
+      const main_sorted_index = sorted_siblings.findIndex(d => d.data.id === main.data.id);
       for (let i = 0; i < sorted_siblings.length; i++) {
         if (i === main_sorted_index) continue;
         const sib = sorted_siblings[i];
         if (i < main_sorted_index) {
-          sib.x = (x_range[0] ?? 0) - node_separation * (main_sorted_index - i);
+          sib.x = (main_x_range[0] ?? main_x) - node_separation * (main_sorted_index - i);
         } else {
-          sib.x = (x_range[1] ?? 0) + node_separation * (i - main_sorted_index);
+          sib.x = (main_x_range[1] ?? main_x) + node_separation * (i - main_sorted_index);
         }
       }
+      return;
+    }
+
+    // CASE 2+: Multiple drop points - position groups by their drop point
+    // Strategy: Position main's group first (around main), then position other groups
+    // relative to their drop points (left groups go left, right groups go right)
+
+    // Helper to position a group internally (spread siblings within the group)
+    const positionGroupInternal = (group: TreeDatum[], anchorX: number, anchorSib?: TreeDatum) => {
+      if (anchorSib) {
+        // Position around the anchor sibling (main person)
+        const anchorIdx = group.indexOf(anchorSib);
+        group.forEach((sib, i) => {
+          if (sib === anchorSib) return;
+          const offset = i - anchorIdx;
+          sib.x = anchorSib.x + offset * node_separation;
+        });
+      } else {
+        // Position group centered at anchorX
+        const groupWidth = (group.length - 1) * node_separation;
+        const startX = anchorX - groupWidth / 2;
+        group.forEach((sib, i) => {
+          sib.x = startX + i * node_separation;
+        });
+      }
+    };
+
+    // Helper to get the X extent of a group
+    const getGroupExtent = (group: TreeDatum[]): [number, number] => {
+      const xs = group.map(s => s.x);
+      return [Math.min(...xs), Math.max(...xs)];
+    };
+
+    // First, position main's group around main
+    const mainGroup = dropPointGroups.get(mainDropPointX)!;
+    positionGroupInternal(mainGroup, main_x, main);
+    let [currentLeftX, currentRightX] = getGroupExtent(mainGroup);
+
+    // Now position groups to the LEFT of main's group
+    // Process from closest to main outward (right to left in uniqueDropPoints)
+    for (let i = mainGroupIndex - 1; i >= 0; i--) {
+      const dropX = uniqueDropPoints[i];
+      const group = dropPointGroups.get(dropX)!;
+      
+      // Position this group to the left of currentLeftX
+      const groupWidth = (group.length - 1) * node_separation;
+      const groupRightX = currentLeftX - node_separation; // Gap between groups
+      const groupLeftX = groupRightX - groupWidth;
+      
+      // Position group from left to right
+      group.forEach((sib, idx) => {
+        sib.x = groupLeftX + idx * node_separation;
+      });
+      
+      currentLeftX = groupLeftX;
+    }
+
+    // Now position groups to the RIGHT of main's group
+    // Process from closest to main outward (left to right in uniqueDropPoints)
+    for (let i = mainGroupIndex + 1; i < numGroups; i++) {
+      const dropX = uniqueDropPoints[i];
+      const group = dropPointGroups.get(dropX)!;
+      
+      // Position this group to the right of currentRightX
+      const groupLeftX = currentRightX + node_separation; // Gap between groups
+      
+      // Position group from left to right
+      group.forEach((sib, idx) => {
+        sib.x = groupLeftX + idx * node_separation;
+      });
+      
+      const groupWidth = (group.length - 1) * node_separation;
+      currentRightX = groupLeftX + groupWidth;
     }
   }
 }

@@ -22,6 +22,13 @@ interface BreakSegment {
 /**
  * Detects overlapping horizontal break segments and adjusts their coordinates
  * to prevent collisions between sibling groups' link lines.
+ * 
+ * COMPREHENSIVE APPROACH:
+ * 1. Group links by their DEPTH LEVEL (Y break height band) - links at different
+ *    depths shouldn't affect each other
+ * 2. Within each depth level, group by drop point X
+ * 3. Detect overlaps within each depth level and adjust as needed
+ * 4. Works for both ancestry (going up) and progeny (going down) directions
  */
 export function adjustOverlappingLinkBreaks(links: Link[], tree: Tree): Link[] {
   console.log('[adjustOverlappingLinkBreaks] Starting with', links.length, 'links', {
@@ -34,9 +41,8 @@ export function adjustOverlappingLinkBreaks(links: Link[], tree: Tree): Link[] {
     return adjustOverlappingLinkBreaksHorizontal(links, tree);
   }
   
-  // Group links by their shared drop point X coordinate (sx or parent midpoint)
-  // Links that drop from the same point should have the same break height
-  const dropPointGroups = new Map<string, BreakSegment[]>();
+  // First, extract all link segments and categorize them
+  const allSegments: BreakSegment[] = [];
   let processedLinks = 0;
   let skippedLinks = 0;
   
@@ -51,53 +57,228 @@ export function adjustOverlappingLinkBreaks(links: Link[], tree: Tree): Link[] {
     const segment = extractBreakSegmentVertical(link);
     if (!segment) {
       skippedLinks++;
-      console.log('[adjustOverlappingLinkBreaks] No segment extracted for link:', link.id);
       return;
     }
     
-    // Group by drop point X coordinate using the same function as getDropPointKey
+    // Get drop point key
     const groupKey = getDropPointKey(link);
     if (!groupKey) {
       skippedLinks++;
-      console.log(`[adjustOverlappingLinkBreaks] No drop point key for link: ${link.id}`);
       return;
     }
     
-    // Store the dropPointKey in the segment for consistency
     segment.dropPointKey = groupKey;
-    
-    console.log(`[adjustOverlappingLinkBreaks] Link ${link.id}: groupKey=${groupKey}, is_ancestry=${link.is_ancestry}`);
-    
-    if (!dropPointGroups.has(groupKey)) {
-      dropPointGroups.set(groupKey, []);
-    }
-    dropPointGroups.get(groupKey)!.push(segment);
+    allSegments.push(segment);
     processedLinks++;
   });
   
-  console.log(`[adjustOverlappingLinkBreaks] Processed ${processedLinks} links, skipped ${skippedLinks}`);
-  console.log(`[adjustOverlappingLinkBreaks] Found ${dropPointGroups.size} drop point groups:`, 
-    Array.from(dropPointGroups.keys()).map(key => `${key} (${dropPointGroups.get(key)!.length} links)`));
+  console.log(`[adjustOverlappingLinkBreaks] Extracted ${processedLinks} segments, skipped ${skippedLinks}`);
   
-  // If only one group, no overlaps to resolve
-  if (dropPointGroups.size <= 1) {
-    console.log('[adjustOverlappingLinkBreaks] Only one drop point group, no adjustments needed');
+  if (allSegments.length === 0) {
     return links;
   }
   
-  // Collect all break segments
-  const allSegments: BreakSegment[] = [];
-  dropPointGroups.forEach((segments, groupKey) => {
-    const avgHy = segments.reduce((sum, s) => sum + s.hy, 0) / segments.length;
-    console.log(`[adjustOverlappingLinkBreaks] Drop point group ${groupKey}: ${segments.length} segments, avgHy: ${avgHy.toFixed(1)}`);
-    allSegments.push(...segments);
+  // Group segments by their break height BAND (depth level)
+  // Links at similar Y levels (within a tolerance) are at the same depth
+  const DEPTH_TOLERANCE = 30; // Links within 30px of each other are considered same level
+  const depthLevels = groupByDepthLevel(allSegments, DEPTH_TOLERANCE);
+  
+  console.log(`[adjustOverlappingLinkBreaks] Found ${depthLevels.length} depth levels`);
+  
+  // Process each depth level independently
+  const allAdjustments = new Map<string, number>(); // linkId -> adjustment
+  
+  depthLevels.forEach((levelSegments, levelIndex) => {
+    console.log(`[adjustOverlappingLinkBreaks] Processing depth level ${levelIndex} with ${levelSegments.length} segments`);
+    
+    // Within this depth level, group by drop point
+    const dropPointGroups = new Map<string, BreakSegment[]>();
+    levelSegments.forEach(segment => {
+      if (!dropPointGroups.has(segment.dropPointKey)) {
+        dropPointGroups.set(segment.dropPointKey, []);
+      }
+      dropPointGroups.get(segment.dropPointKey)!.push(segment);
+    });
+    
+    console.log(`[adjustOverlappingLinkBreaks]   Level ${levelIndex} has ${dropPointGroups.size} drop point groups`);
+    
+    // If only one drop point group at this level, no overlap possible
+    if (dropPointGroups.size <= 1) {
+      return;
+    }
+    
+    // Detect and adjust overlaps within this depth level
+    const levelAdjustments = adjustDepthLevel(dropPointGroups);
+    
+    // Merge adjustments
+    levelAdjustments.forEach((adjustment, linkId) => {
+      allAdjustments.set(linkId, adjustment);
+    });
   });
   
-  // Detect overlaps and adjust
-  const adjustedLinks = adjustBreakHeightsVertical(links, allSegments, dropPointGroups);
+  console.log(`[adjustOverlappingLinkBreaks] Total adjustments: ${allAdjustments.size}`);
   
-  console.log(`[adjustOverlappingLinkBreaks] Adjusted ${adjustedLinks.length} links`);
-  return adjustedLinks;
+  // Apply all adjustments to links
+  return links.map(link => {
+    const adjustment = allAdjustments.get(link.id);
+    if (adjustment === undefined || adjustment === 0) {
+      return link;
+    }
+    
+    // Create a new link with adjusted path data
+    return {
+      ...link,
+      d: link.d.map((point, i) => {
+        // Points at indices 1, 2, 3, 4 have the hy Y coordinate
+        if (i >= 1 && i <= 4 && point[1] !== undefined) {
+          return [point[0], point[1] + adjustment] as [number, number];
+        }
+        return point;
+      })
+    };
+  });
+}
+
+/**
+ * Group segments by their depth level (break height band)
+ * Segments with similar hy values are at the same depth
+ */
+function groupByDepthLevel(segments: BreakSegment[], tolerance: number): BreakSegment[][] {
+  if (segments.length === 0) return [];
+  
+  // Sort by hy (break height)
+  const sorted = [...segments].sort((a, b) => a.hy - b.hy);
+  
+  const levels: BreakSegment[][] = [];
+  let currentLevel: BreakSegment[] = [sorted[0]];
+  let currentLevelHy = sorted[0].hy;
+  
+  for (let i = 1; i < sorted.length; i++) {
+    const segment = sorted[i];
+    // If this segment's hy is within tolerance of the current level, add to current level
+    if (Math.abs(segment.hy - currentLevelHy) <= tolerance) {
+      currentLevel.push(segment);
+    } else {
+      // Start a new level
+      levels.push(currentLevel);
+      currentLevel = [segment];
+      currentLevelHy = segment.hy;
+    }
+  }
+  
+  // Don't forget the last level
+  if (currentLevel.length > 0) {
+    levels.push(currentLevel);
+  }
+  
+  return levels;
+}
+
+/**
+ * Adjust overlaps within a single depth level
+ * 
+ * ALGORITHM:
+ * 1. Group all links by their drop point X coordinate
+ * 2. Sort groups by drop point X (left to right)
+ * 3. Walk from outside in - groups farthest from center get highest breaks,
+ *    groups closer to center get progressively lower breaks
+ * 4. The center/source partner group gets the lowest break (closest to children)
+ * 
+ * Returns a map of linkId -> adjustment amount
+ */
+function adjustDepthLevel(dropPointGroups: Map<string, BreakSegment[]>): Map<string, number> {
+  const adjustments = new Map<string, number>();
+  const MIN_SEPARATION = 20;
+  
+  // Build group info with drop point X
+  interface GroupInfo {
+    groupKey: string;
+    avgHy: number;
+    xMin: number;
+    xMax: number;
+    dropPointX: number;
+    segments: BreakSegment[];
+  }
+  
+  const groupInfos: GroupInfo[] = [];
+  dropPointGroups.forEach((segments, groupKey) => {
+    const avgHy = segments.reduce((sum, s) => sum + s.hy, 0) / segments.length;
+    const xMin = Math.min(...segments.map(s => s.xMin));
+    const xMax = Math.max(...segments.map(s => s.xMax));
+    const dropPointX = parseInt(groupKey.replace('drop-', '')) || 0;
+    
+    groupInfos.push({
+      groupKey,
+      avgHy,
+      xMin,
+      xMax,
+      dropPointX,
+      segments
+    });
+  });
+  
+  if (groupInfos.length <= 1) {
+    return adjustments; // Nothing to adjust
+  }
+  
+  // Sort groups by drop point X (left to right)
+  groupInfos.sort((a, b) => a.dropPointX - b.dropPointX);
+  
+  console.log(`[adjustDepthLevel] Groups sorted by dropPointX:`, 
+    groupInfos.map(g => `${g.groupKey} (dropX: ${g.dropPointX})`));
+  
+  // Find the base break height (use the highest position = min Y as reference)
+  const baseY = Math.min(...groupInfos.map(g => g.avgHy));
+  
+  // Walk from OUTSIDE IN:
+  // - Leftmost group and rightmost group are "outer" (farthest partners)
+  // - They should have the HIGHEST break points (lowest Y values)
+  // - As we move toward center, breaks get lower (higher Y values)
+  
+  // Use two pointers from outside in
+  let left = 0;
+  let right = groupInfos.length - 1;
+  let currentLayer = 0; // 0 = outermost layer (highest break)
+  
+  const groupLayerAssignments = new Map<string, number>(); // groupKey -> layer (0 = outermost)
+  
+  while (left <= right) {
+    if (left === right) {
+      // Center group - assign to current layer
+      groupLayerAssignments.set(groupInfos[left].groupKey, currentLayer);
+    } else {
+      // Assign both outer groups to the same layer
+      groupLayerAssignments.set(groupInfos[left].groupKey, currentLayer);
+      groupLayerAssignments.set(groupInfos[right].groupKey, currentLayer);
+    }
+    left++;
+    right--;
+    currentLayer++;
+  }
+  
+  console.log(`[adjustDepthLevel] Layer assignments:`, 
+    Array.from(groupLayerAssignments.entries()).map(([key, layer]) => `${key}: layer ${layer}`));
+  
+  // Now apply adjustments based on layer
+  // Layer 0 (outermost) = highest break = baseY
+  // Layer 1 = baseY + MIN_SEPARATION
+  // Layer 2 = baseY + 2*MIN_SEPARATION
+  // etc.
+  
+  groupInfos.forEach(groupInfo => {
+    const layer = groupLayerAssignments.get(groupInfo.groupKey) ?? 0;
+    const targetY = baseY + (layer * MIN_SEPARATION);
+    const adjustment = targetY - groupInfo.avgHy;
+    
+    console.log(`[adjustDepthLevel] Group ${groupInfo.groupKey}: layer ${layer}, hy ${groupInfo.avgHy.toFixed(1)} -> ${targetY.toFixed(1)} (adj: ${adjustment.toFixed(1)})`);
+    
+    // Apply adjustment to all links in this group
+    groupInfo.segments.forEach(segment => {
+      adjustments.set(segment.link.id, adjustment);
+    });
+  });
+  
+  return adjustments;
 }
 
 
@@ -345,6 +526,10 @@ function adjustBreakHeightsVertical(links: Link[], segments: BreakSegment[], dro
   /**
    * Adjust heights for an overlap cluster
    * Different strategies based on cluster size and configuration
+   * 
+   * KEY INSIGHT: Links that span farther horizontally (to children farther from center)
+   * should have HIGHER break points (lower Y value = higher on screen) so they "arch over"
+   * the inner links without crossing.
    */
   function adjustCluster(cluster: GroupInfo[]): Map<string, number> {
     const adjustments = new Map<string, number>();
@@ -355,65 +540,31 @@ function adjustBreakHeightsVertical(links: Link[], segments: BreakSegment[], dro
       return adjustments;
     }
     
-    if (cluster.length === 2) {
-      // Case 2: Two groups overlap
-      // Strategy: Keep the topmost (lowest Y value = highest on screen) at original height, adjust the other downward
-      // In SVG coordinates, Y increases downward, so "downward" means increasing Y (making it less negative or more positive)
-      const sortedByY = [...cluster].sort((a, b) => a.avgHy - b.avgHy);
-      const topmost = sortedByY[0]; // Lowest Y value (highest on screen)
-      const other = sortedByY[1];   // Higher Y value (lower on screen)
-      
-      adjustments.set(topmost.groupKey, 0);
-      
-      // Calculate target Y: ensure other is at least MIN_SEPARATION below topmost
-      // In SVG, Y increases downward, so "below" means larger Y value (less negative or more positive)
-      // Required minimum Y for other: topmost.avgHy + MIN_SEPARATION
-      const requiredMinY = topmost.avgHy + MIN_SEPARATION;
-      
-      // If other is already at or below the required minimum, no adjustment needed
-      // Otherwise, move it down to the required minimum
-      let targetY: number;
-      let adjustment: number;
-      
-      if (other.avgHy >= requiredMinY) {
-        // Already properly separated, no adjustment needed
-        targetY = other.avgHy;
-        adjustment = 0;
-        console.log(`[adjustBreakHeightsVertical] Case 2 (2 groups): ${topmost.groupKey} stays at ${topmost.avgHy.toFixed(1)}, ${other.groupKey} already at ${other.avgHy.toFixed(1)} (>= ${requiredMinY.toFixed(1)}), no adjustment`);
-      } else {
-        // Need to move other down to create separation
-        targetY = requiredMinY;
-        adjustment = targetY - other.avgHy;
-        console.log(`[adjustBreakHeightsVertical] Case 2 (2 groups): ${topmost.groupKey} stays at ${topmost.avgHy.toFixed(1)}, ${other.groupKey} adjusted from ${other.avgHy.toFixed(1)} to ${targetY.toFixed(1)} (adjustment: ${adjustment.toFixed(1)})`);
-      }
-      
-      adjustments.set(other.groupKey, adjustment);
-      
-      return adjustments;
-    }
+    // Calculate horizontal extent for each group (how far the link spans horizontally)
+    // Larger extent = link goes farther = should have higher break (lower Y)
+    const getHorizontalExtent = (g: GroupInfo) => Math.abs(g.xMax - g.xMin);
     
-    // Case 3: 3+ groups overlap
-    // Strategy: Sort by Y position (topmost first), keep topmost at original height, adjust all others downward
-    const sortedByY = [...cluster].sort((a, b) => a.avgHy - b.avgHy);
+    // Sort by horizontal extent: LARGEST extent first (these should be highest = lowest Y)
+    // Links with larger horizontal extent need to "arch over" the shorter ones
+    const sortedByExtent = [...cluster].sort((a, b) => getHorizontalExtent(b) - getHorizontalExtent(a));
     
-    // Keep the topmost group (closest to top/highest) at its original height
-    const topmost = sortedByY[0];
-    adjustments.set(topmost.groupKey, 0);
+    console.log(`[adjustBreakHeightsVertical] Cluster sorted by horizontal extent:`, 
+      sortedByExtent.map(g => `${g.groupKey}: extent=${getHorizontalExtent(g).toFixed(0)}, avgHy=${g.avgHy.toFixed(1)}`));
     
-    console.log(`[adjustBreakHeightsVertical] Case 3 (${cluster.length} groups): Topmost ${topmost.groupKey} stays at ${topmost.avgHy.toFixed(1)}`);
+    // Get the base Y position (use the highest avgHy as reference - this is closest to parents)
+    const baseY = Math.min(...cluster.map(g => g.avgHy));
     
-    // Adjust all other groups downward in order, maintaining MIN_SEPARATION between each
-    // Start from the topmost's position and work downward
-    let currentY = topmost.avgHy + MIN_SEPARATION;
-    sortedByY.slice(1).forEach((groupInfo, idx) => {
-      // Calculate target Y: ensure it's at least MIN_SEPARATION below the previous group
-      // Always move down from currentY to maintain separation
+    // Assign break heights based on horizontal extent order
+    // Largest extent gets the highest position (lowest Y = closest to parents)
+    // Each subsequent group gets a lower position (higher Y = farther from parents)
+    let currentY = baseY;
+    sortedByExtent.forEach((groupInfo, idx) => {
       const targetY = currentY;
       const adjustment = targetY - groupInfo.avgHy;
       
-      console.log(`[adjustBreakHeightsVertical]   Group ${idx + 2} (${groupInfo.groupKey}): hy ${groupInfo.avgHy.toFixed(1)} -> ${targetY.toFixed(1)} (adjustment: ${adjustment.toFixed(1)})`);
+      console.log(`[adjustBreakHeightsVertical] Group ${idx + 1} (${groupInfo.groupKey}): extent=${getHorizontalExtent(groupInfo).toFixed(0)}, hy ${groupInfo.avgHy.toFixed(1)} -> ${targetY.toFixed(1)} (adjustment: ${adjustment.toFixed(1)})`);
       adjustments.set(groupInfo.groupKey, adjustment);
-      currentY = targetY + MIN_SEPARATION; // Next group goes below this one
+      currentY = targetY + MIN_SEPARATION; // Next group goes below this one (higher Y)
     });
     
     return adjustments;
