@@ -8,15 +8,56 @@ import { defaultSortByAge } from "../utils/family-chart-utils"
 export function sortChildrenWithSpouses(children: Datum[], datum: Datum, data: Data) {
   if (!datum.rels.children) return
   const spouses = datum.rels.spouses || []
+  
+  // Sort spouses by recency (same order as setupSpouses uses for positioning)
+  // This ensures children are grouped under their biological parent's position
+  const relationshipStatuses = datum.data?.relationshipStatuses || datum.data?.data?.relationshipStatuses || {};
+  const sortedSpouses = [...spouses].sort((a, b) => {
+    // Same recency sort as in setupSpouses
+    const statusA = relationshipStatuses[a];
+    const statusB = relationshipStatuses[b];
+    const orderA = getStatusOrder(statusA?.status);
+    const orderB = getStatusOrder(statusB?.status);
+    return orderA - orderB;
+  });
+  
+  // For females, spouses are positioned to the LEFT (decreasing x)
+  // So first spouse in sorted array is closest to the person (rightmost spouse position)
+  // Children should be sorted so they appear under their biological parent
+  // Female: spouses go left, so children of first spouse should be rightmost
+  // Male: spouses go right, so children of first spouse should be leftmost
+  
   return children.sort((a, b) => {
     const a_p2 = otherParent(a, datum, data)
     const b_p2 = otherParent(b, datum, data)
-    const a_i = a_p2 ? spouses.indexOf(a_p2.id) : -1
-    const b_i = b_p2 ? spouses.indexOf(b_p2.id) : -1
+    const a_i = a_p2 ? sortedSpouses.indexOf(a_p2.id) : -1
+    const b_i = b_p2 ? sortedSpouses.indexOf(b_p2.id) : -1
 
+    // For both genders: sort by spouse index in the recency-sorted array
+    // Lower index = closer to the main person = should be positioned closer to center
+    // For female: spouses go left, so lower index spouse is on the right
+    //   Children of lower index spouse should be on the right (higher x)
+    //   So we want descending order: b_i - a_i
+    // For male: spouses go right, so lower index spouse is on the left
+    //   Children of lower index spouse should be on the left (lower x)
+    //   So we want ascending order: a_i - b_i
     if (datum.data.gender === "M") return a_i - b_i
     else return b_i - a_i
   })
+}
+
+// Helper function to get status order for sorting (same as in family-chart-utils)
+function getStatusOrder(status: string | undefined): number {
+  switch (status) {
+    case 'married': return 0;
+    case 'engaged': return 1;
+    case 'partner': return 2;
+    case 'dating': return 3;
+    case 'separated': return 4;
+    case 'divorced': return 5;
+    case 'widowed': return 6;
+    default: return 7;
+  }
 }
 
 export function sortAddNewChildren(children: Datum[]) {

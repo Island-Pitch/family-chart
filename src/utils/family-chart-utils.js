@@ -23,8 +23,8 @@ export const DEFAULT_CHART_SPACING = {
   cardYSpacing: 1, // Vertical spacing: 1 unit = 1 card width gap between people
   transitionTime: 1000, // Animation transition time in milliseconds
   progenyDepth: 10, // Maximum depth to show descendants
-  cardOffsetX: 10, // Horizontal offset for card positioning (pixels, positive = right, negative = left)
-  cardOffsetY: 10, // Vertical offset for card positioning (pixels, positive = down, negative = up)
+  cardOffsetX: 0, // Horizontal offset for card positioning (pixels, positive = right, negative = left)
+  cardOffsetY: 0, // Vertical offset for card positioning (pixels, positive = down, negative = up)
 };
 
 /**
