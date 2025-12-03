@@ -179,10 +179,9 @@ function groupByDepthLevel(segments: BreakSegment[], tolerance: number): BreakSe
  * 
  * ALGORITHM:
  * 1. Group all links by their drop point X coordinate
- * 2. Sort groups by drop point X (left to right)
- * 3. Walk from outside in - groups farthest from center get highest breaks,
- *    groups closer to center get progressively lower breaks
- * 4. The center/source partner group gets the lowest break (closest to children)
+ * 2. Find groups that actually have overlapping X ranges (would collide)
+ * 3. Only adjust groups within collision clusters - leave non-colliding groups unchanged
+ * 4. Within each collision cluster, assign break heights from left to right
  * 
  * Returns a map of linkId -> adjustment amount
  */
@@ -225,56 +224,74 @@ function adjustDepthLevel(dropPointGroups: Map<string, BreakSegment[]>): Map<str
   groupInfos.sort((a, b) => a.dropPointX - b.dropPointX);
   
   console.log(`[adjustDepthLevel] Groups sorted by dropPointX:`, 
-    groupInfos.map(g => `${g.groupKey} (dropX: ${g.dropPointX})`));
+    groupInfos.map(g => `${g.groupKey} (dropX: ${g.dropPointX}, xRange: ${g.xMin.toFixed(0)}-${g.xMax.toFixed(0)})`));
   
-  // Find the base break height (use the highest position = min Y as reference)
-  const baseY = Math.min(...groupInfos.map(g => g.avgHy));
-  
-  // Walk from OUTSIDE IN:
-  // - Leftmost group and rightmost group are "outer" (farthest partners)
-  // - They should have the HIGHEST break points (lowest Y values)
-  // - As we move toward center, breaks get lower (higher Y values)
-  
-  // Use two pointers from outside in
-  let left = 0;
-  let right = groupInfos.length - 1;
-  let currentLayer = 0; // 0 = outermost layer (highest break)
-  
-  const groupLayerAssignments = new Map<string, number>(); // groupKey -> layer (0 = outermost)
-  
-  while (left <= right) {
-    if (left === right) {
-      // Center group - assign to current layer
-      groupLayerAssignments.set(groupInfos[left].groupKey, currentLayer);
-    } else {
-      // Assign both outer groups to the same layer
-      groupLayerAssignments.set(groupInfos[left].groupKey, currentLayer);
-      groupLayerAssignments.set(groupInfos[right].groupKey, currentLayer);
-    }
-    left++;
-    right--;
-    currentLayer++;
+  // Check if two groups' X ranges overlap (would visually collide)
+  function xRangesOverlap(a: GroupInfo, b: GroupInfo): boolean {
+    const TOLERANCE = 5; // Small tolerance for near-misses
+    return !(a.xMax < b.xMin - TOLERANCE || a.xMin > b.xMax + TOLERANCE);
   }
   
-  console.log(`[adjustDepthLevel] Layer assignments:`, 
-    Array.from(groupLayerAssignments.entries()).map(([key, layer]) => `${key}: layer ${layer}`));
+  // Build collision clusters using transitive closure
+  // Groups in the same cluster have overlapping X ranges (directly or transitively)
+  const clusters: GroupInfo[][] = [];
+  const processed = new Set<string>();
   
-  // Now apply adjustments based on layer
-  // Layer 0 (outermost) = highest break = baseY
-  // Layer 1 = baseY + MIN_SEPARATION
-  // Layer 2 = baseY + 2*MIN_SEPARATION
-  // etc.
+  groupInfos.forEach(group => {
+    if (processed.has(group.groupKey)) return;
+    
+    const cluster: GroupInfo[] = [group];
+    processed.add(group.groupKey);
+    
+    // Find all groups that overlap with any group in this cluster
+    let foundNew = true;
+    while (foundNew) {
+      foundNew = false;
+      groupInfos.forEach(other => {
+        if (processed.has(other.groupKey)) return;
+        if (cluster.some(c => xRangesOverlap(c, other))) {
+          cluster.push(other);
+          processed.add(other.groupKey);
+          foundNew = true;
+        }
+      });
+    }
+    
+    clusters.push(cluster);
+  });
   
-  groupInfos.forEach(groupInfo => {
-    const layer = groupLayerAssignments.get(groupInfo.groupKey) ?? 0;
-    const targetY = baseY + (layer * MIN_SEPARATION);
-    const adjustment = targetY - groupInfo.avgHy;
+  console.log(`[adjustDepthLevel] Found ${clusters.length} collision clusters:`, 
+    clusters.map((c, i) => `cluster ${i}: [${c.map(g => g.groupKey).join(', ')}]`));
+  
+  // Process each collision cluster
+  clusters.forEach((cluster, clusterIndex) => {
+    // If cluster has only 1 group, no collision possible - skip adjustment
+    if (cluster.length === 1) {
+      console.log(`[adjustDepthLevel] Cluster ${clusterIndex} has 1 group, no adjustment needed`);
+      return;
+    }
     
-    console.log(`[adjustDepthLevel] Group ${groupInfo.groupKey}: layer ${layer}, hy ${groupInfo.avgHy.toFixed(1)} -> ${targetY.toFixed(1)} (adj: ${adjustment.toFixed(1)})`);
+    // Sort cluster by drop point X (left to right)
+    cluster.sort((a, b) => a.dropPointX - b.dropPointX);
     
-    // Apply adjustment to all links in this group
-    groupInfo.segments.forEach(segment => {
-      adjustments.set(segment.link.id, adjustment);
+    // Find the base break height for this cluster (use the highest position = min Y)
+    const baseY = Math.min(...cluster.map(g => g.avgHy));
+    
+    console.log(`[adjustDepthLevel] Cluster ${clusterIndex} (${cluster.length} groups) baseY: ${baseY.toFixed(1)}`);
+    
+    // Assign layers from left to right within the cluster
+    // Left-most group = layer 0 (highest break = lowest Y)
+    // Each subsequent group gets progressively lower break (higher Y)
+    cluster.forEach((groupInfo, layerIndex) => {
+      const targetY = baseY + (layerIndex * MIN_SEPARATION);
+      const adjustment = targetY - groupInfo.avgHy;
+      
+      console.log(`[adjustDepthLevel]   Group ${groupInfo.groupKey}: layer ${layerIndex}, hy ${groupInfo.avgHy.toFixed(1)} -> ${targetY.toFixed(1)} (adj: ${adjustment.toFixed(1)})`);
+      
+      // Apply adjustment to all links in this group
+      groupInfo.segments.forEach(segment => {
+        adjustments.set(segment.link.id, adjustment);
+      });
     });
   });
   
