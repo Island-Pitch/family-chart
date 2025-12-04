@@ -85,13 +85,20 @@ export function adjustOverlappingLinkBreaks(links: Link[], tree: Tree): Link[] {
   
   console.log(`[adjustOverlappingLinkBreaks] Found ${depthLevels.length} depth levels`);
   
-  // Process each depth level independently
+  // EXTENDED: Merge adjacent depth levels that have overlapping X ranges
+  // This handles cases like "Liam" and "Child Child" group where siblings from
+  // different parent groups are positioned close together horizontally
+  const mergedLevels = mergeOverlappingDepthLevels(depthLevels);
+  
+  console.log(`[adjustOverlappingLinkBreaks] After merging overlapping levels: ${mergedLevels.length} processing groups`);
+  
+  // Process each merged level group
   const allAdjustments = new Map<string, number>(); // linkId -> adjustment
   
-  depthLevels.forEach((levelSegments, levelIndex) => {
-    console.log(`[adjustOverlappingLinkBreaks] Processing depth level ${levelIndex} with ${levelSegments.length} segments`);
+  mergedLevels.forEach((levelSegments, levelIndex) => {
+    console.log(`[adjustOverlappingLinkBreaks] Processing level group ${levelIndex} with ${levelSegments.length} segments`);
     
-    // Within this depth level, group by drop point
+    // Within this level group, group by drop point
     const dropPointGroups = new Map<string, BreakSegment[]>();
     levelSegments.forEach(segment => {
       if (!dropPointGroups.has(segment.dropPointKey)) {
@@ -100,14 +107,14 @@ export function adjustOverlappingLinkBreaks(links: Link[], tree: Tree): Link[] {
       dropPointGroups.get(segment.dropPointKey)!.push(segment);
     });
     
-    console.log(`[adjustOverlappingLinkBreaks]   Level ${levelIndex} has ${dropPointGroups.size} drop point groups`);
+    console.log(`[adjustOverlappingLinkBreaks]   Level group ${levelIndex} has ${dropPointGroups.size} drop point groups`);
     
     // If only one drop point group at this level, no overlap possible
     if (dropPointGroups.size <= 1) {
       return;
     }
     
-    // Detect and adjust overlaps within this depth level
+    // Detect and adjust overlaps within this level group (may span multiple original depth levels)
     const levelAdjustments = adjustDepthLevel(dropPointGroups);
     
     // Merge adjustments
@@ -175,13 +182,137 @@ function groupByDepthLevel(segments: BreakSegment[], tolerance: number): BreakSe
 }
 
 /**
+ * Merge adjacent depth levels that have overlapping X ranges.
+ * This handles cases where siblings from different parent groups (different drop points)
+ * are positioned close together horizontally, causing their link lines to overlap even
+ * though they're at slightly different Y positions (different depth levels).
+ * 
+ * Example: "Liam" (from one parent) and "Child Child" group (from another parent)
+ * might be at different depth levels but their X ranges overlap, causing visual collisions.
+ * 
+ * Algorithm:
+ * 1. For each depth level, calculate its X range (min/max of all segments)
+ * 2. Check if adjacent levels have overlapping X ranges
+ * 3. If they overlap and are close enough in Y, merge them into a single processing group
+ * 4. This allows the cascade logic to work across depth levels, not just within them
+ */
+function mergeOverlappingDepthLevels(depthLevels: BreakSegment[][]): BreakSegment[][] {
+  if (depthLevels.length <= 1) {
+    return depthLevels; // Nothing to merge
+  }
+  
+  // Calculate X range and representative Y for each level
+  interface LevelInfo {
+    segments: BreakSegment[];
+    xMin: number;
+    xMax: number;
+    yMin: number;
+    yMax: number;
+    avgY: number;
+  }
+  
+  const levelInfos: LevelInfo[] = depthLevels.map(levelSegments => {
+    const xMin = Math.min(...levelSegments.map(s => s.xMin));
+    const xMax = Math.max(...levelSegments.map(s => s.xMax));
+    const yMin = Math.min(...levelSegments.map(s => s.hy));
+    const yMax = Math.max(...levelSegments.map(s => s.hy));
+    const avgY = levelSegments.reduce((sum, s) => sum + s.hy, 0) / levelSegments.length;
+    
+    return {
+      segments: levelSegments,
+      xMin,
+      xMax,
+      yMin,
+      yMax,
+      avgY
+    };
+  });
+  
+  // Check if two levels should be merged (overlapping X ranges and close in Y)
+  const X_OVERLAP_TOLERANCE = 10; // Small tolerance for X range overlap detection
+  const Y_PROXIMITY_THRESHOLD = 60; // If levels are within 60px in Y and X overlaps, merge them
+  
+  function shouldMerge(a: LevelInfo, b: LevelInfo): boolean {
+    // Check if X ranges overlap
+    const xOverlaps = !(a.xMax < b.xMin - X_OVERLAP_TOLERANCE || a.xMin > b.xMax + X_OVERLAP_TOLERANCE);
+    
+    if (!xOverlaps) {
+      return false; // No X overlap, don't merge
+    }
+    
+    // Check if Y positions are close enough
+    const yDistance = Math.abs(a.avgY - b.avgY);
+    const yClose = yDistance <= Y_PROXIMITY_THRESHOLD;
+    
+    if (yClose) {
+      console.log(`[mergeOverlappingDepthLevels] Merging levels: X ranges overlap (${a.xMin.toFixed(0)}-${a.xMax.toFixed(0)} vs ${b.xMin.toFixed(0)}-${b.xMax.toFixed(0)}), Y distance: ${yDistance.toFixed(1)}px`);
+    }
+    
+    return yClose;
+  }
+  
+  // Build merge groups using transitive closure
+  // If level A overlaps B and B overlaps C, then A, B, C should all be merged
+  const mergedGroups: BreakSegment[][] = [];
+  const processed = new Set<number>();
+  
+  levelInfos.forEach((levelInfo, index) => {
+    if (processed.has(index)) {
+      return; // Already merged into another group
+    }
+    
+    // Start a new merge group with this level's segments
+    const mergeGroupIndices = new Set<number>([index]);
+    processed.add(index);
+    
+    // Find all levels that should be merged with this one (transitive closure)
+    let foundNew = true;
+    while (foundNew) {
+      foundNew = false;
+      levelInfos.forEach((otherLevelInfo, otherIndex) => {
+        if (processed.has(otherIndex)) {
+          return; // Already in merge group
+        }
+        
+        // Check if this level overlaps with any level already in the merge group
+        const overlapsWithGroup = Array.from(mergeGroupIndices).some(groupIndex => {
+          return shouldMerge(levelInfos[groupIndex], otherLevelInfo);
+        });
+        
+        if (overlapsWithGroup) {
+          mergeGroupIndices.add(otherIndex);
+          processed.add(otherIndex);
+          foundNew = true;
+          console.log(`[mergeOverlappingDepthLevels] Added level ${otherIndex} to merge group (transitive overlap)`);
+        }
+      });
+    }
+    
+    // Combine all segments from merged levels
+    const mergeGroup: BreakSegment[] = [];
+    mergeGroupIndices.forEach(groupIndex => {
+      mergeGroup.push(...levelInfos[groupIndex].segments);
+    });
+    
+    mergedGroups.push(mergeGroup);
+  });
+  
+  console.log(`[mergeOverlappingDepthLevels] Merged ${depthLevels.length} depth levels into ${mergedGroups.length} processing groups`);
+  
+  return mergedGroups;
+}
+
+/**
  * Adjust overlaps within a single depth level
  * 
- * ALGORITHM:
- * 1. Group all links by their drop point X coordinate
- * 2. Find groups that actually have overlapping X ranges (would collide)
- * 3. Only adjust groups within collision clusters - leave non-colliding groups unchanged
- * 4. Within each collision cluster, assign break heights from left to right
+ * ALGORITHM (UPDATED):
+ * When multiple sibling groups have links at the SAME break height (same depth level),
+ * we cascade ALL of them from left to right - not just overlapping ones.
+ * 
+ * This is because even if the X ranges don't overlap, having multiple horizontal
+ * lines at the same Y level looks visually cluttered. Better to cascade them.
+ * 
+ * The cascading order is determined by drop point X (leftmost group gets highest break).
  * 
  * Returns a map of linkId -> adjustment amount
  */
@@ -220,78 +351,37 @@ function adjustDepthLevel(dropPointGroups: Map<string, BreakSegment[]>): Map<str
     return adjustments; // Nothing to adjust
   }
   
-  // Sort groups by drop point X (left to right)
-  groupInfos.sort((a, b) => a.dropPointX - b.dropPointX);
+  // Calculate horizontal extent for each group (how far the link spans)
+  const getHorizontalExtent = (g: GroupInfo) => Math.abs(g.xMax - g.xMin);
   
-  console.log(`[adjustDepthLevel] Groups sorted by dropPointX:`, 
-    groupInfos.map(g => `${g.groupKey} (dropX: ${g.dropPointX}, xRange: ${g.xMin.toFixed(0)}-${g.xMax.toFixed(0)})`));
+  // Sort groups by horizontal extent: LARGEST extent first
+  // Links with larger horizontal extent need to "arch over" shorter ones
+  // So wider-spanning links get HIGHER breaks (lower Y = closer to parents)
+  groupInfos.sort((a, b) => getHorizontalExtent(b) - getHorizontalExtent(a));
   
-  // Check if two groups' X ranges overlap (would visually collide)
-  function xRangesOverlap(a: GroupInfo, b: GroupInfo): boolean {
-    const TOLERANCE = 5; // Small tolerance for near-misses
-    return !(a.xMax < b.xMin - TOLERANCE || a.xMin > b.xMax + TOLERANCE);
-  }
+  console.log(`[adjustDepthLevel] Groups sorted by horizontal extent (widest first):`, 
+    groupInfos.map(g => `${g.groupKey} (extent: ${getHorizontalExtent(g).toFixed(0)}, xRange: ${g.xMin.toFixed(0)}-${g.xMax.toFixed(0)})`));
   
-  // Build collision clusters using transitive closure
-  // Groups in the same cluster have overlapping X ranges (directly or transitively)
-  const clusters: GroupInfo[][] = [];
-  const processed = new Set<string>();
+  // NEW APPROACH: Cascade ALL groups at the same depth level, not just overlapping ones
+  // This prevents visual clutter when multiple sibling groups have horizontal lines at the same Y
   
-  groupInfos.forEach(group => {
-    if (processed.has(group.groupKey)) return;
-    
-    const cluster: GroupInfo[] = [group];
-    processed.add(group.groupKey);
-    
-    // Find all groups that overlap with any group in this cluster
-    let foundNew = true;
-    while (foundNew) {
-      foundNew = false;
-      groupInfos.forEach(other => {
-        if (processed.has(other.groupKey)) return;
-        if (cluster.some(c => xRangesOverlap(c, other))) {
-          cluster.push(other);
-          processed.add(other.groupKey);
-          foundNew = true;
-        }
-      });
-    }
-    
-    clusters.push(cluster);
-  });
+  // Find the base break height (use the minimum Y = highest position on screen)
+  const baseY = Math.min(...groupInfos.map(g => g.avgHy));
   
-  console.log(`[adjustDepthLevel] Found ${clusters.length} collision clusters:`, 
-    clusters.map((c, i) => `cluster ${i}: [${c.map(g => g.groupKey).join(', ')}]`));
+  console.log(`[adjustDepthLevel] Cascading ${groupInfos.length} groups at depth level, baseY: ${baseY.toFixed(1)}`);
   
-  // Process each collision cluster
-  clusters.forEach((cluster, clusterIndex) => {
-    // If cluster has only 1 group, no collision possible - skip adjustment
-    if (cluster.length === 1) {
-      console.log(`[adjustDepthLevel] Cluster ${clusterIndex} has 1 group, no adjustment needed`);
-      return;
-    }
+  // Assign layers based on horizontal extent (widest first)
+  // Widest group = layer 0 (highest break = lowest Y = closest to parents, arches over others)
+  // Each subsequent (narrower) group gets progressively lower break (higher Y = further from parents)
+  groupInfos.forEach((groupInfo, layerIndex) => {
+    const targetY = baseY + (layerIndex * MIN_SEPARATION);
+    const adjustment = targetY - groupInfo.avgHy;
     
-    // Sort cluster by drop point X (left to right)
-    cluster.sort((a, b) => a.dropPointX - b.dropPointX);
+    console.log(`[adjustDepthLevel]   Group ${groupInfo.groupKey}: layer ${layerIndex}, extent ${getHorizontalExtent(groupInfo).toFixed(0)}, hy ${groupInfo.avgHy.toFixed(1)} -> ${targetY.toFixed(1)} (adj: ${adjustment.toFixed(1)})`);
     
-    // Find the base break height for this cluster (use the highest position = min Y)
-    const baseY = Math.min(...cluster.map(g => g.avgHy));
-    
-    console.log(`[adjustDepthLevel] Cluster ${clusterIndex} (${cluster.length} groups) baseY: ${baseY.toFixed(1)}`);
-    
-    // Assign layers from left to right within the cluster
-    // Left-most group = layer 0 (highest break = lowest Y)
-    // Each subsequent group gets progressively lower break (higher Y)
-    cluster.forEach((groupInfo, layerIndex) => {
-      const targetY = baseY + (layerIndex * MIN_SEPARATION);
-      const adjustment = targetY - groupInfo.avgHy;
-      
-      console.log(`[adjustDepthLevel]   Group ${groupInfo.groupKey}: layer ${layerIndex}, hy ${groupInfo.avgHy.toFixed(1)} -> ${targetY.toFixed(1)} (adj: ${adjustment.toFixed(1)})`);
-      
-      // Apply adjustment to all links in this group
-      groupInfo.segments.forEach(segment => {
-        adjustments.set(segment.link.id, adjustment);
-      });
+    // Apply adjustment to all links in this group
+    groupInfo.segments.forEach(segment => {
+      adjustments.set(segment.link.id, adjustment);
     });
   });
   
