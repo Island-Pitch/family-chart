@@ -1,0 +1,430 @@
+[
+  {
+    "id": "cindy",
+    "main": true,
+    "data": {
+      "first_name": "Cindy",
+      "last_name": "Brady",
+      "preferred_name": "Cindy",
+      "gender": "F",
+      "birthday": "2005-08-15",
+      "birth_place": "Los Angeles, CA",
+      "bio": "Cindy is a bright and energetic teenager who is navigating the changes in her family after her mother Carol married Mike last year. She has two sisters, Jan and Marcia, and now has three stepbrothers - Peter, Bobby, and Greg - from Mike's previous marriage. Cindy is adjusting to her new blended family and enjoys spending time with both her biological sisters and her new stepbrothers. She is a good student who enjoys art, music, and spending time with friends. Cindy values the relationships she has with all of her family members and is learning to embrace her expanded family.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Student",
+      "employer": null,
+      "email": "cindy.brady@email.com",
+      "phone": "(310) 555-1001",
+      "address": "1234 Family Way, Los Angeles, CA 90028",
+      "work_entries": [],
+      "education_entries": [
+        {
+          "title": "9th Grade",
+          "institution": "Los Angeles High School",
+          "from_year": 2024,
+          "to_year": 2025,
+          "description": "Currently in 9th grade, enjoying art, music, and social studies classes."
+        }
+      ],
+      "social_media": [
+        {
+          "platform": "Instagram",
+          "url": "https://instagram.com/cindybrady"
+        }
+      ]
+    },
+    "rels": {
+      "parents": [
+        "carol",
+        "mike"
+      ],
+      "siblings": [
+        "jan",
+        "marcia",
+        "peter",
+        "bobby",
+        "greg"
+      ]
+    }
+  },
+  {
+    "id": "jan",
+    "data": {
+      "first_name": "Jan",
+      "last_name": "Brady",
+      "preferred_name": "Jan",
+      "gender": "F",
+      "birthday": "2003-05-20",
+      "birth_place": "Los Angeles, CA",
+      "bio": "Jan is Cindy's older sister, a thoughtful and responsible young woman who is adjusting to her new blended family. She works part-time at a local bookstore while attending college. Jan enjoys reading, writing, and spending time with her sisters and new stepbrothers. She values the relationships she has with all of her family members.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Student / Bookseller",
+      "employer": "Bookstore Plus",
+      "email": "jan.brady@email.com",
+      "phone": "(310) 555-1002",
+      "address": "1234 Family Way, Los Angeles, CA 90028",
+      "work_entries": [
+        {
+          "title": "Bookseller (Part-time)",
+          "organization": "Bookstore Plus",
+          "from_year": 2023,
+          "to_year": null,
+          "description": "Help customers find books, manage inventory, and assist with store operations. Part-time position while attending college."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Bachelor of Arts in English",
+          "institution": "University of California, Los Angeles",
+          "from_year": 2021,
+          "to_year": 2025,
+          "description": "Currently pursuing degree in English literature. Expected graduation 2025."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "carol",
+        "mike"
+      ],
+      "siblings": [
+        "cindy",
+        "marcia",
+        "peter",
+        "bobby",
+        "greg"
+      ]
+    }
+  },
+  {
+    "id": "marcia",
+    "data": {
+      "first_name": "Marcia",
+      "last_name": "Brady",
+      "preferred_name": "Marcia",
+      "gender": "F",
+      "birthday": "2001-11-10",
+      "birth_place": "Los Angeles, CA",
+      "bio": "Marcia is Cindy's oldest sister, a confident and ambitious young woman who is studying business at a local university. She works part-time as a marketing intern and enjoys networking and building her career. Marcia is adjusting to her new blended family and enjoys spending time with her sisters and new stepbrothers. She values the relationships she has with all of her family members.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Student / Marketing Intern",
+      "employer": "Los Angeles Marketing Agency",
+      "email": "marcia.brady@email.com",
+      "phone": "(310) 555-1003",
+      "address": "1234 Family Way, Los Angeles, CA 90028",
+      "work_entries": [
+        {
+          "title": "Marketing Intern (Part-time)",
+          "organization": "Los Angeles Marketing Agency",
+          "from_year": 2023,
+          "to_year": null,
+          "description": "Support marketing team, create content, and assist with marketing campaigns. Part-time internship while attending college."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Bachelor of Science in Business",
+          "institution": "University of Southern California",
+          "from_year": 2019,
+          "to_year": 2023,
+          "description": "Graduated with focus on business management and marketing."
+        }
+      ],
+      "social_media": [
+        {
+          "platform": "LinkedIn",
+          "url": "https://linkedin.com/in/marciabrady"
+        }
+      ]
+    },
+    "rels": {
+      "parents": [
+        "carol",
+        "mike"
+      ],
+      "siblings": [
+        "cindy",
+        "jan",
+        "peter",
+        "bobby",
+        "greg"
+      ]
+    }
+  },
+  {
+    "id": "carol",
+    "data": {
+      "first_name": "Carol",
+      "last_name": "Brady",
+      "preferred_name": "Carol",
+      "gender": "F",
+      "birthday": "1978-04-12",
+      "birth_place": "Los Angeles, CA",
+      "bio": "Carol is a loving mother who recently married Mike, creating a blended family with her three daughters and Mike's three sons. She works as a nurse and is passionate about helping others. Carol is adjusting to her new role as a stepmother and is working to create a harmonious blended family. She enjoys spending time with all of her children and values the relationships they are building together.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Registered Nurse",
+      "employer": "Los Angeles Medical Center",
+      "email": "carol.brady@email.com",
+      "phone": "(310) 555-1004",
+      "address": "1234 Family Way, Los Angeles, CA 90028",
+      "work_entries": [
+        {
+          "title": "Registered Nurse",
+          "organization": "Los Angeles Medical Center",
+          "from_year": 2003,
+          "to_year": null,
+          "description": "Provide patient care, administer medications, and support families during medical treatment."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Associate Degree in Nursing",
+          "institution": "Los Angeles Community College",
+          "from_year": 2001,
+          "to_year": 2003,
+          "description": "Completed nursing program with clinical rotations."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "mike"
+      ],
+      "children": [
+        "cindy",
+        "jan",
+        "marcia"
+      ]
+    }
+  },
+  {
+    "id": "mike",
+    "data": {
+      "first_name": "Mike",
+      "last_name": "Brady",
+      "preferred_name": "Mike",
+      "gender": "M",
+      "birthday": "1975-09-18",
+      "birth_place": "Los Angeles, CA",
+      "bio": "Mike is a devoted father who recently married Carol, creating a blended family with his three sons and Carol's three daughters. He works as an architect and is passionate about design and construction. Mike is adjusting to his new role as a stepfather and is working to create a harmonious blended family. He enjoys spending time with all of his children and values the relationships they are building together.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Architect",
+      "employer": "Los Angeles Architecture Firm",
+      "email": "mike.brady@email.com",
+      "phone": "(310) 555-1005",
+      "address": "1234 Family Way, Los Angeles, CA 90028",
+      "work_entries": [
+        {
+          "title": "Senior Architect",
+          "organization": "Los Angeles Architecture Firm",
+          "from_year": 2005,
+          "to_year": null,
+          "description": "Design buildings, create architectural drawings, and coordinate with construction teams."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Master of Architecture",
+          "institution": "University of California, Los Angeles",
+          "from_year": 1997,
+          "to_year": 2000,
+          "description": "Earned master's degree in architecture with focus on sustainable design."
+        },
+        {
+          "title": "Bachelor of Science in Architecture",
+          "institution": "California State University, Los Angeles",
+          "from_year": 1993,
+          "to_year": 1997,
+          "description": "Graduated with focus on architectural design."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "carol"
+      ],
+      "children": [
+        "peter",
+        "bobby",
+        "greg"
+      ]
+    }
+  },
+  {
+    "id": "peter",
+    "data": {
+      "first_name": "Peter",
+      "last_name": "Brady",
+      "preferred_name": "Peter",
+      "gender": "M",
+      "birthday": "2004-02-14",
+      "birth_place": "Los Angeles, CA",
+      "bio": "Peter is one of Mike's three sons, a friendly and outgoing teenager who is adjusting to his new blended family. He enjoys sports, especially football and basketball, and is a good student. Peter is building relationships with his new stepsisters and values the expanded family dynamic.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Student",
+      "employer": null,
+      "email": "peter.brady@email.com",
+      "phone": "(310) 555-1006",
+      "address": "1234 Family Way, Los Angeles, CA 90028",
+      "work_entries": [],
+      "education_entries": [
+        {
+          "title": "10th Grade",
+          "institution": "Los Angeles High School",
+          "from_year": 2024,
+          "to_year": 2025,
+          "description": "Currently in 10th grade, enjoying sports and social studies classes."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "mike",
+        "carol"
+      ],
+      "siblings": [
+        "bobby",
+        "greg",
+        "cindy",
+        "jan",
+        "marcia"
+      ]
+    }
+  },
+  {
+    "id": "bobby",
+    "data": {
+      "first_name": "Bobby",
+      "last_name": "Brady",
+      "preferred_name": "Bobby",
+      "gender": "M",
+      "birthday": "2006-07-22",
+      "birth_place": "Los Angeles, CA",
+      "bio": "Bobby is one of Mike's three sons, a playful and energetic teenager who is adjusting to his new blended family. He enjoys playing video games, sports, and spending time with friends. Bobby is building relationships with his new stepsisters and values the expanded family dynamic.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Student",
+      "employer": null,
+      "email": "bobby.brady@email.com",
+      "phone": "(310) 555-1007",
+      "address": "1234 Family Way, Los Angeles, CA 90028",
+      "work_entries": [],
+      "education_entries": [
+        {
+          "title": "8th Grade",
+          "institution": "Los Angeles Middle School",
+          "from_year": 2024,
+          "to_year": 2025,
+          "description": "Currently in 8th grade, enjoying sports and technology classes."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "mike",
+        "carol"
+      ],
+      "siblings": [
+        "peter",
+        "greg",
+        "cindy",
+        "jan",
+        "marcia"
+      ]
+    }
+  },
+  {
+    "id": "greg",
+    "data": {
+      "first_name": "Greg",
+      "last_name": "Brady",
+      "preferred_name": "Greg",
+      "gender": "M",
+      "birthday": "2002-12-05",
+      "birth_place": "Los Angeles, CA",
+      "bio": "Greg is the oldest of Mike's three sons, a responsible and mature young man who is adjusting to his new blended family. He works part-time at a local restaurant while attending college. Greg is building relationships with his new stepsisters and values the expanded family dynamic.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Student / Server",
+      "employer": "Los Angeles Restaurant",
+      "email": "greg.brady@email.com",
+      "phone": "(310) 555-1008",
+      "address": "1234 Family Way, Los Angeles, CA 90028",
+      "work_entries": [
+        {
+          "title": "Server (Part-time)",
+          "organization": "Los Angeles Restaurant",
+          "from_year": 2022,
+          "to_year": null,
+          "description": "Serve customers, take orders, and provide excellent customer service. Part-time position while attending college."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Bachelor of Science in Business",
+          "institution": "California State University, Los Angeles",
+          "from_year": 2020,
+          "to_year": 2024,
+          "description": "Graduated with focus on business management."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "mike",
+        "carol"
+      ],
+      "siblings": [
+        "peter",
+        "bobby",
+        "cindy",
+        "jan",
+        "marcia"
+      ]
+    }
+  }
+]

@@ -1,0 +1,321 @@
+[
+  {
+    "id": "stephanie",
+    "main": true,
+    "data": {
+      "first_name": "Stephanie",
+      "last_name": "Vargas De Los Angeles",
+      "preferred_name": "Stephanie",
+      "gender": "F",
+      "birthday": "1995-08-20",
+      "birth_place": "Santa Monica, CA",
+      "bio": "Stephanie Vargas De Los Angeles comes from a family with a romantic history - her parents Sandra and Jose Luis were high school sweethearts who were Prom King and Queen of Santa Monica High in 1966. She has a close relationship with her brother Stephen, who shares the same full last name. Stephanie works as a marketing professional and is proud of her family's heritage and the love story of her parents. She values the relationships she has with her extended family, including her Aunt Divine and Uncle Fred, who are the only other known members of her extended family.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Marketing Manager",
+      "employer": "Santa Monica Marketing Agency",
+      "email": "stephanie.vargas@email.com",
+      "phone": "(310) 555-1401",
+      "address": "1234 Promenade Blvd, Santa Monica, CA 90401",
+      "work_entries": [
+        {
+          "title": "Marketing Manager",
+          "organization": "Santa Monica Marketing Agency",
+          "from_year": 2019,
+          "to_year": null,
+          "description": "Lead marketing campaigns, manage client relationships, and develop brand strategies."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Bachelor of Arts in Marketing",
+          "institution": "University of California, Los Angeles",
+          "from_year": 2013,
+          "to_year": 2017,
+          "description": "Graduated with focus on marketing and advertising."
+        }
+      ],
+      "social_media": [
+        {
+          "platform": "LinkedIn",
+          "url": "https://linkedin.com/in/stephanievargas"
+        },
+        {
+          "platform": "Instagram",
+          "url": "https://instagram.com/stephanievargas"
+        }
+      ]
+    },
+    "rels": {
+      "parents": [
+        "sandra",
+        "jose-luis"
+      ],
+      "siblings": [
+        "stephen"
+      ]
+    }
+  },
+  {
+    "id": "stephen",
+    "data": {
+      "first_name": "Stephen",
+      "last_name": "Vargas de Los Angeles",
+      "preferred_name": "Stephen",
+      "gender": "M",
+      "birthday": "1993-05-15",
+      "birth_place": "Santa Monica, CA",
+      "bio": "Stephen Vargas de Los Angeles is Stephanie's brother, sharing the same full last name and family heritage. He works as an engineer and is proud of his family's history, especially the romantic story of his parents being Prom King and Queen. Stephen values the relationships he has with his sister and extended family.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Engineer",
+      "employer": "Santa Monica Engineering Firm",
+      "email": "stephen.vargas@email.com",
+      "phone": "(310) 555-1402",
+      "address": "2345 Engineer Way, Santa Monica, CA 90401",
+      "work_entries": [
+        {
+          "title": "Mechanical Engineer",
+          "organization": "Santa Monica Engineering Firm",
+          "from_year": 2017,
+          "to_year": null,
+          "description": "Design mechanical systems, create engineering drawings, and coordinate with manufacturing teams."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Bachelor of Science in Mechanical Engineering",
+          "institution": "University of California, Los Angeles",
+          "from_year": 2011,
+          "to_year": 2015,
+          "description": "Graduated with honors. Focused on mechanical engineering and design."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "sandra",
+        "jose-luis"
+      ],
+      "siblings": [
+        "stephanie"
+      ]
+    }
+  },
+  {
+    "id": "sandra",
+    "data": {
+      "first_name": "Sandra",
+      "last_name": "Vargas De Los Angeles",
+      "preferred_name": "Sandra",
+      "gender": "F",
+      "birthday": "1950-03-10",
+      "birth_place": "Santa Monica, CA",
+      "bio": "Sandra was the Prom Queen of Santa Monica High in 1966, where she met her future husband Jose Luis, who was the Prom King. Their high school romance blossomed into a lifelong love story. Sandra worked as a teacher and dedicated her life to her family and her students. She is proud of her children Stephanie and Stephen and the family traditions they have maintained.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Teacher (Retired)",
+      "employer": "Santa Monica Elementary School",
+      "email": "sandra.vargas@email.com",
+      "phone": "(310) 555-1403",
+      "address": "3456 Promenade Way, Santa Monica, CA 90401",
+      "work_entries": [
+        {
+          "title": "Elementary School Teacher",
+          "organization": "Santa Monica Elementary School",
+          "from_year": 1975,
+          "to_year": 2015,
+          "description": "Taught elementary students, developed lesson plans, and supported student learning for 40 years."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Bachelor of Science in Education",
+          "institution": "University of California, Los Angeles",
+          "from_year": 1968,
+          "to_year": 1972,
+          "description": "Graduated with focus on elementary education."
+        },
+        {
+          "title": "High School Diploma",
+          "institution": "Santa Monica High School",
+          "from_year": 1964,
+          "to_year": 1966,
+          "description": "Graduated as Prom Queen in 1966."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "jose-luis"
+      ],
+      "children": [
+        "stephanie",
+        "stephen"
+      ],
+      "siblings": [
+        "divine"
+      ]
+    }
+  },
+  {
+    "id": "jose-luis",
+    "data": {
+      "first_name": "Jose",
+      "last_name": "Luis Vargas De Los Angeles",
+      "preferred_name": "Jose Luis",
+      "gender": "M",
+      "birthday": "1949-11-22",
+      "birth_place": "Santa Monica, CA",
+      "bio": "Jose Luis was the Prom King of Santa Monica High in 1966, where he met his future wife Sandra, who was the Prom Queen. Their high school romance blossomed into a lifelong love story. Jose Luis worked as a construction supervisor and provided for his family throughout his career. He is proud of his children Stephanie and Stephen and the family traditions they have maintained.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Construction Supervisor (Retired)",
+      "employer": "Santa Monica Construction Co.",
+      "email": "jose.luis.vargas@email.com",
+      "phone": "(310) 555-1404",
+      "address": "3456 Promenade Way, Santa Monica, CA 90401",
+      "work_entries": [
+        {
+          "title": "Construction Supervisor",
+          "organization": "Santa Monica Construction Co.",
+          "from_year": 1970,
+          "to_year": 2014,
+          "description": "Supervised construction projects, managed crews, and ensured safety compliance for 44 years."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "High School Diploma",
+          "institution": "Santa Monica High School",
+          "from_year": 1963,
+          "to_year": 1966,
+          "description": "Graduated as Prom King in 1966."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "sandra"
+      ],
+      "children": [
+        "stephanie",
+        "stephen"
+      ],
+      "siblings": [
+        "fred"
+      ]
+    }
+  },
+  {
+    "id": "divine",
+    "data": {
+      "first_name": "Divine",
+      "last_name": "Vargas",
+      "preferred_name": "Aunt Divine",
+      "nicknames": "Aunt Divine",
+      "gender": "F",
+      "birthday": "1952-07-18",
+      "birth_place": "Santa Monica, CA",
+      "bio": "Divine is Stephanie and Stephen's aunt, Sandra's sister. She is one of the only other known members of the extended family. Divine works as a nurse and maintains close relationships with her sister's family. She is known for her warm personality and her dedication to her family.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Registered Nurse",
+      "employer": "Santa Monica Medical Center",
+      "email": "divine.vargas@email.com",
+      "phone": "(310) 555-1405",
+      "address": "4567 Medical Way, Santa Monica, CA 90401",
+      "work_entries": [
+        {
+          "title": "Registered Nurse",
+          "organization": "Santa Monica Medical Center",
+          "from_year": 1975,
+          "to_year": null,
+          "description": "Provide patient care, administer medications, and support families during medical treatment."
+        }
+      ],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "fred"
+      ],
+      "siblings": [
+        "sandra"
+      ]
+    }
+  },
+  {
+    "id": "fred",
+    "data": {
+      "first_name": "Fred",
+      "last_name": "Vargas",
+      "preferred_name": "Uncle Fred",
+      "nicknames": "Uncle Fred",
+      "gender": "M",
+      "birthday": "1950-12-05",
+      "birth_place": "Santa Monica, CA",
+      "bio": "Fred is Stephanie and Stephen's uncle, married to Divine and brother-in-law to Jose Luis. He is one of the only other known members of the extended family. Fred works as a mechanic and maintains close relationships with his extended family. He is known for his sense of humor and his willingness to help family members.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Automotive Mechanic",
+      "employer": "Santa Monica Auto Repair",
+      "email": "fred.vargas@email.com",
+      "phone": "(310) 555-1406",
+      "address": "4567 Medical Way, Santa Monica, CA 90401",
+      "work_entries": [
+        {
+          "title": "Automotive Mechanic",
+          "organization": "Santa Monica Auto Repair",
+          "from_year": 1975,
+          "to_year": null,
+          "description": "Diagnose and repair vehicles, perform routine maintenance, and ensure customer satisfaction."
+        }
+      ],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "divine"
+      ],
+      "siblings": [
+        "jose-luis"
+      ]
+    }
+  }
+]

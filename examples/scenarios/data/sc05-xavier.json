@@ -1,0 +1,726 @@
+[
+  {
+    "id": "xavier",
+    "main": true,
+    "data": {
+      "first_name": "Xavier",
+      "last_name": "Thompson",
+      "preferred_name": "Xavier",
+      "gender": "M",
+      "birthday": "1990-09-12",
+      "birth_place": "Chicago, IL",
+      "bio": "Xavier is the middle child in a large family of seven siblings, which has taught him the value of sharing, cooperation, and finding his own voice in a crowded household. Growing up with six siblings - Ben, Fil, Fannie, Doris, Laura, and Boris - Xavier developed strong relationships with each of them while also learning to be independent. He works as a project manager for a technology company, where he uses his natural leadership skills and ability to coordinate multiple tasks simultaneously. Xavier enjoys playing basketball, reading science fiction novels, and organizing family gatherings. He maintains close relationships with his parents Sandy and Casey, and appreciates the unique family dynamic that comes from having so many siblings.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Project Manager",
+      "employer": "Tech Solutions Inc.",
+      "email": "xavier.thompson@email.com",
+      "phone": "(312) 555-0501",
+      "address": "1234 Tech Blvd, Chicago, IL 60601",
+      "work_entries": [
+        {
+          "title": "Senior Project Manager",
+          "organization": "Tech Solutions Inc.",
+          "from_year": 2018,
+          "to_year": null,
+          "description": "Lead technology projects, coordinate teams, manage timelines and budgets, and ensure successful project delivery."
+        },
+        {
+          "title": "Project Manager",
+          "organization": "Digital Innovations",
+          "from_year": 2015,
+          "to_year": 2018,
+          "description": "Managed software development projects, coordinated with stakeholders, and tracked project progress."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Master of Business Administration",
+          "institution": "Northwestern University",
+          "from_year": 2013,
+          "to_year": 2015,
+          "description": "Earned MBA with focus on project management and technology. Graduated with honors."
+        },
+        {
+          "title": "Bachelor of Science in Business",
+          "institution": "University of Illinois",
+          "from_year": 2008,
+          "to_year": 2012,
+          "description": "Graduated with focus on business management and information systems."
+        }
+      ],
+      "social_media": [
+        {
+          "platform": "LinkedIn",
+          "url": "https://linkedin.com/in/xavierthompson"
+        }
+      ]
+    },
+    "rels": {
+      "parents": [
+        "sandy",
+        "casey"
+      ],
+      "siblings": [
+        "ben",
+        "fil",
+        "fannie",
+        "doris",
+        "laura",
+        "boris"
+      ]
+    }
+  },
+  {
+    "id": "sandy",
+    "data": {
+      "first_name": "Sandy",
+      "last_name": "Thompson",
+      "preferred_name": "Sandy",
+      "gender": "F",
+      "birthday": "1965-06-20",
+      "birth_place": "Milwaukee, WI",
+      "bio": "Sandy is a devoted mother of seven children who has dedicated her life to raising her large family. She works as a nurse and balances her demanding career with managing a household full of children. Sandy is known for her patience, organizational skills, and her ability to keep track of everyone's schedules and activities. She enjoys cooking large family meals, reading, and spending time with her children. Sandy comes from a close-knit family and maintains strong relationships with her parents Andy and Sally Anne.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Registered Nurse",
+      "employer": "Chicago General Hospital",
+      "email": "sandy.thompson@email.com",
+      "phone": "(312) 555-0502",
+      "address": "5678 Family Lane, Chicago, IL 60601",
+      "work_entries": [
+        {
+          "title": "Registered Nurse",
+          "organization": "Chicago General Hospital",
+          "from_year": 1988,
+          "to_year": null,
+          "description": "Provide patient care, administer medications, and support families. Known for compassionate care and attention to detail."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Associate Degree in Nursing",
+          "institution": "Milwaukee Community College",
+          "from_year": 1986,
+          "to_year": 1988,
+          "description": "Completed nursing program with clinical rotations."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "casey"
+      ],
+      "children": [
+        "xavier",
+        "ben",
+        "fil",
+        "fannie",
+        "doris",
+        "laura",
+        "boris"
+      ],
+      "parents": [
+        "andy-sandy",
+        "sally-anne"
+      ]
+    }
+  },
+  {
+    "id": "casey",
+    "data": {
+      "first_name": "Casey",
+      "last_name": "Thompson",
+      "preferred_name": "Casey",
+      "gender": "M",
+      "birthday": "1963-11-15",
+      "birth_place": "Detroit, MI",
+      "bio": "Casey is a hardworking father of seven who works as a construction supervisor. He takes pride in providing for his large family and enjoys spending time with all of his children. Casey is known for his strong work ethic, his sense of humor, and his ability to fix anything around the house. He enjoys coaching his children's sports teams, working on home improvement projects, and watching football. Casey comes from a family where his father was also named Andy, and he maintains close relationships with his family.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Construction Supervisor",
+      "employer": "Chicago Construction Co.",
+      "email": "casey.thompson@email.com",
+      "phone": "(312) 555-0503",
+      "address": "5678 Family Lane, Chicago, IL 60601",
+      "work_entries": [
+        {
+          "title": "Construction Supervisor",
+          "organization": "Chicago Construction Co.",
+          "from_year": 1990,
+          "to_year": null,
+          "description": "Supervise construction projects, manage crews, ensure safety compliance, and coordinate with clients."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "High School Diploma",
+          "institution": "Detroit High School",
+          "from_year": 1979,
+          "to_year": 1981,
+          "description": "Graduated with focus on vocational training in construction trades."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "sandy"
+      ],
+      "children": [
+        "xavier",
+        "ben",
+        "fil",
+        "fannie",
+        "doris",
+        "laura",
+        "boris"
+      ],
+      "parents": [
+        "andy-casey",
+        "grandma-casey"
+      ]
+    }
+  },
+  {
+    "id": "ben",
+    "data": {
+      "first_name": "Benjamin",
+      "last_name": "Thompson",
+      "preferred_name": "Ben",
+      "gender": "M",
+      "birthday": "1988-03-10",
+      "birth_place": "Chicago, IL",
+      "bio": "Ben is the oldest of the Thompson siblings and works as an engineer. He has always been a role model for his younger siblings and enjoys helping them with schoolwork and life advice. Ben is married and has started his own family, but maintains close relationships with all of his siblings.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Engineer",
+      "employer": "Chicago Engineering Firm",
+      "email": "ben.thompson@email.com",
+      "phone": "(312) 555-0504",
+      "address": "9012 Engineer Way, Chicago, IL 60601",
+      "work_entries": [
+        {
+          "title": "Mechanical Engineer",
+          "organization": "Chicago Engineering Firm",
+          "from_year": 2012,
+          "to_year": null,
+          "description": "Design mechanical systems, create engineering drawings, and coordinate with manufacturing teams."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Bachelor of Science in Mechanical Engineering",
+          "institution": "University of Illinois",
+          "from_year": 2006,
+          "to_year": 2010,
+          "description": "Graduated with honors. Focused on mechanical engineering and design."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "sandy",
+        "casey"
+      ],
+      "siblings": [
+        "xavier",
+        "fil",
+        "fannie",
+        "doris",
+        "laura",
+        "boris"
+      ]
+    }
+  },
+  {
+    "id": "fil",
+    "data": {
+      "first_name": "Philip",
+      "last_name": "Thompson",
+      "preferred_name": "Fil",
+      "nicknames": "Fil",
+      "gender": "M",
+      "birthday": "1989-07-22",
+      "birth_place": "Chicago, IL",
+      "bio": "Fil is one of Xavier's older brothers who works as a teacher. He is passionate about education and enjoys working with children. Fil maintains close relationships with his siblings and often helps organize family events.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Teacher",
+      "employer": "Chicago Elementary School",
+      "email": "fil.thompson@email.com",
+      "phone": "(312) 555-0505",
+      "address": "3456 School St, Chicago, IL 60601",
+      "work_entries": [
+        {
+          "title": "Elementary School Teacher",
+          "organization": "Chicago Elementary School",
+          "from_year": 2013,
+          "to_year": null,
+          "description": "Teach elementary students, develop lesson plans, and support student learning."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Bachelor of Science in Education",
+          "institution": "Illinois State University",
+          "from_year": 2007,
+          "to_year": 2011,
+          "description": "Graduated with focus on elementary education."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "sandy",
+        "casey"
+      ],
+      "siblings": [
+        "xavier",
+        "ben",
+        "fannie",
+        "doris",
+        "laura",
+        "boris"
+      ]
+    }
+  },
+  {
+    "id": "fannie",
+    "data": {
+      "first_name": "Frances",
+      "last_name": "Thompson",
+      "preferred_name": "Fannie",
+      "nicknames": "Fannie",
+      "gender": "F",
+      "birthday": "1991-12-05",
+      "birth_place": "Chicago, IL",
+      "bio": "Fannie is one of Xavier's sisters who works as a nurse, following in her mother's footsteps. She is passionate about healthcare and enjoys helping others. Fannie maintains close relationships with all of her siblings and often organizes family gatherings.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Registered Nurse",
+      "employer": "Chicago Medical Center",
+      "email": "fannie.thompson@email.com",
+      "phone": "(312) 555-0506",
+      "address": "4567 Medical Way, Chicago, IL 60601",
+      "work_entries": [
+        {
+          "title": "Registered Nurse",
+          "organization": "Chicago Medical Center",
+          "from_year": 2014,
+          "to_year": null,
+          "description": "Provide patient care, administer medications, and support families during medical treatment."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Bachelor of Science in Nursing",
+          "institution": "University of Illinois",
+          "from_year": 2010,
+          "to_year": 2014,
+          "description": "Graduated with honors. Focused on nursing and patient care."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "sandy",
+        "casey"
+      ],
+      "siblings": [
+        "xavier",
+        "ben",
+        "fil",
+        "doris",
+        "laura",
+        "boris"
+      ]
+    }
+  },
+  {
+    "id": "doris",
+    "data": {
+      "first_name": "Doris",
+      "last_name": "Thompson",
+      "preferred_name": "Doris",
+      "gender": "F",
+      "birthday": "1993-05-18",
+      "birth_place": "Chicago, IL",
+      "bio": "Doris is one of Xavier's younger sisters who works as a graphic designer. She is creative and enjoys working on design projects. Doris maintains close relationships with her siblings and often helps with family events and celebrations.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Graphic Designer",
+      "employer": "Chicago Design Studio",
+      "email": "doris.thompson@email.com",
+      "phone": "(312) 555-0507",
+      "address": "5678 Design Ave, Chicago, IL 60601",
+      "work_entries": [
+        {
+          "title": "Graphic Designer",
+          "organization": "Chicago Design Studio",
+          "from_year": 2016,
+          "to_year": null,
+          "description": "Create visual designs for clients, develop brand identities, and design marketing materials."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Bachelor of Fine Arts in Graphic Design",
+          "institution": "School of the Art Institute of Chicago",
+          "from_year": 2011,
+          "to_year": 2015,
+          "description": "Graduated with focus on graphic design and visual communication."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "sandy",
+        "casey"
+      ],
+      "siblings": [
+        "xavier",
+        "ben",
+        "fil",
+        "fannie",
+        "laura",
+        "boris"
+      ]
+    }
+  },
+  {
+    "id": "laura",
+    "data": {
+      "first_name": "Laura",
+      "last_name": "Thompson",
+      "preferred_name": "Laura",
+      "gender": "F",
+      "birthday": "1995-09-25",
+      "birth_place": "Chicago, IL",
+      "bio": "Laura is one of Xavier's younger sisters who is currently studying to become a veterinarian. She has always loved animals and is passionate about animal welfare. Laura maintains close relationships with all of her siblings and often helps with family activities.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Veterinary Student",
+      "employer": null,
+      "email": "laura.thompson@email.com",
+      "phone": "(312) 555-0508",
+      "address": "6789 Student Way, Chicago, IL 60601",
+      "work_entries": [],
+      "education_entries": [
+        {
+          "title": "Doctor of Veterinary Medicine",
+          "institution": "University of Illinois College of Veterinary Medicine",
+          "from_year": 2019,
+          "to_year": 2025,
+          "description": "Currently pursuing DVM degree. Expected graduation 2025. Focus on small animal medicine."
+        },
+        {
+          "title": "Bachelor of Science in Animal Science",
+          "institution": "University of Illinois",
+          "from_year": 2013,
+          "to_year": 2017,
+          "description": "Graduated with honors. Focused on animal science and pre-veterinary studies."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "sandy",
+        "casey"
+      ],
+      "siblings": [
+        "xavier",
+        "ben",
+        "fil",
+        "fannie",
+        "doris",
+        "boris"
+      ]
+    }
+  },
+  {
+    "id": "boris",
+    "data": {
+      "first_name": "Boris",
+      "last_name": "Thompson",
+      "preferred_name": "Boris",
+      "gender": "M",
+      "birthday": "1997-02-14",
+      "birth_place": "Chicago, IL",
+      "bio": "Boris is the youngest of the Thompson siblings and is currently working as a software developer. He is tech-savvy and enjoys coding and working on technology projects. Boris maintains close relationships with all of his siblings and often helps them with technology-related questions.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Software Developer",
+      "employer": "Chicago Tech Startup",
+      "email": "boris.thompson@email.com",
+      "phone": "(312) 555-0509",
+      "address": "7890 Code St, Chicago, IL 60601",
+      "work_entries": [
+        {
+          "title": "Software Developer",
+          "organization": "Chicago Tech Startup",
+          "from_year": 2019,
+          "to_year": null,
+          "description": "Develop web applications, write code, and collaborate with development teams."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Bachelor of Science in Computer Science",
+          "institution": "University of Illinois",
+          "from_year": 2015,
+          "to_year": 2019,
+          "description": "Graduated with focus on software engineering and web development."
+        }
+      ],
+      "social_media": [
+        {
+          "platform": "GitHub",
+          "url": "https://github.com/boristhompson"
+        }
+      ]
+    },
+    "rels": {
+      "parents": [
+        "sandy",
+        "casey"
+      ],
+      "siblings": [
+        "xavier",
+        "ben",
+        "fil",
+        "fannie",
+        "doris",
+        "laura"
+      ]
+    }
+  },
+  {
+    "id": "andy-sandy",
+    "data": {
+      "first_name": "Andrew",
+      "last_name": "Miller",
+      "preferred_name": "Andy",
+      "gender": "M",
+      "birthday": "1940-04-10",
+      "birth_place": "Milwaukee, WI",
+      "death_date": "2010-12-15",
+      "death_place": "Milwaukee, WI",
+      "deceased": true,
+      "bio": "Andy was Sandy's father, a hardworking factory worker who provided for his family. He was known for his strong work ethic and his love of family. Andy passed away in 2010, leaving behind cherished memories.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Factory Worker (Retired)",
+      "employer": "Milwaukee Manufacturing",
+      "email": null,
+      "phone": null,
+      "address": null,
+      "work_entries": [
+        {
+          "title": "Factory Worker",
+          "organization": "Milwaukee Manufacturing",
+          "from_year": 1960,
+          "to_year": 2000,
+          "description": "Worked in manufacturing, operated machinery, and maintained production lines."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "High School Diploma",
+          "institution": "Milwaukee High School",
+          "from_year": 1956,
+          "to_year": 1958,
+          "description": "Graduated with focus on vocational training."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "sally-anne"
+      ],
+      "children": [
+        "sandy"
+      ]
+    }
+  },
+  {
+    "id": "sally-anne",
+    "data": {
+      "first_name": "Sally",
+      "last_name": "Miller",
+      "preferred_name": "Sally Anne",
+      "nicknames": "Sally Anne",
+      "gender": "F",
+      "birthday": "1942-08-20",
+      "birth_place": "Milwaukee, WI",
+      "death_date": "2012-05-10",
+      "death_place": "Milwaukee, WI",
+      "deceased": true,
+      "bio": "Sally Anne was Sandy's mother, a devoted homemaker who dedicated her life to her family. She was known for her delicious cooking and her warm personality. Sally Anne passed away in 2012, leaving behind cherished memories.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Homemaker",
+      "employer": null,
+      "email": null,
+      "phone": null,
+      "address": null,
+      "work_entries": [],
+      "education_entries": [
+        {
+          "title": "High School Diploma",
+          "institution": "Milwaukee High School",
+          "from_year": 1958,
+          "to_year": 1960,
+          "description": "Graduated with focus on home economics."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "andy-sandy"
+      ],
+      "children": [
+        "sandy"
+      ]
+    }
+  },
+  {
+    "id": "andy-casey",
+    "data": {
+      "first_name": "Andrew",
+      "last_name": "Thompson",
+      "preferred_name": "Andy",
+      "gender": "M",
+      "birthday": "1938-06-15",
+      "birth_place": "Detroit, MI",
+      "death_date": "2008-09-20",
+      "death_place": "Detroit, MI",
+      "deceased": true,
+      "bio": "Andy was Casey's father, also named Andy, who worked as a machinist. He was known for his craftsmanship and his love of family. Andy passed away in 2008, leaving behind a legacy of hard work and dedication.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Machinist (Retired)",
+      "employer": "Detroit Manufacturing",
+      "email": null,
+      "phone": null,
+      "address": null,
+      "work_entries": [
+        {
+          "title": "Machinist",
+          "organization": "Detroit Manufacturing",
+          "from_year": 1960,
+          "to_year": 1998,
+          "description": "Operated precision machinery, created custom parts, and trained apprentices."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "High School Diploma",
+          "institution": "Detroit High School",
+          "from_year": 1954,
+          "to_year": 1956,
+          "description": "Graduated with focus on vocational training in machine shop."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "grandma-casey"
+      ],
+      "children": [
+        "casey"
+      ]
+    }
+  },
+  {
+    "id": "grandma-casey",
+    "data": {
+      "first_name": "Unknown",
+      "last_name": "Thompson",
+      "preferred_name": "Grandma",
+      "gender": "F",
+      "birthday": "1940-10-05",
+      "birth_place": "Detroit, MI",
+      "bio": "Casey's mother, whose name Xavier doesn't remember, was a devoted homemaker who dedicated her life to her family. She was known for her kindness and her love of family.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Homemaker",
+      "employer": null,
+      "email": null,
+      "phone": null,
+      "address": null,
+      "work_entries": [],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "andy-casey"
+      ],
+      "children": [
+        "casey"
+      ]
+    }
+  }
+]

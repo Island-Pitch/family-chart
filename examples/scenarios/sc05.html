@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Scenario sc05 - Xavier</title>
+  <link rel="shortcut icon" type="image/svg" href="/examples/logo.svg">
+  <script src="https://unpkg.com/d3@7"></script>
+  <link rel="stylesheet" href="/src/styles/family-chart.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Figtree', 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f5f5;
+    }
+    .container {
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .nav {
+      background: white;
+      padding: 15px 20px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .nav a {
+      color: #03a9f4;
+      text-decoration: none;
+      margin-right: 15px;
+      padding: 5px 10px;
+      border-radius: 4px;
+      transition: background 0.2s;
+    }
+    .nav a:hover {
+      background: #e3f2fd;
+    }
+    .nav-links {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .nav-links a {
+      white-space: nowrap;
+    }
+    
+    /* Tree Section - Full Width with Full Height */
+    .tree-section {
+      background: white;
+      padding: 0;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+      position: relative;
+      height: calc(100vh - 200px);
+      min-height: 600px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .tree-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+      border-bottom: 2px solid #03a9f4;
+      flex-shrink: 0;
+      background: white;
+      z-index: 10;
+    }
+    .tree-header h2 {
+      margin: 0;
+      color: #333;
+      font-size: 1.2em;
+    }
+    #FamilyChart {
+      flex: 1;
+      width: 100%;
+      height: 100%;
+      min-height: 0;
+      background-color: #ffffff;
+      border: none;
+      border-radius: 0;
+      overflow: hidden;
+    }
+    
+    /* Scenario Text - Fixed in Corner */
+    .scenario-text-corner {
+      position: fixed;
+      top: 80px;
+      right: 20px;
+      width: 350px;
+      max-height: calc(100vh - 120px);
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .scenario-text-header {
+      padding: 12px 15px;
+      border-bottom: 2px solid #03a9f4;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #f9f9f9;
+      flex-shrink: 0;
+    }
+    .scenario-text-header h3 {
+      margin: 0;
+      color: #333;
+      font-size: 1em;
+      font-weight: 600;
+    }
+    .scenario-text-toggle {
+      background: transparent;
+      border: none;
+      font-size: 18px;
+      color: #666;
+      cursor: pointer;
+      padding: 0;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+      transition: background 0.2s;
+    }
+    .scenario-text-toggle:hover {
+      background: #e0e0e0;
+      color: #333;
+    }
+    .scenario-text-body {
+      padding: 15px;
+      overflow-y: auto;
+      flex: 1;
+    }
+    .scenario-text {
+      white-space: pre-wrap;
+      font-family: 'Courier New', monospace;
+      background: #f9f9f9;
+      padding: 12px;
+      border-radius: 4px;
+      border-left: 4px solid #03a9f4;
+      font-size: 12px;
+      line-height: 1.5;
+      color: #333;
+      margin: 0;
+    }
+    .scenario-text-corner.collapsed {
+      width: auto;
+      height: auto;
+    }
+    .scenario-text-corner.collapsed .scenario-text-body {
+      display: none;
+    }
+    .scenario-text-corner.collapsed .scenario-text-header {
+      border-bottom: none;
+    }
+    
+    /* JSON Section - Below Tree */
+    .json-section {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .json-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #4caf50;
+    }
+    .json-header h2 {
+      margin: 0;
+      color: #333;
+      font-size: 1.2em;
+    }
+    .json-toggle {
+      background: #4caf50;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: background 0.2s;
+    }
+    .json-toggle:hover {
+      background: #45a049;
+    }
+    .json-content {
+      font-family: 'Courier New', monospace;
+      font-size: 11px;
+      background: #f9f9f9;
+      padding: 15px;
+      border-radius: 4px;
+      border-left: 4px solid #4caf50;
+      line-height: 1.4;
+      max-height: 600px;
+      overflow-y: auto;
+      white-space: pre;
+      color: #333;
+    }
+    .json-content.collapsed {
+      display: none;
+    }
+    
+    .loading {
+      color: #666;
+      font-style: italic;
+      text-align: center;
+      padding: 20px;
+    }
+    .error {
+      color: #d32f2f;
+      background: #ffebee;
+      padding: 15px;
+      border-radius: 4px;
+      border-left: 4px solid #d32f2f;
+    }
+    
+      @media (max-width: 1024px) {
+      .tree-section {
+        height: calc(100vh - 180px);
+        min-height: 500px;
+      }
+      .scenario-text-corner {
+        width: 300px;
+        top: 70px;
+        right: 10px;
+        max-height: calc(100vh - 100px);
+      }
+    }
+    @media (max-width: 768px) {
+      .scenario-text-corner {
+        width: 280px;
+        font-size: 11px;
+      }
+    }
+    
+    /* Figma-Aligned Card Styling */
+    .f3 div.card {
+      cursor: pointer;
+      pointer-events: auto;
+      color: #000;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      transform: translate(-50%, -40px);
+      width: 80px;
+    }
+    .f3 div.card .card-avatar {
+      border-radius: 50%;
+      width: 80px;
+      height: 80px;
+      position: relative;
+      box-shadow: -8px 4px 4px 0px rgba(0,0,0,0.25);
+      box-sizing: border-box;
+    }
+    .f3 div.card.card-deceased .card-avatar-deceased-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      pointer-events: none;
+      background: radial-gradient(
+        circle at 30% 30%,
+        rgba(0, 0, 0, 0.1) 0%,
+        rgba(0, 0, 0, 0.5) 60%,
+        rgba(0, 0, 0, 0.85) 100%
+      );
+      z-index: 1;
+      mix-blend-mode: multiply;
+      opacity: 1 !important;
+      display: block !important;
+    }
+    .f3 div.card .card-avatar-white-ring {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      background-color: #ffffff;
+      box-sizing: border-box;
+      pointer-events: none;
+      z-index: 2;
+    }
+    .f3 div.card .card-avatar-inner {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background-color: #e5eaef;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      box-sizing: border-box;
+      z-index: 3;
+    }
+    .f3 div.card .card-initials {
+      font-family: 'Roboto', 'Arial', sans-serif;
+      font-weight: 500;
+      font-size: 24px;
+      color: #3b4654;
+      text-align: center;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      line-height: normal;
+      white-space: nowrap;
+    }
+    .f3 div.card .card-avatar-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      display: block;
+      min-width: 64px;
+      min-height: 64px;
+    }
+    .f3 div.card .card-label {
+      position: absolute;
+      top: 86px;
+      left: 50%;
+      transform: translateX(-50%);
+      transform-origin: center;
+      background-color: #ffffff;
+      color: #1f2937;
+      border-radius: 13px;
+      padding: 0 10px;
+      min-height: 26px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: -8px 4px 4px 0px rgba(0,0,0,0.25);
+      font-family: 'Roboto', 'Arial', sans-serif;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 17px;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 150px;
+      min-width: fit-content;
+      box-sizing: border-box;
+    }
+    .f3 div.card.card-male .card-avatar {
+      border-color: #03a9f4 !important;
+    }
+    .f3 div.card.card-female .card-avatar {
+      border-color: #e91e63 !important;
+    }
+    .f3 div.card.card-nonbin .card-avatar {
+      border-color: #FFD700 !important;
+    }
+    .f3 div.card.card-genderless .card-avatar {
+      border-color: #d1d1d6 !important;
+    }
+    .f3 div.card.card-main .card-avatar {
+      box-shadow: 0 0 20px 8px rgba(147, 51, 234, 0.6), 0 0 40px 12px rgba(147, 51, 234, 0.4);
+    }
+    .f3 div.card.card-main .card-label {
+      box-shadow: 0 0 15px 6px rgba(147, 51, 234, 0.5), 0 0 30px 10px rgba(147, 51, 234, 0.3);
+    }
+    .f3 div.card:hover .card-avatar {
+      transform: scale(1.05);
+      transition: transform 0.2s ease-in-out;
+      box-shadow: -8px 4px 8px 0px rgba(0,0,0,0.35);
+    }
+    .f3 div.card.card-main:hover .card-avatar {
+      box-shadow: 0 0 25px 10px rgba(147, 51, 234, 0.7), 0 0 50px 15px rgba(147, 51, 234, 0.5);
+    }
+    .f3 div.card:hover .card-label {
+      transform: translateX(-50%) scale(1.05);
+      transform-origin: center;
+      box-shadow: -8px 4px 8px 0px rgba(0,0,0,0.35);
+      transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    }
+    .f3 div.card.card-main:hover .card-label {
+      box-shadow: 0 0 20px 8px rgba(147, 51, 234, 0.6), 0 0 40px 12px rgba(147, 51, 234, 0.4);
+    }
+    .f3 div.card > div {
+      transition: transform 0.2s ease-in-out;
+    }
+    .f3 svg .link {
+      stroke: #090909 !important;
+      stroke-width: 6px !important;
+      fill: none !important;
+      stroke-linecap: round !important;
+      stroke-linejoin: round !important;
+      transition: stroke-width 0.2s ease-in-out !important;
+    }
+    .f3 svg .link[data-link-type="spouse"] {
+      stroke: #AEB8C7 !important;
+    }
+    .f3 svg .link[data-link-type="parent-child"] {
+      stroke: #090909 !important;
+    }
+    .f3 svg .link.edge--adopted {
+      stroke: #090909 !important;
+      stroke-width: 6px !important;
+      stroke-dasharray: 12 12 !important;
+      stroke-linecap: round !important;
+      stroke-linejoin: round !important;
+    }
+    .f3 svg .link:hover {
+      stroke-width: 8px !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="nav">
+      <a href="index.html">← Back to Scenarios</a>
+      <span class="nav-links" id="nav-links"></span>
+    </div>
+    
+    <!-- Tree Section - Full Width -->
+    <div class="tree-section">
+      <div class="tree-header">
+        <h2>Family Tree</h2>
+      </div>
+      <div id="FamilyChart" class="f3"></div>
+    </div>
+    
+    <!-- Scenario Text - Fixed in Corner -->
+    <div class="scenario-text-corner" id="scenario-text-corner">
+      <div class="scenario-text-header">
+        <h3>Scenario Text</h3>
+        <button class="scenario-text-toggle" id="text-toggle" aria-label="Toggle text">−</button>
+      </div>
+      <div class="scenario-text-body">
+        <div class="scenario-text" id="scenario-text">
+          <div class="loading">Loading scenario text...</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- JSON Section - Below Tree -->
+    <div class="json-section">
+      <div class="json-header">
+        <h2>Source Data (JSON)</h2>
+        <button class="json-toggle" id="json-toggle">Toggle JSON</button>
+      </div>
+      <div class="json-content" id="json-data">
+        <div class="loading">Loading JSON data...</div>
+      </div>
+    </div>
+  </div>
+
+
+  <script type="module">
+    import f3 from '../../src/index.ts';
+    import { transformScenarioData, createCardRenderer, createStepsiblingModifier, configureChartSpacing, DEFAULT_CHART_SPACING } from '../../src/utils/family-chart-utils.js';
+    import { initializeAdvancedDecorations } from '../../src/utils/family-chart-decorations.js';
+    import { extendChart } from '../../src/utils/chart-extensions.js';
+
+    const SCENARIO_ID = 'sc05';
+    const SCENARIO_NAME = 'Xavier';
+    const JSON_FILE = 'sc05-xavier.json';
+    const SNIPPET_FILE = 'sc05-Xavier.txt';
+
+    // Scenario text corner toggle
+    const textCorner = document.getElementById('scenario-text-corner');
+    const textToggle = document.getElementById('text-toggle');
+    const jsonToggle = document.getElementById('json-toggle');
+    const jsonContent = document.getElementById('json-data');
+
+    let textExpanded = true;
+    textToggle.addEventListener('click', () => {
+      textExpanded = !textExpanded;
+      if (textExpanded) {
+        textCorner.classList.remove('collapsed');
+        textToggle.textContent = '−';
+      } else {
+        textCorner.classList.add('collapsed');
+        textToggle.textContent = '+';
+      }
+    });
+
+    // JSON toggle functionality
+    let jsonExpanded = true;
+    jsonToggle.addEventListener('click', () => {
+      jsonExpanded = !jsonExpanded;
+      if (jsonExpanded) {
+        jsonContent.classList.remove('collapsed');
+        jsonToggle.textContent = 'Collapse JSON';
+      } else {
+        jsonContent.classList.add('collapsed');
+        jsonToggle.textContent = 'Expand JSON';
+      }
+    });
+
+    // Load scenario text and JSON in parallel for faster loading
+    const loadScenario = async () => {
+      const [snippetRes, jsonRes] = await Promise.allSettled([
+        fetch(`/Scenarios/snippet/${SNIPPET_FILE}`),
+        fetch(`./data/${JSON_FILE}`)
+      ]);
+
+      // Handle snippet loading
+      if (snippetRes.status === 'fulfilled' && snippetRes.value.ok) {
+        const text = await snippetRes.value.text();
+        document.getElementById('scenario-text').textContent = text;
+      } else {
+        const errorMsg = snippetRes.status === 'rejected' 
+          ? snippetRes.reason.message 
+          : `HTTP ${snippetRes.value.status}: ${snippetRes.value.statusText}`;
+        document.getElementById('scenario-text').innerHTML = 
+          `<div class="error">Error loading scenario text: ${errorMsg}</div>`;
+        console.error('Error loading snippet:', snippetRes);
+      }
+
+      // Handle JSON loading
+      if (jsonRes.status === 'fulfilled' && jsonRes.value.ok) {
+        const data = await jsonRes.value.json();
+        document.getElementById('json-data').textContent = JSON.stringify(data, null, 2);
+        const transformed = transformScenarioData(data);
+        createChart(transformed);
+      } else {
+        const errorMsg = jsonRes.status === 'rejected'
+          ? jsonRes.reason.message
+          : `HTTP ${jsonRes.value.status}: ${jsonRes.value.statusText}`;
+        document.getElementById('json-data').innerHTML = 
+          `<div class="error">Error loading JSON: ${errorMsg}</div>`;
+        console.error('Error loading JSON:', jsonRes);
+      }
+    };
+
+    loadScenario();
+
+    function createChart(data) {
+      let f3Chart = f3.createChart('#FamilyChart', data);
+      
+      // Configure spacing using shared utility
+      f3Chart = configureChartSpacing(f3Chart);
+
+      f3Chart.setCardHtml()
+        .setOnCardUpdate(createCardRenderer(f3Chart)());
+
+      // Enable showing siblings of main person
+      f3Chart.setShowSiblingsOfMain(true);
+
+      // Enable showing stepsiblings (children of step-parents) by using modifyTreeHierarchy
+      f3Chart.setModifyTreeHierarchy(createStepsiblingModifier(data));
+
+      // Enable showing stepsiblings (children of step-parents) by increasing progeny depth
+      f3Chart.setProgenyDepth(DEFAULT_CHART_SPACING.progenyDepth);
+
+      // Apply tree extensions (spouses of ancestry nodes, stepsibling parent links)
+      f3Chart = extendChart(f3Chart);
+
+      // Initialize advanced decoration system (relationship decorations, chained links, adoption styling)
+      initializeAdvancedDecorations(f3Chart, data);
+
+      // Find main person or use first person
+      const mainPerson = data.find(p => p.main) || data[0];
+      if (mainPerson) {
+        f3Chart.updateMainId(mainPerson.id);
+      }
+
+      f3Chart.updateTree({ initial: true });
+    }
+
+    // Navigation links - all 25 scenarios
+    const scenarios = [
+      { id: 'sc01', name: 'Marcos' },
+      { id: 'sc02', name: 'Eddie' },
+      { id: 'sc03', name: 'Jennifer' },
+      { id: 'sc04', name: 'Francine' },
+      { id: 'sc05', name: 'Xavier' },
+      { id: 'sc06', name: 'Philip' },
+      { id: 'sc07', name: 'Geraldo' },
+      { id: 'sc07b', name: 'Geraldo B' },
+      { id: 'sc08', name: 'Toni' },
+      { id: 'sc09', name: 'Rafael' },
+      { id: 'sc10', name: 'Cindy' },
+      { id: 'sc11', name: 'Michael' },
+      { id: 'sc12', name: 'Betty' },
+      { id: 'sc13', name: 'Clyde' },
+      { id: 'sc14', name: 'Stephanie' },
+      { id: 'sc15', name: 'Paul' },
+      { id: 'sc16', name: 'Pam' },
+      { id: 'sc17', name: 'Alec' },
+      { id: 'sc18', name: 'Vince' },
+      { id: 'sc19', name: 'The Castros' },
+      { id: 'sc20', name: 'Roberta' },
+      { id: 'sc21', name: 'Lori' },
+      { id: 'sc22', name: 'Samantha' },
+      { id: 'sc23', name: 'Jason' },
+      { id: 'sc24', name: 'Liz' },
+      { id: 'sc25', name: 'Henry XIII' }
+    ];
+
+    const currentIndex = scenarios.findIndex(s => s.id === SCENARIO_ID);
+    const navLinks = document.getElementById('nav-links');
+    
+    if (currentIndex > 0) {
+      const prev = scenarios[currentIndex - 1];
+      navLinks.innerHTML += `<a href="${prev.id}.html">← ${prev.name}</a>`;
+    }
+    if (currentIndex < scenarios.length - 1) {
+      const next = scenarios[currentIndex + 1];
+      navLinks.innerHTML += `<a href="${next.id}.html">${next.name} →</a>`;
+    }
+  </script>
+</body>
+</html>
+

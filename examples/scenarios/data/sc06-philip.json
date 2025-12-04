@@ -1,0 +1,705 @@
+[
+  {
+    "id": "philip-jr",
+    "main": true,
+    "data": {
+      "first_name": "Philip",
+      "last_name": "Unknown",
+      "preferred_name": "Philip",
+      "suffix": "Jr.",
+      "gender": "M",
+      "birthday": "1985-04-18",
+      "birth_place": "Los Angeles, CA",
+      "bio": "Philip Jr. comes from the complex Stevens family, where his grandmother Elena had 8 children with 3 different partners. His mother Maria kept her maiden name Stevens, while his father's last name is unknown. This unique family structure has taught him the importance of family bonds regardless of biological relationships. Philip works as a social worker, helping families navigate complex situations similar to his own family background. He values all of his aunts, uncles, and cousins, recognizing that family is defined by love and connection rather than just genetics.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Social Worker",
+      "employer": "Los Angeles Family Services",
+      "email": "philip.stevens@email.com",
+      "phone": "(310) 555-0601",
+      "address": "1234 Family Way, Los Angeles, CA 90028",
+      "work_entries": [
+        {
+          "title": "Family Social Worker",
+          "organization": "Los Angeles Family Services",
+          "from_year": 2010,
+          "to_year": null,
+          "description": "Help families navigate complex situations, provide support services, and connect families with resources. Specialized in blended and extended family dynamics."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Master of Social Work",
+          "institution": "University of California, Los Angeles",
+          "from_year": 2008,
+          "to_year": 2010,
+          "description": "Earned MSW with focus on family services and child welfare."
+        },
+        {
+          "title": "Bachelor of Arts in Psychology",
+          "institution": "California State University, Los Angeles",
+          "from_year": 2003,
+          "to_year": 2007,
+          "description": "Graduated with focus on psychology and social work."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "mom-philip",
+        "philip-sr"
+      ]
+    }
+  },
+  {
+    "id": "elena",
+    "data": {
+      "first_name": "Elena",
+      "last_name": "Stevens",
+      "preferred_name": "Elena",
+      "gender": "F",
+      "birthday": "1940-08-15",
+      "birth_place": "Los Angeles, CA",
+      "bio": "Elena was a strong and resilient woman who raised 8 children with 3 different partners, creating a large and diverse family. She worked hard to provide for all of her children and instilled in them the importance of family unity. Elena was known for her warmth, her cooking, and her ability to bring everyone together. She passed away several years ago, but her legacy lives on through her children and grandchildren.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Homemaker",
+      "employer": null,
+      "email": null,
+      "phone": null,
+      "address": null,
+      "work_entries": [],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "children": [
+        "mom-philip",
+        "alfred-uncle",
+        "carol",
+        "alex-uncle",
+        "dante",
+        "donna",
+        "donald",
+        "diana"
+      ],
+      "spouses": [
+        "alfred-sr",
+        "unknown-father",
+        "ralph"
+      ]
+    }
+  },
+  {
+    "id": "alfred-sr",
+    "data": {
+      "first_name": "Alfred",
+      "last_name": "Stevens",
+      "preferred_name": "Alfred",
+      "suffix": "Sr.",
+      "gender": "M",
+      "birthday": "1938-03-20",
+      "birth_place": "Los Angeles, CA",
+      "death_date": "1995-11-10",
+      "death_place": "Los Angeles, CA",
+      "deceased": true,
+      "bio": "Alfred Sr. was Elena's first partner and the father of her two oldest children. He worked as a factory worker and was known for his strong work ethic. Alfred Sr. passed away in 1995, but his memory lives on through his children and grandchildren.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Factory Worker (Deceased)",
+      "employer": "Los Angeles Manufacturing",
+      "email": null,
+      "phone": null,
+      "address": null,
+      "work_entries": [
+        {
+          "title": "Factory Worker",
+          "organization": "Los Angeles Manufacturing",
+          "from_year": 1960,
+          "to_year": 1995,
+          "description": "Worked in manufacturing, operated machinery, and maintained production lines."
+        }
+      ],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "elena"
+      ],
+      "children": [
+        "mom-philip",
+        "alfred-uncle"
+      ]
+    }
+  },
+  {
+    "id": "philip-sr",
+    "data": {
+      "first_name": "Philip",
+      "last_name": "Unknown",
+      "preferred_name": "Philip",
+      "suffix": "Sr.",
+      "gender": "M",
+      "birthday": "1960-01-15",
+      "birth_place": "Los Angeles, CA",
+      "bio": "Philip Sr., father of Philip Jr. He married Maria Stevens. His last name is unknown.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Teacher",
+      "employer": "Los Angeles School District",
+      "email": null,
+      "phone": null,
+      "address": null,
+      "work_entries": [
+        {
+          "title": "High School Teacher",
+          "organization": "Los Angeles School District",
+          "from_year": 1985,
+          "to_year": null,
+          "description": "Teach history and social studies to high school students."
+        }
+      ],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "mom-philip"
+      ],
+      "children": [
+        "philip-jr"
+      ]
+    }
+  },
+  {
+    "id": "mom-philip",
+    "data": {
+      "first_name": "Maria",
+      "last_name": "Stevens",
+      "preferred_name": "Maria",
+      "gender": "F",
+      "birthday": "1962-06-10",
+      "birth_place": "Los Angeles, CA",
+      "bio": "Maria Stevens, mother of Philip Jr. She kept her maiden name Stevens when she married Philip (whose last name is unknown). She is the oldest daughter of Elena and Alfred Sr. She worked as a nurse and was a devoted mother. She passed away when Philip Jr. was young, but her memory lives on.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Registered Nurse (Deceased)",
+      "employer": "Los Angeles General Hospital",
+      "email": null,
+      "phone": null,
+      "address": null,
+      "work_entries": [
+        {
+          "title": "Registered Nurse",
+          "organization": "Los Angeles General Hospital",
+          "from_year": 1985,
+          "to_year": 1995,
+          "description": "Provided patient care in various hospital departments."
+        }
+      ],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "elena",
+        "alfred-sr"
+      ],
+      "children": [
+        "philip-jr"
+      ],
+      "spouses": [
+        "philip-sr"
+      ],
+      "siblings": [
+        "alfred-uncle"
+      ]
+    }
+  },
+  {
+    "id": "alfred-uncle",
+    "data": {
+      "first_name": "Alfred",
+      "last_name": "Stevens",
+      "preferred_name": "Alfred",
+      "gender": "M",
+      "birthday": "1964-09-22",
+      "birth_place": "Los Angeles, CA",
+      "bio": "Alfred is Philip's uncle, the son of Elena and Alfred Sr. He works as a construction supervisor and maintains close relationships with all of his siblings and their children. Alfred is known for his sense of humor and his willingness to help family members.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Construction Supervisor",
+      "employer": "Los Angeles Construction Co.",
+      "email": "alfred.stevens@email.com",
+      "phone": "(310) 555-0602",
+      "address": "2345 Build St, Los Angeles, CA 90028",
+      "work_entries": [
+        {
+          "title": "Construction Supervisor",
+          "organization": "Los Angeles Construction Co.",
+          "from_year": 1990,
+          "to_year": null,
+          "description": "Supervise construction projects, manage crews, and ensure safety compliance."
+        }
+      ],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "elena",
+        "alfred-sr"
+      ],
+      "siblings": [
+        "mom-philip",
+        "carol",
+        "alex-uncle",
+        "dante",
+        "donna",
+        "donald",
+        "diana"
+      ]
+    }
+  },
+  {
+    "id": "carol",
+    "data": {
+      "first_name": "Carol",
+      "last_name": "Stevens",
+      "preferred_name": "Carol",
+      "gender": "F",
+      "birthday": "1966-12-05",
+      "birth_place": "Los Angeles, CA",
+      "bio": "Carol is Philip's aunt, one of Elena's children whose father's name is unknown. She works as a teacher and is passionate about education. Carol maintains close relationships with all of her siblings and their children.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Teacher",
+      "employer": "Los Angeles Elementary School",
+      "email": "carol.stevens@email.com",
+      "phone": "(310) 555-0603",
+      "address": "3456 School Ave, Los Angeles, CA 90028",
+      "work_entries": [
+        {
+          "title": "Elementary School Teacher",
+          "organization": "Los Angeles Elementary School",
+          "from_year": 1990,
+          "to_year": null,
+          "description": "Teach elementary students, develop lesson plans, and support student learning."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Bachelor of Science in Education",
+          "institution": "California State University, Los Angeles",
+          "from_year": 1984,
+          "to_year": 1988,
+          "description": "Graduated with focus on elementary education."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "elena",
+        "unknown-father"
+      ],
+      "siblings": [
+        "alex-uncle",
+        "mom-philip",
+        "alfred-uncle",
+        "dante",
+        "donna",
+        "donald",
+        "diana"
+      ]
+    }
+  },
+  {
+    "id": "alex-uncle",
+    "data": {
+      "first_name": "Alex",
+      "last_name": "Stevens",
+      "preferred_name": "Alex",
+      "gender": "M",
+      "birthday": "1968-07-18",
+      "birth_place": "Los Angeles, CA",
+      "bio": "Alex is Philip's uncle, one of Elena's children whose father's name is unknown. He works as a mechanic and enjoys working on cars. Alex maintains close relationships with all of his siblings and their children.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Automotive Mechanic",
+      "employer": "Los Angeles Auto Repair",
+      "email": "alex.stevens@email.com",
+      "phone": "(310) 555-0604",
+      "address": "4567 Auto Way, Los Angeles, CA 90028",
+      "work_entries": [
+        {
+          "title": "Automotive Mechanic",
+          "organization": "Los Angeles Auto Repair",
+          "from_year": 1990,
+          "to_year": null,
+          "description": "Diagnose and repair vehicles, perform routine maintenance, and ensure customer satisfaction."
+        }
+      ],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "elena",
+        "unknown-father"
+      ],
+      "siblings": [
+        "carol",
+        "mom-philip",
+        "alfred-uncle",
+        "dante",
+        "donna",
+        "donald",
+        "diana"
+      ]
+    }
+  },
+  {
+    "id": "ralph",
+    "data": {
+      "first_name": "Ralph",
+      "last_name": "Stevens",
+      "preferred_name": "Papa Ralph",
+      "nicknames": "Papa Ralph",
+      "gender": "M",
+      "birthday": "1945-05-12",
+      "birth_place": "Los Angeles, CA",
+      "bio": "Ralph, known as Papa Ralph to Philip and his cousins, was Elena's third partner and the father of her four youngest children. He was a loving stepfather and grandfather figure to all of Elena's children, regardless of biological relationship. Ralph worked as a truck driver and was known for his kindness and his ability to make everyone feel welcome. He passed away several years ago, but his memory lives on through the family.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Truck Driver (Deceased)",
+      "employer": "Los Angeles Trucking Co.",
+      "email": null,
+      "phone": null,
+      "address": null,
+      "work_entries": [
+        {
+          "title": "Truck Driver",
+          "organization": "Los Angeles Trucking Co.",
+          "from_year": 1970,
+          "to_year": 2010,
+          "description": "Drove trucks across the country, delivered goods, and maintained safe driving record."
+        }
+      ],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "elena"
+      ],
+      "children": [
+        "dante",
+        "donna",
+        "donald",
+        "diana"
+      ]
+    }
+  },
+  {
+    "id": "dante",
+    "data": {
+      "first_name": "Dante",
+      "last_name": "Stevens",
+      "preferred_name": "Dante",
+      "gender": "M",
+      "birthday": "1972-10-30",
+      "birth_place": "Los Angeles, CA",
+      "bio": "Dante is one of Philip's uncles, the son of Elena and Ralph. He works as a chef and is passionate about cooking. Dante maintains close relationships with all of his siblings and their children.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Chef",
+      "employer": "Los Angeles Restaurant",
+      "email": "dante.stevens@email.com",
+      "phone": "(310) 555-0605",
+      "address": "5678 Food St, Los Angeles, CA 90028",
+      "work_entries": [
+        {
+          "title": "Head Chef",
+          "organization": "Los Angeles Restaurant",
+          "from_year": 1995,
+          "to_year": null,
+          "description": "Lead kitchen operations, create menus, and manage kitchen staff."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Culinary Arts Certificate",
+          "institution": "Los Angeles Culinary Institute",
+          "from_year": 1992,
+          "to_year": 1994,
+          "description": "Completed culinary arts program with focus on Italian and Mexican cuisine."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "elena",
+        "ralph"
+      ],
+      "siblings": [
+        "donna",
+        "donald",
+        "diana",
+        "mom-philip",
+        "alfred-uncle",
+        "carol",
+        "alex-uncle"
+      ]
+    }
+  },
+  {
+    "id": "donna",
+    "data": {
+      "first_name": "Donna",
+      "last_name": "Stevens",
+      "preferred_name": "Donna",
+      "gender": "F",
+      "birthday": "1974-03-15",
+      "birth_place": "Los Angeles, CA",
+      "bio": "Donna is one of Philip's aunts, the daughter of Elena and Ralph. She works as a nurse and is passionate about healthcare. Donna maintains close relationships with all of her siblings and their children.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Registered Nurse",
+      "employer": "Los Angeles Medical Center",
+      "email": "donna.stevens@email.com",
+      "phone": "(310) 555-0606",
+      "address": "6789 Medical Way, Los Angeles, CA 90028",
+      "work_entries": [
+        {
+          "title": "Registered Nurse",
+          "organization": "Los Angeles Medical Center",
+          "from_year": 1998,
+          "to_year": null,
+          "description": "Provide patient care, administer medications, and support families during medical treatment."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Associate Degree in Nursing",
+          "institution": "Los Angeles Community College",
+          "from_year": 1994,
+          "to_year": 1996,
+          "description": "Completed nursing program with clinical rotations."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "elena",
+        "ralph"
+      ],
+      "siblings": [
+        "dante",
+        "donald",
+        "diana",
+        "mom-philip",
+        "alfred-uncle",
+        "carol",
+        "alex-uncle"
+      ]
+    }
+  },
+  {
+    "id": "donald",
+    "data": {
+      "first_name": "Donald",
+      "last_name": "Stevens",
+      "preferred_name": "Donald",
+      "gender": "M",
+      "birthday": "1976-11-22",
+      "birth_place": "Los Angeles, CA",
+      "bio": "Donald is one of Philip's uncles, the son of Elena and Ralph. He works as an electrician and enjoys working with his hands. Donald maintains close relationships with all of his siblings and their children.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Licensed Electrician",
+      "employer": "Los Angeles Electric Services",
+      "email": "donald.stevens@email.com",
+      "phone": "(310) 555-0607",
+      "address": "7890 Electric Ave, Los Angeles, CA 90028",
+      "work_entries": [
+        {
+          "title": "Licensed Electrician",
+          "organization": "Los Angeles Electric Services",
+          "from_year": 2000,
+          "to_year": null,
+          "description": "Install and repair electrical systems in residential and commercial buildings."
+        }
+      ],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "elena",
+        "ralph"
+      ],
+      "siblings": [
+        "dante",
+        "donna",
+        "diana",
+        "mom-philip",
+        "alfred-uncle",
+        "carol",
+        "alex-uncle"
+      ]
+    }
+  },
+  {
+    "id": "diana",
+    "data": {
+      "first_name": "Diana",
+      "last_name": "Stevens",
+      "preferred_name": "Diana",
+      "gender": "F",
+      "birthday": "1978-08-08",
+      "birth_place": "Los Angeles, CA",
+      "bio": "Diana is one of Philip's aunts, the youngest daughter of Elena and Ralph. She works as a graphic designer and is passionate about art and design. Diana maintains close relationships with all of her siblings and their children.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Graphic Designer",
+      "employer": "Los Angeles Design Studio",
+      "email": "diana.stevens@email.com",
+      "phone": "(310) 555-0608",
+      "address": "8901 Design Blvd, Los Angeles, CA 90028",
+      "work_entries": [
+        {
+          "title": "Graphic Designer",
+          "organization": "Los Angeles Design Studio",
+          "from_year": 2002,
+          "to_year": null,
+          "description": "Create visual designs for clients, develop brand identities, and design marketing materials."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Bachelor of Fine Arts in Graphic Design",
+          "institution": "Art Center College of Design",
+          "from_year": 1996,
+          "to_year": 2000,
+          "description": "Graduated with focus on graphic design and visual communication."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "elena",
+        "ralph"
+      ],
+      "siblings": [
+        "dante",
+        "donna",
+        "donald",
+        "mom-philip",
+        "alfred-uncle",
+        "carol",
+        "alex-uncle"
+      ]
+    }
+  },
+  {
+    "id": "unknown-father",
+    "data": {
+      "first_name": "Unknown",
+      "last_name": "Unknown",
+      "preferred_name": "Unknown",
+      "gender": "M",
+      "birthday": null,
+      "birth_place": null,
+      "bio": "The father of Carol and Alex, whose name is unknown to the family.",
+      "nationality": "Unknown",
+      "ethnicity": "Unknown",
+      "religion": null,
+      "languages": null,
+      "occupation": null,
+      "employer": null,
+      "email": null,
+      "phone": null,
+      "address": null,
+      "work_entries": [],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "children": [
+        "carol",
+        "alex-uncle"
+      ]
+    }
+  }
+]

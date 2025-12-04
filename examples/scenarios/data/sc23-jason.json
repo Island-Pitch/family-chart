@@ -1,0 +1,314 @@
+[
+  {
+    "id": "jason",
+    "main": true,
+    "data": {
+      "first_name": "Jason",
+      "last_name": "Williams",
+      "preferred_name": "Jason",
+      "gender": "M",
+      "birthday": "1985-11-20",
+      "birth_place": "New York, NY",
+      "bio": "Jason is a devoted husband and father who is married to Queen B and has two children with her: Ivy and Rumi. He also has a child named Kidr from a previous relationship with Shea. Jason works as a music producer and enjoys spending time with all of his children. He values the relationships he has with both his current family and his child from his previous relationship, working hard to maintain strong bonds with all of them.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Music Producer",
+      "employer": "Independent",
+      "email": "jason.williams@email.com",
+      "phone": "(212) 555-2301",
+      "address": "1234 Music Ave, New York, NY 10001",
+      "work_entries": [
+        {
+          "title": "Music Producer",
+          "organization": "Independent",
+          "from_year": 2010,
+          "to_year": null,
+          "description": "Produce music for artists, create beats, and collaborate with musicians. Work with various record labels and independent artists."
+        },
+        {
+          "title": "Audio Engineer",
+          "organization": "New York Recording Studio",
+          "from_year": 2008,
+          "to_year": 2010,
+          "description": "Engineered recording sessions, mixed tracks, and maintained studio equipment."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Bachelor of Arts in Music Production",
+          "institution": "New York University",
+          "from_year": 2003,
+          "to_year": 2007,
+          "description": "Graduated with focus on music production, audio engineering, and sound design."
+        }
+      ],
+      "social_media": [
+        {
+          "platform": "Instagram",
+          "url": "https://instagram.com/jasonwilliams"
+        },
+        {
+          "platform": "LinkedIn",
+          "url": "https://linkedin.com/in/jasonwilliams"
+        }
+      ]
+    },
+    "rels": {
+      "spouses": [
+        "queen-b"
+      ],
+      "children": [
+        "ivy",
+        "rumi",
+        "kidr"
+      ]
+    }
+  },
+  {
+    "id": "queen-b",
+    "data": {
+      "first_name": "Beyonce",
+      "last_name": "Williams",
+      "preferred_name": "Queen B",
+      "nicknames": "Queen B",
+      "gender": "F",
+      "birthday": "1987-04-12",
+      "birth_place": "Houston, TX",
+      "bio": "Queen B, whose real name is Beyonce, is Jason's wife and the mother of their two children, Ivy and Rumi. She works as a singer and performer, bringing creativity and passion to everything she does. Queen B values the relationships she has with her children and supports Jason's relationship with his child from his previous relationship. She is known for her talent, her dedication to her craft, and her love of family.",
+      "nationality": "American",
+      "ethnicity": "African American",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Singer / Performer",
+      "employer": "Independent",
+      "email": "queen.b@email.com",
+      "phone": "(212) 555-2302",
+      "address": "1234 Music Ave, New York, NY 10001",
+      "work_entries": [
+        {
+          "title": "Singer / Performer",
+          "organization": "Independent",
+          "from_year": 2005,
+          "to_year": null,
+          "description": "Perform at concerts, record albums, and collaborate with other artists. Known for powerful vocals and dynamic performances."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "High School Diploma",
+          "institution": "Houston High School",
+          "from_year": 2001,
+          "to_year": 2005,
+          "description": "Graduated with focus on music and performing arts."
+        }
+      ],
+      "social_media": [
+        {
+          "platform": "Instagram",
+          "url": "https://instagram.com/queenb"
+        },
+        {
+          "platform": "Twitter",
+          "url": "https://twitter.com/queenb"
+        }
+      ]
+    },
+    "rels": {
+      "spouses": [
+        "jason"
+      ],
+      "children": [
+        "ivy",
+        "rumi"
+      ]
+    }
+  },
+  {
+    "id": "ivy",
+    "data": {
+      "first_name": "Ivy",
+      "last_name": "Williams",
+      "preferred_name": "Ivy",
+      "gender": "F",
+      "birthday": "2015-06-10",
+      "birth_place": "New York, NY",
+      "bio": "Ivy is Jason and Queen B's older daughter, a bright and creative 9-year-old who enjoys music, art, and spending time with her family. She has a close relationship with both of her parents and her siblings, including her half-brother Kidr. Ivy is growing up in a creative household and shows early interest in music and the arts.",
+      "nationality": "American",
+      "ethnicity": "Mixed",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Student",
+      "employer": null,
+      "email": null,
+      "phone": null,
+      "address": "1234 Music Ave, New York, NY 10001",
+      "work_entries": [],
+      "education_entries": [
+        {
+          "title": "4th Grade",
+          "institution": "New York Elementary School",
+          "from_year": 2024,
+          "to_year": 2025,
+          "description": "Currently in 4th grade, enjoying music, art, and learning."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "jason",
+        "queen-b"
+      ],
+      "siblings": [
+        "rumi",
+        "kidr"
+      ]
+    }
+  },
+  {
+    "id": "rumi",
+    "data": {
+      "first_name": "Rumi",
+      "last_name": "Williams",
+      "preferred_name": "Rumi",
+      "gender": "F",
+      "birthday": "2017-09-15",
+      "birth_place": "New York, NY",
+      "bio": "Rumi is Jason and Queen B's younger daughter, a happy and playful 7-year-old who enjoys playing with her sister Ivy and spending time with her family. She has a close relationship with both of her parents and her siblings, including her half-brother Kidr. Rumi is growing up in a creative household and shows early interest in music and the arts.",
+      "nationality": "American",
+      "ethnicity": "Mixed",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Student",
+      "employer": null,
+      "email": null,
+      "phone": null,
+      "address": "1234 Music Ave, New York, NY 10001",
+      "work_entries": [],
+      "education_entries": [
+        {
+          "title": "2nd Grade",
+          "institution": "New York Elementary School",
+          "from_year": 2024,
+          "to_year": 2025,
+          "description": "Currently in 2nd grade, enjoying learning and playing with friends."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "jason",
+        "queen-b"
+      ],
+      "siblings": [
+        "ivy",
+        "kidr"
+      ]
+    }
+  },
+  {
+    "id": "kidr",
+    "data": {
+      "first_name": "Kidr",
+      "last_name": "Williams",
+      "preferred_name": "Kidr",
+      "gender": "M",
+      "birthday": "2012-03-20",
+      "birth_place": "New York, NY",
+      "bio": "Kidr is Jason's son from his previous relationship with Shea. He is a thoughtful and mature 12-year-old who enjoys sports, music, and spending time with his family. Kidr has a close relationship with his father and maintains relationships with his half-sisters Ivy and Rumi. He values the blended family dynamic and the support he receives from all of his family members.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Student",
+      "employer": null,
+      "email": null,
+      "phone": null,
+      "address": "2345 Family Way, New York, NY 10001",
+      "work_entries": [],
+      "education_entries": [
+        {
+          "title": "7th Grade",
+          "institution": "New York Middle School",
+          "from_year": 2024,
+          "to_year": 2025,
+          "description": "Currently in 7th grade, enjoying sports and music classes."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "jason",
+        "shea"
+      ],
+      "siblings": [
+        "ivy",
+        "rumi"
+      ]
+    }
+  },
+  {
+    "id": "shea",
+    "data": {
+      "first_name": "Shea",
+      "last_name": "Williams",
+      "preferred_name": "Shea",
+      "gender": "F",
+      "birthday": "1986-08-18",
+      "birth_place": "New York, NY",
+      "bio": "Shea is Kidr's mother and Jason's ex-partner. She works as a teacher and maintains a cooperative relationship with Jason for the sake of their son. Shea values the relationships she has with her son and supports his relationships with his father and stepfamily. She is known for her dedication to education and her love of family.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Teacher",
+      "employer": "New York Elementary School",
+      "email": "shea.williams@email.com",
+      "phone": "(212) 555-2303",
+      "address": "2345 Family Way, New York, NY 10001",
+      "work_entries": [
+        {
+          "title": "Elementary School Teacher",
+          "organization": "New York Elementary School",
+          "from_year": 2010,
+          "to_year": null,
+          "description": "Teach elementary students, develop lesson plans, and support student learning."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Bachelor of Science in Education",
+          "institution": "New York University",
+          "from_year": 2004,
+          "to_year": 2008,
+          "description": "Graduated with focus on elementary education."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "jason"
+      ],
+      "children": [
+        "kidr"
+      ]
+    }
+  }
+]

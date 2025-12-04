@@ -1,0 +1,364 @@
+[
+  {
+    "id": "roberta",
+    "main": true,
+    "data": {
+      "first_name": "Roberta",
+      "last_name": "Davis",
+      "preferred_name": "Bobbi",
+      "nicknames": "Bobbi",
+      "gender": "F",
+      "birthday": "1989-05-15",
+      "birth_place": "Phoenix, AZ",
+      "bio": "Roberta, known to everyone as Bobbi, is a fierce and determined single mother who balances her career as a graphic designer with raising her 10-year-old son Johnny. A former regional boxing champion at age 17, Bobbi's competitive spirit and drive extend beyond the ring into all aspects of her life. She was the first in her family to attend college, graduating from UC San Diego, and moved to Santa Ana 13 years ago to pursue her career. Bobbi's life took a turn when her mother passed away when she was 19, forcing her to quit boxing to care for her two younger brothers, Alfonso and Derek. Despite the challenges, she has built a successful career and is a devoted mother. Bobbi's unique talents include juggling, surfing, and even juggling while surfing. She loves dancing to EDM music and watching boxing matches with her father, who taught her everything about the sport.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Graphic Designer",
+      "employer": "Watters Construction Co.",
+      "email": "roberta.davis@email.com",
+      "phone": "(714) 555-2001",
+      "address": "2345 Orange Ave, Santa Ana, CA 92701",
+      "work_entries": [
+        {
+          "title": "Senior Graphic Designer",
+          "organization": "Watters Construction Co.",
+          "from_year": 2011,
+          "to_year": null,
+          "description": "Create visual designs for construction projects, marketing materials, and brand identity. Lead design projects and collaborate with marketing and construction teams."
+        },
+        {
+          "title": "Graphic Designer",
+          "organization": "Orange County Design Studio",
+          "from_year": 2009,
+          "to_year": 2011,
+          "description": "Designed logos, brochures, and digital graphics for various clients."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Bachelor of Fine Arts in Graphic Design",
+          "institution": "University of California, San Diego",
+          "from_year": 2005,
+          "to_year": 2009,
+          "description": "Graduated with honors. First in family to attend college. Focused on graphic design, digital media, and visual communication."
+        },
+        {
+          "title": "High School Diploma",
+          "institution": "Phoenix High School",
+          "from_year": 2001,
+          "to_year": 2005,
+          "description": "Graduated while maintaining boxing training. Regional boxing champion at age 17."
+        }
+      ],
+      "social_media": [
+        {
+          "platform": "Instagram",
+          "url": "https://instagram.com/bobbidavis"
+        },
+        {
+          "platform": "LinkedIn",
+          "url": "https://linkedin.com/in/robertadavis"
+        }
+      ]
+    },
+    "rels": {
+      "parents": [
+        "jr-davis",
+        "mom-davis"
+      ],
+      "children": [
+        "johnny-davis"
+      ],
+      "siblings": [
+        "alfonso-davis",
+        "derek-davis"
+      ]
+    }
+  },
+  {
+    "id": "johnny-davis",
+    "data": {
+      "first_name": "Johnny",
+      "last_name": "Davis",
+      "preferred_name": "Johnny",
+      "gender": "M",
+      "birthday": "2014-08-20",
+      "birth_place": "Santa Ana, CA",
+      "bio": "Johnny is a bright and curious 10-year-old who shares his mother Bobbi's competitive spirit and love of strategy games. He is an avid chess player, matching his mother's passion for boxing with his own dedication to the game. Johnny is a good student who enjoys math and science, and he participates in his school's chess club. He loves spending time with his mother, learning about boxing, and playing chess with friends and family. Johnny has a close relationship with his grandfather Jr., who often teaches him about boxing and life lessons.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Student",
+      "employer": null,
+      "email": null,
+      "phone": null,
+      "address": "2345 Orange Ave, Santa Ana, CA 92701",
+      "work_entries": [],
+      "education_entries": [
+        {
+          "title": "5th Grade",
+          "institution": "Santa Ana Elementary School",
+          "from_year": 2024,
+          "to_year": 2025,
+          "description": "Currently in 5th grade, excelling in math and science. Member of chess club."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "roberta"
+      ],
+      "siblings": []
+    }
+  },
+  {
+    "id": "jr-davis",
+    "data": {
+      "first_name": "Robert",
+      "last_name": "Davis",
+      "preferred_name": "Jr.",
+      "suffix": "Jr.",
+      "gender": "M",
+      "birthday": "1965-11-10",
+      "birth_place": "Phoenix, AZ",
+      "bio": "Jr. is a devoted father and grandfather who taught his daughter Bobbi everything about boxing. He is proud of her accomplishments both in and out of the ring, and enjoys watching boxing matches with her. Jr. worked as a construction foreman for many years before retiring. He is a loving grandfather to Johnny and enjoys teaching him about boxing and life. Jr. is known for his strong work ethic, his sense of humor, and his unwavering support for his family.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Construction Foreman (Retired)",
+      "employer": "Phoenix Construction Co.",
+      "email": "jr.davis@email.com",
+      "phone": "(602) 555-2002",
+      "address": "3456 Desert View Dr, Phoenix, AZ 85004",
+      "work_entries": [
+        {
+          "title": "Construction Foreman",
+          "organization": "Phoenix Construction Co.",
+          "from_year": 1985,
+          "to_year": 2015,
+          "description": "Supervised construction projects, managed crews, and ensured safety compliance. Known for leadership and quality work."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "High School Diploma",
+          "institution": "Phoenix High School",
+          "from_year": 1981,
+          "to_year": 1983,
+          "description": "Graduated with focus on vocational training in construction trades."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "mom-davis"
+      ],
+      "children": [
+        "roberta",
+        "alfonso-davis",
+        "derek-davis"
+      ]
+    }
+  },
+  {
+    "id": "mom-davis",
+    "data": {
+      "first_name": "Maria",
+      "last_name": "Davis",
+      "preferred_name": "Maria",
+      "gender": "F",
+      "birthday": "1968-02-14",
+      "birth_place": "Phoenix, AZ",
+      "death_date": "2008-03-20",
+      "death_place": "Phoenix, AZ",
+      "deceased": true,
+      "bio": "Maria was a loving mother and wife who dedicated her life to her family. She worked as a nurse and was known for her caring nature and warm personality. Maria was proud of her daughter Bobbi's boxing achievements and supported all of her children's endeavors. Her untimely passing when Bobbi was 19 had a profound impact on the family, requiring Bobbi to step up and care for her younger brothers. Maria's legacy lives on through her children and grandchildren, who remember her fondly for her kindness, strength, and unconditional love.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Registered Nurse",
+      "employer": "Phoenix General Hospital",
+      "email": null,
+      "phone": null,
+      "address": null,
+      "work_entries": [
+        {
+          "title": "Registered Nurse",
+          "organization": "Phoenix General Hospital",
+          "from_year": 1990,
+          "to_year": 2008,
+          "description": "Provided patient care in various departments, known for compassionate care and attention to detail."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Associate Degree in Nursing",
+          "institution": "Phoenix Community College",
+          "from_year": 1988,
+          "to_year": 1990,
+          "description": "Completed nursing program with clinical rotations."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "jr-davis"
+      ],
+      "children": [
+        "roberta",
+        "alfonso-davis",
+        "derek-davis"
+      ]
+    }
+  },
+  {
+    "id": "alfonso-davis",
+    "data": {
+      "first_name": "Alfonso",
+      "last_name": "Davis",
+      "preferred_name": "Alfonso",
+      "gender": "M",
+      "birthday": "1992-07-22",
+      "birth_place": "Phoenix, AZ",
+      "bio": "Alfonso is Bobbi's younger brother who was raised by her after their mother's passing. He is grateful for his sister's sacrifice in quitting boxing to care for him and Derek. Alfonso works as an electrician and has built a successful career in the trades. He maintains a close relationship with his sister and nephew Johnny, often spending time with them on weekends. Alfonso enjoys playing basketball, watching sports, and spending time with friends.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Licensed Electrician",
+      "employer": "Phoenix Electric Services",
+      "email": "alfonso.davis@email.com",
+      "phone": "(602) 555-2003",
+      "address": "4567 Electric Way, Phoenix, AZ 85004",
+      "work_entries": [
+        {
+          "title": "Licensed Electrician",
+          "organization": "Phoenix Electric Services",
+          "from_year": 2014,
+          "to_year": null,
+          "description": "Install and repair electrical systems in residential and commercial buildings. Ensure code compliance and safety standards."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Electrician Apprenticeship",
+          "institution": "Phoenix Electrical Training Program",
+          "from_year": 2010,
+          "to_year": 2014,
+          "description": "Completed 4-year apprenticeship program with on-the-job training and classroom instruction."
+        },
+        {
+          "title": "High School Diploma",
+          "institution": "Phoenix High School",
+          "from_year": 2006,
+          "to_year": 2010,
+          "description": "Graduated with focus on vocational training."
+        }
+      ],
+      "social_media": [
+        {
+          "platform": "Instagram",
+          "url": "https://instagram.com/alfonsodavis"
+        }
+      ]
+    },
+    "rels": {
+      "parents": [
+        "jr-davis",
+        "mom-davis"
+      ],
+      "siblings": [
+        "roberta",
+        "derek-davis"
+      ]
+    }
+  },
+  {
+    "id": "derek-davis",
+    "data": {
+      "first_name": "Derek",
+      "last_name": "Davis",
+      "preferred_name": "Derek",
+      "gender": "M",
+      "birthday": "1994-12-05",
+      "birth_place": "Phoenix, AZ",
+      "bio": "Derek is Bobbi's youngest brother who was also raised by her after their mother's passing. He is appreciative of his sister's dedication and sacrifice. Derek works as a mechanic and enjoys working on cars in his spare time. He has a close relationship with his sister and nephew, and often helps out with family activities. Derek enjoys playing video games, watching movies, and spending time with friends.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Automotive Mechanic",
+      "employer": "Phoenix Auto Repair",
+      "email": "derek.davis@email.com",
+      "phone": "(602) 555-2004",
+      "address": "5678 Auto Lane, Phoenix, AZ 85004",
+      "work_entries": [
+        {
+          "title": "Automotive Mechanic",
+          "organization": "Phoenix Auto Repair",
+          "from_year": 2015,
+          "to_year": null,
+          "description": "Diagnose and repair vehicles, perform routine maintenance, and ensure customer satisfaction."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Automotive Technology Certificate",
+          "institution": "Phoenix Technical College",
+          "from_year": 2012,
+          "to_year": 2015,
+          "description": "Completed comprehensive program in automotive repair and diagnostics."
+        },
+        {
+          "title": "High School Diploma",
+          "institution": "Phoenix High School",
+          "from_year": 2008,
+          "to_year": 2012,
+          "description": "Graduated with focus on vocational training in automotive trades."
+        }
+      ],
+      "social_media": [
+        {
+          "platform": "Instagram",
+          "url": "https://instagram.com/derekdavis"
+        }
+      ]
+    },
+    "rels": {
+      "parents": [
+        "jr-davis",
+        "mom-davis"
+      ],
+      "siblings": [
+        "roberta",
+        "alfonso-davis"
+      ]
+    }
+  }
+]

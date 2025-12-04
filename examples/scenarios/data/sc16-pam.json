@@ -1,0 +1,224 @@
+[
+  {
+    "id": "pam",
+    "main": true,
+    "data": {
+      "first_name": "Pam",
+      "last_name": "Brown",
+      "preferred_name": "Pam",
+      "gender": "F",
+      "birthday": "1975-04-18",
+      "birth_place": "Chicago, IL",
+      "bio": "Pam Brown comes from a family with a strong naming tradition - her husband, father, and son are all named Robert, creating a unique family legacy. Pam works as a nurse and is passionate about helping others. She values the relationships she has with all three Roberts in her life and enjoys the family tradition that has been passed down through the generations. Pam is known for her warm personality and her ability to keep track of all the Roberts in her family.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Registered Nurse",
+      "employer": "Chicago Medical Center",
+      "email": "pam.brown@email.com",
+      "phone": "(312) 555-1601",
+      "address": "1234 Robert Way, Chicago, IL 60601",
+      "work_entries": [
+        {
+          "title": "Registered Nurse",
+          "organization": "Chicago Medical Center",
+          "from_year": 2000,
+          "to_year": null,
+          "description": "Provide patient care, administer medications, and support families during medical treatment."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Associate Degree in Nursing",
+          "institution": "Chicago Community College",
+          "from_year": 1998,
+          "to_year": 2000,
+          "description": "Completed nursing program with clinical rotations."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "robert-husband"
+      ],
+      "children": [
+        "robert-son"
+      ],
+      "parents": [
+        "robert-dad",
+        "mom-pam"
+      ]
+    }
+  },
+  {
+    "id": "robert-husband",
+    "data": {
+      "first_name": "Robert",
+      "last_name": "Brown",
+      "preferred_name": "Robert",
+      "gender": "M",
+      "birthday": "1973-08-22",
+      "birth_place": "Chicago, IL",
+      "bio": "Robert is Pam's husband, continuing the family tradition of naming sons Robert. He works as an engineer and takes pride in providing for his family. Robert values the family naming tradition and enjoys being part of a family with three generations of Roberts.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Engineer",
+      "employer": "Chicago Engineering Firm",
+      "email": "robert.brown@email.com",
+      "phone": "(312) 555-1602",
+      "address": "1234 Robert Way, Chicago, IL 60601",
+      "work_entries": [
+        {
+          "title": "Mechanical Engineer",
+          "organization": "Chicago Engineering Firm",
+          "from_year": 1998,
+          "to_year": null,
+          "description": "Design mechanical systems, create engineering drawings, and coordinate with manufacturing teams."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Bachelor of Science in Mechanical Engineering",
+          "institution": "University of Illinois",
+          "from_year": 1991,
+          "to_year": 1995,
+          "description": "Graduated with honors. Focused on mechanical engineering and design."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "pam"
+      ],
+      "children": [
+        "robert-son"
+      ]
+    }
+  },
+  {
+    "id": "robert-son",
+    "data": {
+      "first_name": "Robert",
+      "last_name": "Brown",
+      "preferred_name": "Robert",
+      "gender": "M",
+      "birthday": "2005-12-10",
+      "birth_place": "Chicago, IL",
+      "bio": "Robert is Pam and Robert's son, the third generation of Roberts in the family. He is a bright and energetic teenager who enjoys sports and spending time with his family. Robert is proud of the family naming tradition and values the relationships he has with his father and grandfather, both named Robert.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Student",
+      "employer": null,
+      "email": null,
+      "phone": null,
+      "address": "1234 Robert Way, Chicago, IL 60601",
+      "work_entries": [],
+      "education_entries": [
+        {
+          "title": "9th Grade",
+          "institution": "Chicago High School",
+          "from_year": 2024,
+          "to_year": 2025,
+          "description": "Currently in 9th grade, enjoying sports and social studies classes."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "pam",
+        "robert-husband"
+      ],
+      "siblings": []
+    }
+  },
+  {
+    "id": "robert-dad",
+    "data": {
+      "first_name": "Robert",
+      "last_name": "Brown",
+      "preferred_name": "Robert",
+      "gender": "M",
+      "birthday": "1950-06-15",
+      "birth_place": "Chicago, IL",
+      "bio": "Robert is Pam's father, the patriarch of the Robert naming tradition. He worked as a factory worker for many years before retiring. Robert is proud of the family tradition and enjoys spending time with his son-in-law and grandson, both named Robert. He values the relationships he has with all three generations of Roberts.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Factory Worker (Retired)",
+      "employer": "Chicago Manufacturing",
+      "email": null,
+      "phone": null,
+      "address": "2345 Grandparent Way, Chicago, IL 60601",
+      "work_entries": [
+        {
+          "title": "Factory Worker",
+          "organization": "Chicago Manufacturing",
+          "from_year": 1970,
+          "to_year": 2010,
+          "description": "Worked in manufacturing, operated machinery, and maintained production lines."
+        }
+      ],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "mom-pam"
+      ],
+      "children": [
+        "pam"
+      ]
+    }
+  },
+  {
+    "id": "mom-pam",
+    "data": {
+      "first_name": "Margaret",
+      "last_name": "Brown",
+      "preferred_name": "Margaret",
+      "gender": "F",
+      "birthday": "1952-09-25",
+      "birth_place": "Chicago, IL",
+      "bio": "Margaret is Pam's mother, a loving homemaker who has supported her family throughout her life. She is proud of her daughter Pam and enjoys spending time with her son-in-law and grandson, both named Robert. Margaret values the family naming tradition and the relationships she has with all three generations of Roberts.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Homemaker",
+      "employer": null,
+      "email": null,
+      "phone": null,
+      "address": "2345 Grandparent Way, Chicago, IL 60601",
+      "work_entries": [],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "robert-dad"
+      ],
+      "children": [
+        "pam"
+      ]
+    }
+  }
+]

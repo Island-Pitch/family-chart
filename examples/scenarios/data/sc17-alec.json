@@ -1,0 +1,367 @@
+[
+  {
+    "id": "alec",
+    "main": true,
+    "data": {
+      "first_name": "Alec",
+      "last_name": "Johnson",
+      "preferred_name": "Alec",
+      "gender": "M",
+      "birthday": "2000-07-15",
+      "birth_place": "Phoenix, AZ",
+      "bio": "Alec is a young man who shares his name with his father, continuing a family naming tradition. He has a unique family situation - his aunt Marla used to be married to his uncle Pelon, and he has two cousins named Proctor and Gamble who all live with Maria and her fiance Sal. Alec works as a software developer and enjoys spending time with his extended family. He values the relationships he has with all of his family members, despite the complex family structure.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Software Developer",
+      "employer": "Phoenix Tech Startup",
+      "email": "alec.johnson@email.com",
+      "phone": "(602) 555-1701",
+      "address": "1234 Tech Way, Phoenix, AZ 85004",
+      "work_entries": [
+        {
+          "title": "Software Developer",
+          "organization": "Phoenix Tech Startup",
+          "from_year": 2022,
+          "to_year": null,
+          "description": "Develop web applications, write code, and collaborate with development teams."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Bachelor of Science in Computer Science",
+          "institution": "Arizona State University",
+          "from_year": 2018,
+          "to_year": 2022,
+          "description": "Graduated with focus on software engineering and web development."
+        }
+      ],
+      "social_media": [
+        {
+          "platform": "GitHub",
+          "url": "https://github.com/alecjohnson"
+        }
+      ]
+    },
+    "rels": {
+      "parents": [
+        "alec-sr"
+      ],
+      "siblings": []
+    }
+  },
+  {
+    "id": "alec-sr",
+    "data": {
+      "first_name": "Alec",
+      "last_name": "Johnson",
+      "preferred_name": "Alec",
+      "suffix": "Sr.",
+      "gender": "M",
+      "birthday": "1975-03-20",
+      "birth_place": "Phoenix, AZ",
+      "bio": "Alec Sr. is Alec's father, continuing the family naming tradition. He works as a construction supervisor and takes pride in providing for his family. Alec Sr. has a sister named Marla and maintains relationships with his extended family, including his son's cousins Proctor and Gamble.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Construction Supervisor",
+      "employer": "Phoenix Construction Co.",
+      "email": "alec.sr.johnson@email.com",
+      "phone": "(602) 555-1702",
+      "address": "2345 Family Way, Phoenix, AZ 85004",
+      "work_entries": [
+        {
+          "title": "Construction Supervisor",
+          "organization": "Phoenix Construction Co.",
+          "from_year": 2000,
+          "to_year": null,
+          "description": "Supervise construction projects, manage crews, ensure safety compliance, and coordinate with clients."
+        }
+      ],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "children": [
+        "alec"
+      ],
+      "siblings": [
+        "marla"
+      ]
+    }
+  },
+  {
+    "id": "marla",
+    "data": {
+      "first_name": "Marla",
+      "last_name": "Johnson",
+      "preferred_name": "Marla",
+      "gender": "F",
+      "birthday": "1977-09-12",
+      "birth_place": "Phoenix, AZ",
+      "bio": "Marla is Alec Sr.'s sister and Alec's aunt. She used to be married to Pelon, who is Alec's uncle. Marla works as a teacher and maintains relationships with her extended family, including her nephews Proctor and Gamble.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Teacher",
+      "employer": "Phoenix Elementary School",
+      "email": "marla.johnson@email.com",
+      "phone": "(602) 555-1703",
+      "address": "3456 School St, Phoenix, AZ 85004",
+      "work_entries": [
+        {
+          "title": "Elementary School Teacher",
+          "organization": "Phoenix Elementary School",
+          "from_year": 2002,
+          "to_year": null,
+          "description": "Teach elementary students, develop lesson plans, and support student learning."
+        }
+      ],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "pelon"
+      ],
+      "siblings": [
+        "alec-sr"
+      ],
+      "children": [
+        "proctor",
+        "gamble"
+      ]
+    }
+  },
+  {
+    "id": "pelon",
+    "data": {
+      "first_name": "Pelon",
+      "last_name": "Johnson",
+      "preferred_name": "Uncle Pelon",
+      "nicknames": "Uncle Pelon",
+      "gender": "M",
+      "birthday": "1976-11-08",
+      "birth_place": "Phoenix, AZ",
+      "bio": "Pelon is Alec's uncle who used to be married to Marla. He works as a mechanic and maintains relationships with his extended family, including his sons Proctor and Gamble.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Automotive Mechanic",
+      "employer": "Phoenix Auto Repair",
+      "email": "pelon.johnson@email.com",
+      "phone": "(602) 555-1704",
+      "address": "4567 Auto Way, Phoenix, AZ 85004",
+      "work_entries": [
+        {
+          "title": "Automotive Mechanic",
+          "organization": "Phoenix Auto Repair",
+          "from_year": 2000,
+          "to_year": null,
+          "description": "Diagnose and repair vehicles, perform routine maintenance, and ensure customer satisfaction."
+        }
+      ],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "marla"
+      ],
+      "children": [
+        "proctor",
+        "gamble"
+      ]
+    }
+  },
+  {
+    "id": "proctor",
+    "data": {
+      "first_name": "Proctor",
+      "last_name": "Johnson",
+      "preferred_name": "Proctor",
+      "gender": "M",
+      "birthday": "2002-05-18",
+      "birth_place": "Phoenix, AZ",
+      "bio": "Proctor is one of Alec's cousins, the son of Marla and Pelon. He lives with his brother Gamble, their mother Maria, and her fiance Sal. Proctor works part-time while attending college and values the relationships he has with his extended family.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Student / Part-time Worker",
+      "employer": "Retail Store",
+      "email": "proctor.johnson@email.com",
+      "phone": "(602) 555-1705",
+      "address": "5678 Family Home, Phoenix, AZ 85004",
+      "work_entries": [
+        {
+          "title": "Retail Associate (Part-time)",
+          "organization": "Retail Store",
+          "from_year": 2021,
+          "to_year": null,
+          "description": "Assist customers, manage inventory, and process transactions. Part-time position while attending college."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Bachelor of Arts in Business",
+          "institution": "Arizona State University",
+          "from_year": 2020,
+          "to_year": 2024,
+          "description": "Currently pursuing degree in business management. Expected graduation 2024."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "marla",
+        "pelon"
+      ],
+      "siblings": [
+        "gamble"
+      ]
+    }
+  },
+  {
+    "id": "gamble",
+    "data": {
+      "first_name": "Gamble",
+      "last_name": "Johnson",
+      "preferred_name": "Gamble",
+      "gender": "M",
+      "birthday": "2004-08-25",
+      "birth_place": "Phoenix, AZ",
+      "bio": "Gamble is one of Alec's cousins, the son of Marla and Pelon. He lives with his brother Proctor, their mother Maria, and her fiance Sal. Gamble is currently a student and values the relationships he has with his extended family.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Student",
+      "employer": null,
+      "email": null,
+      "phone": null,
+      "address": "5678 Family Home, Phoenix, AZ 85004",
+      "work_entries": [],
+      "education_entries": [
+        {
+          "title": "12th Grade",
+          "institution": "Phoenix High School",
+          "from_year": 2024,
+          "to_year": 2025,
+          "description": "Currently in 12th grade, preparing for college."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "marla",
+        "pelon"
+      ],
+      "siblings": [
+        "proctor"
+      ]
+    }
+  },
+  {
+    "id": "maria",
+    "data": {
+      "first_name": "Maria",
+      "last_name": "Johnson",
+      "preferred_name": "Maria",
+      "gender": "F",
+      "birthday": "1980-02-14",
+      "birth_place": "Phoenix, AZ",
+      "bio": "Maria is the mother of Proctor and Gamble, and she lives with them and her fiance Sal. She works as a nurse and provides a stable home for her sons. Maria values the relationships she has with her extended family and works to maintain harmony in her blended household.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Registered Nurse",
+      "employer": "Phoenix Medical Center",
+      "email": "maria.johnson@email.com",
+      "phone": "(602) 555-1706",
+      "address": "5678 Family Home, Phoenix, AZ 85004",
+      "work_entries": [
+        {
+          "title": "Registered Nurse",
+          "organization": "Phoenix Medical Center",
+          "from_year": 2005,
+          "to_year": null,
+          "description": "Provide patient care, administer medications, and support families during medical treatment."
+        }
+      ],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "sal"
+      ],
+      "children": [
+        "proctor",
+        "gamble"
+      ]
+    }
+  },
+  {
+    "id": "sal",
+    "data": {
+      "first_name": "Sal",
+      "last_name": "Martinez",
+      "preferred_name": "Sal",
+      "gender": "M",
+      "birthday": "1978-12-05",
+      "birth_place": "Phoenix, AZ",
+      "bio": "Sal is Maria's fiance and lives with her and her sons Proctor and Gamble. He works as a construction worker and provides support to the family. Sal values the relationships he has with Maria's extended family and works to create a harmonious blended household.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Construction Worker",
+      "employer": "Phoenix Construction Co.",
+      "email": "sal.martinez@email.com",
+      "phone": "(602) 555-1707",
+      "address": "5678 Family Home, Phoenix, AZ 85004",
+      "work_entries": [
+        {
+          "title": "Construction Worker",
+          "organization": "Phoenix Construction Co.",
+          "from_year": 2000,
+          "to_year": null,
+          "description": "Work on construction projects, assist with building and renovation tasks."
+        }
+      ],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "maria"
+      ]
+    }
+  }
+]

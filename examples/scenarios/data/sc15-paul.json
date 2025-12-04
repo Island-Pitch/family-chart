@@ -1,0 +1,348 @@
+[
+  {
+    "id": "paul",
+    "main": true,
+    "data": {
+      "first_name": "Paul",
+      "last_name": "Martinez",
+      "preferred_name": "Paul",
+      "gender": "M",
+      "birthday": "1985-09-12",
+      "birth_place": "Los Angeles, CA",
+      "bio": "Paul was raised by his grandparents, who provided him with love and support throughout his childhood. He also received help from Tia Lucas and Tio Juan, who became important figures in his life. Despite not having traditional parents, Paul has built a strong family of his own with his three children: Luis, Carmen, and Suzette. He works as a social worker, helping children and families navigate difficult situations similar to his own background. Paul values the relationships he has with his children and the extended family that helped raise him.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Social Worker",
+      "employer": "Los Angeles Family Services",
+      "email": "paul.martinez@email.com",
+      "phone": "(310) 555-1501",
+      "address": "1234 Family Way, Los Angeles, CA 90028",
+      "work_entries": [
+        {
+          "title": "Family Social Worker",
+          "organization": "Los Angeles Family Services",
+          "from_year": 2010,
+          "to_year": null,
+          "description": "Help families navigate complex situations, provide support services, and connect families with resources. Specialized in helping children in non-traditional family situations."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Master of Social Work",
+          "institution": "University of California, Los Angeles",
+          "from_year": 2008,
+          "to_year": 2010,
+          "description": "Earned MSW with focus on family services and child welfare."
+        },
+        {
+          "title": "Bachelor of Arts in Psychology",
+          "institution": "California State University, Los Angeles",
+          "from_year": 2003,
+          "to_year": 2007,
+          "description": "Graduated with focus on psychology and social work."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "grandma-paul",
+        "grandpa-paul"
+      ],
+      "children": [
+        "luis",
+        "carmen",
+        "suzette"
+      ]
+    }
+  },
+  {
+    "id": "luis",
+    "data": {
+      "first_name": "Luis",
+      "last_name": "Martinez",
+      "preferred_name": "Luis",
+      "gender": "M",
+      "birthday": "2010-05-20",
+      "birth_place": "Los Angeles, CA",
+      "bio": "Luis is Paul's oldest child, a bright and responsible teenager who enjoys sports and spending time with his family. He has a close relationship with his father and his sisters, and he values the extended family that has supported them throughout their lives.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Student",
+      "employer": null,
+      "email": null,
+      "phone": null,
+      "address": "1234 Family Way, Los Angeles, CA 90028",
+      "work_entries": [],
+      "education_entries": [
+        {
+          "title": "9th Grade",
+          "institution": "Los Angeles High School",
+          "from_year": 2024,
+          "to_year": 2025,
+          "description": "Currently in 9th grade, enjoying sports and social studies classes."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "paul"
+      ],
+      "siblings": [
+        "carmen",
+        "suzette"
+      ]
+    }
+  },
+  {
+    "id": "carmen",
+    "data": {
+      "first_name": "Carmen",
+      "last_name": "Martinez",
+      "preferred_name": "Carmen",
+      "gender": "F",
+      "birthday": "2012-11-15",
+      "birth_place": "Los Angeles, CA",
+      "bio": "Carmen is Paul's middle child, a creative and artistic teenager who enjoys art, music, and spending time with her family. She has a close relationship with her father and her siblings, and she values the extended family that has supported them throughout their lives.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Student",
+      "employer": null,
+      "email": null,
+      "phone": null,
+      "address": "1234 Family Way, Los Angeles, CA 90028",
+      "work_entries": [],
+      "education_entries": [
+        {
+          "title": "7th Grade",
+          "institution": "Los Angeles Middle School",
+          "from_year": 2024,
+          "to_year": 2025,
+          "description": "Currently in 7th grade, enjoying art and music classes."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "paul"
+      ],
+      "siblings": [
+        "luis",
+        "suzette"
+      ]
+    }
+  },
+  {
+    "id": "suzette",
+    "data": {
+      "first_name": "Suzette",
+      "last_name": "Martinez",
+      "preferred_name": "Suzette",
+      "gender": "F",
+      "birthday": "2015-08-10",
+      "birth_place": "Los Angeles, CA",
+      "bio": "Suzette is Paul's youngest child, a happy and energetic 9-year-old who enjoys playing with her siblings and spending time with her family. She has a close relationship with her father and her siblings, and she values the extended family that has supported them throughout their lives.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Student",
+      "employer": null,
+      "email": null,
+      "phone": null,
+      "address": "1234 Family Way, Los Angeles, CA 90028",
+      "work_entries": [],
+      "education_entries": [
+        {
+          "title": "4th Grade",
+          "institution": "Los Angeles Elementary School",
+          "from_year": 2024,
+          "to_year": 2025,
+          "description": "Currently in 4th grade, enjoying learning and playing with friends."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "paul"
+      ],
+      "siblings": [
+        "luis",
+        "carmen"
+      ]
+    }
+  },
+  {
+    "id": "grandma-paul",
+    "data": {
+      "first_name": "Maria",
+      "last_name": "Martinez",
+      "preferred_name": "Grandma",
+      "gender": "F",
+      "birthday": "1940-06-15",
+      "birth_place": "Los Angeles, CA",
+      "bio": "Paul's grandmother who raised him when his parents were unable to. She provided love, support, and stability throughout his childhood. She is proud of the man Paul has become and the family he has built. She enjoys spending time with her great-grandchildren and values the relationships she has with her extended family.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Homemaker (Retired)",
+      "employer": null,
+      "email": null,
+      "phone": null,
+      "address": "2345 Grandparent Way, Los Angeles, CA 90028",
+      "work_entries": [],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "grandpa-paul"
+      ],
+      "children": [
+        "paul"
+      ]
+    }
+  },
+  {
+    "id": "grandpa-paul",
+    "data": {
+      "first_name": "Carlos",
+      "last_name": "Martinez",
+      "preferred_name": "Grandpa",
+      "gender": "M",
+      "birthday": "1938-03-20",
+      "birth_place": "Los Angeles, CA",
+      "bio": "Paul's grandfather who raised him when his parents were unable to. He provided love, support, and stability throughout Paul's childhood. He is proud of the man Paul has become and the family he has built. He enjoys spending time with his great-grandchildren and values the relationships he has with his extended family.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Factory Worker (Retired)",
+      "employer": "Los Angeles Manufacturing",
+      "email": null,
+      "phone": null,
+      "address": "2345 Grandparent Way, Los Angeles, CA 90028",
+      "work_entries": [
+        {
+          "title": "Factory Worker",
+          "organization": "Los Angeles Manufacturing",
+          "from_year": 1960,
+          "to_year": 2000,
+          "description": "Worked in manufacturing, operated machinery, and maintained production lines."
+        }
+      ],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "grandma-paul"
+      ],
+      "children": [
+        "paul"
+      ]
+    }
+  },
+  {
+    "id": "tia-lucas",
+    "data": {
+      "first_name": "Lucas",
+      "last_name": "Martinez",
+      "preferred_name": "Tia Lucas",
+      "nicknames": "Tia Lucas",
+      "gender": "M",
+      "birthday": "1955-09-18",
+      "birth_place": "Los Angeles, CA",
+      "bio": "Tia Lucas is an important figure in Paul's life who helped raise him along with his grandparents. He provided support, guidance, and love throughout Paul's childhood. Tia Lucas maintains a close relationship with Paul and his children, and he is considered an important member of the extended family.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Construction Worker",
+      "employer": "Los Angeles Construction Co.",
+      "email": "lucas.martinez@email.com",
+      "phone": "(310) 555-1502",
+      "address": "3456 Helper Way, Los Angeles, CA 90028",
+      "work_entries": [
+        {
+          "title": "Construction Worker",
+          "organization": "Los Angeles Construction Co.",
+          "from_year": 1980,
+          "to_year": null,
+          "description": "Work on construction projects, assist with building and renovation tasks."
+        }
+      ],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {}
+  },
+  {
+    "id": "tio-juan",
+    "data": {
+      "first_name": "Juan",
+      "last_name": "Martinez",
+      "preferred_name": "Tio Juan",
+      "nicknames": "Tio Juan",
+      "gender": "M",
+      "birthday": "1957-12-05",
+      "birth_place": "Los Angeles, CA",
+      "bio": "Tio Juan is an important figure in Paul's life who helped raise him along with his grandparents. He provided support, guidance, and love throughout Paul's childhood. Tio Juan maintains a close relationship with Paul and his children, and he is considered an important member of the extended family.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Mechanic",
+      "employer": "Los Angeles Auto Repair",
+      "email": "juan.martinez@email.com",
+      "phone": "(310) 555-1503",
+      "address": "4567 Helper Ave, Los Angeles, CA 90028",
+      "work_entries": [
+        {
+          "title": "Automotive Mechanic",
+          "organization": "Los Angeles Auto Repair",
+          "from_year": 1982,
+          "to_year": null,
+          "description": "Diagnose and repair vehicles, perform routine maintenance, and ensure customer satisfaction."
+        }
+      ],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {}
+  }
+]

@@ -1,0 +1,654 @@
+[
+  {
+    "id": "rafael",
+    "main": true,
+    "data": {
+      "first_name": "Rafael",
+      "last_name": "Garcia",
+      "preferred_name": "Rafael",
+      "gender": "M",
+      "birthday": "1988-06-20",
+      "birth_place": "Mexico City, Mexico",
+      "bio": "Rafael is a dedicated husband to Susanna, and together they have built a beautiful life despite not having children of their own. He comes from a small family - he has no siblings, and his parents were also only children - which makes his large extended family through marriage all the more special. Rafael works as a software engineer and enjoys the quiet moments he shares with Susanna. He is fascinated by his in-laws' legendary past as world-famous Mexican wrestlers El Tigre and La Lloronita from the late 1970s, and he enjoys hearing stories about their wrestling careers. Rafael values the close relationships he has with Susanna's five siblings and their children, who have become like his own family.",
+      "nationality": "Mexican",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "Spanish",
+        "English"
+      ],
+      "occupation": "Software Engineer",
+      "employer": "Tech Solutions Mexico",
+      "email": "rafael.garcia@email.com",
+      "phone": "+52 55 5555-0901",
+      "address": "1234 Tech Avenue, Mexico City, Mexico",
+      "work_entries": [
+        {
+          "title": "Senior Software Engineer",
+          "organization": "Tech Solutions Mexico",
+          "from_year": 2015,
+          "to_year": null,
+          "description": "Develop software applications, lead technical projects, and mentor junior developers."
+        },
+        {
+          "title": "Software Developer",
+          "organization": "Digital Innovations Mexico",
+          "from_year": 2012,
+          "to_year": 2015,
+          "description": "Developed web applications and collaborated with development teams."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Bachelor of Science in Computer Science",
+          "institution": "National Autonomous University of Mexico",
+          "from_year": 2006,
+          "to_year": 2010,
+          "description": "Graduated with honors. Focused on software engineering and computer science."
+        }
+      ],
+      "social_media": [
+        {
+          "platform": "LinkedIn",
+          "url": "https://linkedin.com/in/rafaelgarcia"
+        }
+      ]
+    },
+    "rels": {
+      "spouses": [
+        "susanna"
+      ]
+    }
+  },
+  {
+    "id": "susanna",
+    "data": {
+      "first_name": "Susanna",
+      "last_name": "Garcia",
+      "preferred_name": "Susanna",
+      "gender": "F",
+      "birthday": "1990-03-15",
+      "birth_place": "Guadalajara, Mexico",
+      "bio": "Susanna is Rafael's wife and comes from a large and famous wrestling family. Her parents were world-famous Mexican wrestlers El Tigre and La Lloronita in the late 1970s, and she has five siblings, each with at least one child. Susanna works as a marketing director and enjoys spending time with her large extended family. She is proud of her family's wrestling legacy and often shares stories about her parents' careers. Susanna and Rafael have chosen not to have children, but they are very involved in the lives of their nieces and nephews.",
+      "nationality": "Mexican",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "Spanish",
+        "English"
+      ],
+      "occupation": "Marketing Director",
+      "employer": "Mexico Marketing Agency",
+      "email": "susanna.garcia@email.com",
+      "phone": "+52 55 5555-0902",
+      "address": "1234 Tech Avenue, Mexico City, Mexico",
+      "work_entries": [
+        {
+          "title": "Marketing Director",
+          "organization": "Mexico Marketing Agency",
+          "from_year": 2016,
+          "to_year": null,
+          "description": "Lead marketing campaigns, manage client relationships, and develop brand strategies."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Bachelor of Arts in Marketing",
+          "institution": "University of Guadalajara",
+          "from_year": 2008,
+          "to_year": 2012,
+          "description": "Graduated with focus on marketing and advertising."
+        }
+      ],
+      "social_media": [
+        {
+          "platform": "LinkedIn",
+          "url": "https://linkedin.com/in/susannagarcia"
+        },
+        {
+          "platform": "Instagram",
+          "url": "https://instagram.com/susannagarcia"
+        }
+      ]
+    },
+    "rels": {
+      "spouses": [
+        "rafael"
+      ],
+      "parents": [
+        "el-tigre",
+        "la-lloronita"
+      ],
+      "siblings": [
+        "sibling1",
+        "sibling2",
+        "sibling3",
+        "sibling4",
+        "sibling5"
+      ]
+    }
+  },
+  {
+    "id": "el-tigre",
+    "data": {
+      "first_name": "Carlos",
+      "last_name": "Rodriguez",
+      "preferred_name": "El Tigre",
+      "nicknames": "El Tigre",
+      "gender": "M",
+      "birthday": "1950-08-10",
+      "birth_place": "Mexico City, Mexico",
+      "bio": "El Tigre was a world-famous Mexican wrestler in the late 1970s, known for his incredible athleticism and charismatic personality in the ring. He was married to La Lloronita, and together they were one of the most famous wrestling couples of their era. El Tigre retired from wrestling in the early 1980s and worked as a wrestling trainer, passing on his knowledge to the next generation. He is proud of his large family, including his six children and many grandchildren. El Tigre enjoys telling stories about his wrestling career and spending time with his family.",
+      "nationality": "Mexican",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "Spanish"
+      ],
+      "occupation": "Wrestling Trainer (Retired)",
+      "employer": "Mexico Wrestling Academy",
+      "email": null,
+      "phone": null,
+      "address": "2345 Wrestling Way, Guadalajara, Mexico",
+      "work_entries": [
+        {
+          "title": "Professional Wrestler",
+          "organization": "Mexican Wrestling Federation",
+          "from_year": 1970,
+          "to_year": 1982,
+          "description": "World-famous professional wrestler known as El Tigre. Performed in major wrestling venues throughout Mexico and internationally."
+        },
+        {
+          "title": "Wrestling Trainer",
+          "organization": "Mexico Wrestling Academy",
+          "from_year": 1982,
+          "to_year": 2010,
+          "description": "Trained aspiring wrestlers, taught wrestling techniques, and mentored young athletes."
+        }
+      ],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "la-lloronita"
+      ],
+      "children": [
+        "susanna",
+        "sibling1",
+        "sibling2",
+        "sibling3",
+        "sibling4",
+        "sibling5"
+      ]
+    }
+  },
+  {
+    "id": "la-lloronita",
+    "data": {
+      "first_name": "Maria",
+      "last_name": "Rodriguez",
+      "preferred_name": "La Lloronita",
+      "nicknames": "La Lloronita",
+      "gender": "F",
+      "birthday": "1952-11-25",
+      "birth_place": "Guadalajara, Mexico",
+      "bio": "La Lloronita was a world-famous Mexican wrestler in the late 1970s, known for her powerful moves and dramatic performances in the ring. She was married to El Tigre, and together they were one of the most famous wrestling couples of their era. La Lloronita retired from wrestling in the early 1980s and focused on raising her six children. She is proud of her large family and enjoys spending time with her children and many grandchildren. La Lloronita is known for her warm personality and her ability to make everyone feel welcome.",
+      "nationality": "Mexican",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "Spanish"
+      ],
+      "occupation": "Homemaker (Retired Wrestler)",
+      "employer": null,
+      "email": null,
+      "phone": null,
+      "address": "2345 Wrestling Way, Guadalajara, Mexico",
+      "work_entries": [
+        {
+          "title": "Professional Wrestler",
+          "organization": "Mexican Wrestling Federation",
+          "from_year": 1972,
+          "to_year": 1982,
+          "description": "World-famous professional wrestler known as La Lloronita. Performed in major wrestling venues throughout Mexico and internationally."
+        }
+      ],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "el-tigre"
+      ],
+      "children": [
+        "susanna",
+        "sibling1",
+        "sibling2",
+        "sibling3",
+        "sibling4",
+        "sibling5"
+      ]
+    }
+  },
+  {
+    "id": "sibling1",
+    "data": {
+      "first_name": "Alejandro",
+      "last_name": "Rodriguez",
+      "preferred_name": "Alejandro",
+      "gender": "M",
+      "birthday": "1975-04-12",
+      "birth_place": "Guadalajara, Mexico",
+      "bio": "Alejandro is one of Susanna's five siblings, each of whom has at least one child. He works as a business owner and maintains close relationships with his family.",
+      "nationality": "Mexican",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "Spanish",
+        "English"
+      ],
+      "occupation": "Business Owner",
+      "employer": "Rodriguez Enterprises",
+      "email": "alejandro.rodriguez@email.com",
+      "phone": "+52 33 5555-0903",
+      "address": "3456 Business Ave, Guadalajara, Mexico",
+      "work_entries": [
+        {
+          "title": "Business Owner",
+          "organization": "Rodriguez Enterprises",
+          "from_year": 2000,
+          "to_year": null,
+          "description": "Own and operate business, manage operations, and provide services to clients."
+        }
+      ],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "el-tigre",
+        "la-lloronita"
+      ],
+      "siblings": [
+        "susanna",
+        "sibling2",
+        "sibling3",
+        "sibling4",
+        "sibling5"
+      ],
+      "children": [
+        "nephew1"
+      ]
+    }
+  },
+  {
+    "id": "sibling2",
+    "data": {
+      "first_name": "Carmen",
+      "last_name": "Rodriguez",
+      "preferred_name": "Carmen",
+      "gender": "F",
+      "birthday": "1977-07-18",
+      "birth_place": "Guadalajara, Mexico",
+      "bio": "Carmen is one of Susanna's five siblings, each of whom has at least one child. She works as a teacher and maintains close relationships with her family.",
+      "nationality": "Mexican",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "Spanish",
+        "English"
+      ],
+      "occupation": "Teacher",
+      "employer": "Guadalajara Elementary School",
+      "email": "carmen.rodriguez@email.com",
+      "phone": "+52 33 5555-0904",
+      "address": "4567 School St, Guadalajara, Mexico",
+      "work_entries": [
+        {
+          "title": "Elementary School Teacher",
+          "organization": "Guadalajara Elementary School",
+          "from_year": 2002,
+          "to_year": null,
+          "description": "Teach elementary students, develop lesson plans, and support student learning."
+        }
+      ],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "el-tigre",
+        "la-lloronita"
+      ],
+      "siblings": [
+        "susanna",
+        "sibling1",
+        "sibling3",
+        "sibling4",
+        "sibling5"
+      ],
+      "children": [
+        "nephew2"
+      ]
+    }
+  },
+  {
+    "id": "sibling3",
+    "data": {
+      "first_name": "Diego",
+      "last_name": "Rodriguez",
+      "preferred_name": "Diego",
+      "gender": "M",
+      "birthday": "1979-10-05",
+      "birth_place": "Guadalajara, Mexico",
+      "bio": "Diego is one of Susanna's five siblings, each of whom has at least one child. He works as an engineer and maintains close relationships with his family.",
+      "nationality": "Mexican",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "Spanish",
+        "English"
+      ],
+      "occupation": "Engineer",
+      "employer": "Mexico Engineering Firm",
+      "email": "diego.rodriguez@email.com",
+      "phone": "+52 33 5555-0905",
+      "address": "5678 Engineer Way, Guadalajara, Mexico",
+      "work_entries": [
+        {
+          "title": "Mechanical Engineer",
+          "organization": "Mexico Engineering Firm",
+          "from_year": 2005,
+          "to_year": null,
+          "description": "Design mechanical systems, create engineering drawings, and coordinate with manufacturing teams."
+        }
+      ],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "el-tigre",
+        "la-lloronita"
+      ],
+      "siblings": [
+        "susanna",
+        "sibling1",
+        "sibling2",
+        "sibling4",
+        "sibling5"
+      ],
+      "children": [
+        "nephew3"
+      ]
+    }
+  },
+  {
+    "id": "sibling4",
+    "data": {
+      "first_name": "Elena",
+      "last_name": "Rodriguez",
+      "preferred_name": "Elena",
+      "gender": "F",
+      "birthday": "1981-02-20",
+      "birth_place": "Guadalajara, Mexico",
+      "bio": "Elena is one of Susanna's five siblings, each of whom has at least one child. She works as a nurse and maintains close relationships with her family.",
+      "nationality": "Mexican",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "Spanish",
+        "English"
+      ],
+      "occupation": "Registered Nurse",
+      "employer": "Guadalajara Medical Center",
+      "email": "elena.rodriguez@email.com",
+      "phone": "+52 33 5555-0906",
+      "address": "6789 Medical Ave, Guadalajara, Mexico",
+      "work_entries": [
+        {
+          "title": "Registered Nurse",
+          "organization": "Guadalajara Medical Center",
+          "from_year": 2006,
+          "to_year": null,
+          "description": "Provide patient care, administer medications, and support families during medical treatment."
+        }
+      ],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "el-tigre",
+        "la-lloronita"
+      ],
+      "siblings": [
+        "susanna",
+        "sibling1",
+        "sibling2",
+        "sibling3",
+        "sibling5"
+      ],
+      "children": [
+        "nephew4"
+      ]
+    }
+  },
+  {
+    "id": "sibling5",
+    "data": {
+      "first_name": "Fernando",
+      "last_name": "Rodriguez",
+      "preferred_name": "Fernando",
+      "gender": "M",
+      "birthday": "1983-12-15",
+      "birth_place": "Guadalajara, Mexico",
+      "bio": "Fernando is one of Susanna's five siblings, each of whom has at least one child. He works as a chef and maintains close relationships with his family.",
+      "nationality": "Mexican",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "Spanish",
+        "English"
+      ],
+      "occupation": "Chef",
+      "employer": "Guadalajara Restaurant",
+      "email": "fernando.rodriguez@email.com",
+      "phone": "+52 33 5555-0907",
+      "address": "7890 Food St, Guadalajara, Mexico",
+      "work_entries": [
+        {
+          "title": "Head Chef",
+          "organization": "Guadalajara Restaurant",
+          "from_year": 2008,
+          "to_year": null,
+          "description": "Lead kitchen operations, create menus, and manage kitchen staff."
+        }
+      ],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "el-tigre",
+        "la-lloronita"
+      ],
+      "siblings": [
+        "susanna",
+        "sibling1",
+        "sibling2",
+        "sibling3",
+        "sibling4"
+      ],
+      "children": [
+        "nephew5"
+      ]
+    }
+  },
+  {
+    "id": "nephew1",
+    "data": {
+      "first_name": "Carlos",
+      "last_name": "Rodriguez",
+      "preferred_name": "Carlos",
+      "gender": "M",
+      "birthday": "2005-05-10",
+      "birth_place": "Guadalajara, Mexico",
+      "bio": "Carlos is one of Susanna's nephews, the son of Alejandro. He enjoys spending time with his extended family, especially his aunt Susanna and uncle Rafael.",
+      "nationality": "Mexican",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "Spanish",
+        "English"
+      ],
+      "occupation": "Student",
+      "employer": null,
+      "email": null,
+      "phone": null,
+      "address": "3456 Business Ave, Guadalajara, Mexico",
+      "work_entries": [],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "sibling1"
+      ],
+      "siblings": []
+    }
+  },
+  {
+    "id": "nephew2",
+    "data": {
+      "first_name": "Sofia",
+      "last_name": "Rodriguez",
+      "preferred_name": "Sofia",
+      "gender": "F",
+      "birthday": "2007-08-22",
+      "birth_place": "Guadalajara, Mexico",
+      "bio": "Sofia is one of Susanna's nieces, the daughter of Carmen. She enjoys spending time with her extended family, especially her aunt Susanna and uncle Rafael.",
+      "nationality": "Mexican",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "Spanish",
+        "English"
+      ],
+      "occupation": "Student",
+      "employer": null,
+      "email": null,
+      "phone": null,
+      "address": "4567 School St, Guadalajara, Mexico",
+      "work_entries": [],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "sibling2"
+      ],
+      "siblings": []
+    }
+  },
+  {
+    "id": "nephew3",
+    "data": {
+      "first_name": "Miguel",
+      "last_name": "Rodriguez",
+      "preferred_name": "Miguel",
+      "gender": "M",
+      "birthday": "2009-11-30",
+      "birth_place": "Guadalajara, Mexico",
+      "bio": "Miguel is one of Susanna's nephews, the son of Diego. He enjoys spending time with his extended family, especially his aunt Susanna and uncle Rafael.",
+      "nationality": "Mexican",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "Spanish",
+        "English"
+      ],
+      "occupation": "Student",
+      "employer": null,
+      "email": null,
+      "phone": null,
+      "address": "5678 Engineer Way, Guadalajara, Mexico",
+      "work_entries": [],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "sibling3"
+      ],
+      "siblings": []
+    }
+  },
+  {
+    "id": "nephew4",
+    "data": {
+      "first_name": "Isabella",
+      "last_name": "Rodriguez",
+      "preferred_name": "Isabella",
+      "gender": "F",
+      "birthday": "2011-03-15",
+      "birth_place": "Guadalajara, Mexico",
+      "bio": "Isabella is one of Susanna's nieces, the daughter of Elena. She enjoys spending time with her extended family, especially her aunt Susanna and uncle Rafael.",
+      "nationality": "Mexican",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "Spanish",
+        "English"
+      ],
+      "occupation": "Student",
+      "employer": null,
+      "email": null,
+      "phone": null,
+      "address": "6789 Medical Ave, Guadalajara, Mexico",
+      "work_entries": [],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "sibling4"
+      ],
+      "siblings": []
+    }
+  },
+  {
+    "id": "nephew5",
+    "data": {
+      "first_name": "Lucas",
+      "last_name": "Rodriguez",
+      "preferred_name": "Lucas",
+      "gender": "M",
+      "birthday": "2013-06-08",
+      "birth_place": "Guadalajara, Mexico",
+      "bio": "Lucas is one of Susanna's nephews, the son of Fernando. He enjoys spending time with his extended family, especially his aunt Susanna and uncle Rafael.",
+      "nationality": "Mexican",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "Spanish",
+        "English"
+      ],
+      "occupation": "Student",
+      "employer": null,
+      "email": null,
+      "phone": null,
+      "address": "7890 Food St, Guadalajara, Mexico",
+      "work_entries": [],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "sibling5"
+      ],
+      "siblings": []
+    }
+  }
+]

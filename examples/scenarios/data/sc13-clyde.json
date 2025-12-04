@@ -1,0 +1,406 @@
+[
+  {
+    "id": "clyde",
+    "main": true,
+    "data": {
+      "first_name": "Clyde",
+      "last_name": "Anderson",
+      "preferred_name": "Clyde",
+      "gender": "M",
+      "birthday": "1975-06-15",
+      "birth_place": "Dallas, TX",
+      "bio": "Clyde is a devoted husband and father who has built a blended family with his wife Mary. Together they have two children, Liam and Roland, and Clyde has two children from a previous marriage - Clyde Jr. and Cynthia - whose mother is Annie. Clyde works as a construction supervisor and takes pride in providing for all of his children. He values the relationships he has with both his current family and his children from his previous marriage, working hard to maintain strong bonds with all of them.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Construction Supervisor",
+      "employer": "Dallas Construction Co.",
+      "email": "clyde.anderson@email.com",
+      "phone": "(214) 555-1301",
+      "address": "1234 Family Way, Dallas, TX 75201",
+      "work_entries": [
+        {
+          "title": "Construction Supervisor",
+          "organization": "Dallas Construction Co.",
+          "from_year": 2000,
+          "to_year": null,
+          "description": "Supervise construction projects, manage crews, ensure safety compliance, and coordinate with clients."
+        }
+      ],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "mary",
+        "annie"
+      ],
+      "children": [
+        "liam",
+        "roland",
+        "clyde-jr",
+        "cynthia"
+      ]
+    }
+  },
+  {
+    "id": "mary",
+    "data": {
+      "first_name": "Mary",
+      "last_name": "Anderson",
+      "preferred_name": "Mary",
+      "gender": "F",
+      "birthday": "1980-09-22",
+      "birth_place": "Dallas, TX",
+      "bio": "Mary is Clyde's current wife and the mother of their two children together, Liam and Roland. She also has two other children whose father is unknown, creating a complex blended family situation. Mary works as a nurse and is passionate about helping others. She values the relationships she has with all of her children and stepchildren, working hard to create a harmonious family environment.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Registered Nurse",
+      "employer": "Dallas Medical Center",
+      "email": "mary.anderson@email.com",
+      "phone": "(214) 555-1302",
+      "address": "1234 Family Way, Dallas, TX 75201",
+      "work_entries": [
+        {
+          "title": "Registered Nurse",
+          "organization": "Dallas Medical Center",
+          "from_year": 2005,
+          "to_year": null,
+          "description": "Provide patient care, administer medications, and support families during medical treatment."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Associate Degree in Nursing",
+          "institution": "Dallas Community College",
+          "from_year": 2003,
+          "to_year": 2005,
+          "description": "Completed nursing program with clinical rotations."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "clyde"
+      ],
+      "children": [
+        "liam",
+        "roland",
+        "mary-child1",
+        "mary-child2"
+      ]
+    }
+  },
+  {
+    "id": "liam",
+    "data": {
+      "first_name": "Liam",
+      "last_name": "Anderson",
+      "preferred_name": "Liam",
+      "gender": "M",
+      "birthday": "2010-03-10",
+      "birth_place": "Dallas, TX",
+      "bio": "Liam is one of Clyde and Mary's two children together. He is a bright and energetic teenager who enjoys sports, especially soccer and basketball. Liam has a close relationship with both of his parents and his half-siblings, and he values the blended family dynamic.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Student",
+      "employer": null,
+      "email": null,
+      "phone": null,
+      "address": "1234 Family Way, Dallas, TX 75201",
+      "work_entries": [],
+      "education_entries": [
+        {
+          "title": "9th Grade",
+          "institution": "Dallas High School",
+          "from_year": 2024,
+          "to_year": 2025,
+          "description": "Currently in 9th grade, enjoying sports and social studies classes."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "clyde",
+        "mary"
+      ],
+      "siblings": [
+        "roland",
+        "clyde-jr",
+        "cynthia",
+        "mary-child1",
+        "mary-child2"
+      ]
+    }
+  },
+  {
+    "id": "roland",
+    "data": {
+      "first_name": "Roland",
+      "last_name": "Anderson",
+      "preferred_name": "Roland",
+      "gender": "M",
+      "birthday": "2012-11-18",
+      "birth_place": "Dallas, TX",
+      "bio": "Roland is one of Clyde and Mary's two children together. He is a curious and creative teenager who enjoys art, music, and spending time with his family. Roland has a close relationship with both of his parents and his half-siblings, and he values the blended family dynamic.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Student",
+      "employer": null,
+      "email": null,
+      "phone": null,
+      "address": "1234 Family Way, Dallas, TX 75201",
+      "work_entries": [],
+      "education_entries": [
+        {
+          "title": "7th Grade",
+          "institution": "Dallas Middle School",
+          "from_year": 2024,
+          "to_year": 2025,
+          "description": "Currently in 7th grade, enjoying art and music classes."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "clyde",
+        "mary"
+      ],
+      "siblings": [
+        "liam",
+        "clyde-jr",
+        "cynthia",
+        "mary-child1",
+        "mary-child2"
+      ]
+    }
+  },
+  {
+    "id": "clyde-jr",
+    "data": {
+      "first_name": "Clyde",
+      "last_name": "Anderson",
+      "preferred_name": "Clyde",
+      "suffix": "Jr.",
+      "gender": "M",
+      "birthday": "1998-05-20",
+      "birth_place": "Dallas, TX",
+      "bio": "Clyde Jr. is one of Clyde's two children from his previous marriage to Annie. He works as an electrician and maintains a close relationship with his father and half-siblings. Clyde Jr. values the family connections he has despite the complex family structure.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Licensed Electrician",
+      "employer": "Dallas Electric Services",
+      "email": "clyde.jr.anderson@email.com",
+      "phone": "(214) 555-1303",
+      "address": "2345 Electric Way, Dallas, TX 75201",
+      "work_entries": [
+        {
+          "title": "Licensed Electrician",
+          "organization": "Dallas Electric Services",
+          "from_year": 2020,
+          "to_year": null,
+          "description": "Install and repair electrical systems in residential and commercial buildings."
+        }
+      ],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "clyde",
+        "annie"
+      ],
+      "siblings": [
+        "cynthia"
+      ]
+    }
+  },
+  {
+    "id": "cynthia",
+    "data": {
+      "first_name": "Cynthia",
+      "last_name": "Anderson",
+      "preferred_name": "Cynthia",
+      "gender": "F",
+      "birthday": "2000-08-15",
+      "birth_place": "Dallas, TX",
+      "bio": "Cynthia is one of Clyde's two children from his previous marriage to Annie. She works as a teacher and maintains a close relationship with her father and half-siblings. Cynthia values the family connections she has despite the complex family structure.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Teacher",
+      "employer": "Dallas Elementary School",
+      "email": "cynthia.anderson@email.com",
+      "phone": "(214) 555-1304",
+      "address": "3456 School St, Dallas, TX 75201",
+      "work_entries": [
+        {
+          "title": "Elementary School Teacher",
+          "organization": "Dallas Elementary School",
+          "from_year": 2022,
+          "to_year": null,
+          "description": "Teach elementary students, develop lesson plans, and support student learning."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Bachelor of Science in Education",
+          "institution": "University of Texas at Dallas",
+          "from_year": 2018,
+          "to_year": 2022,
+          "description": "Graduated with focus on elementary education."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "clyde",
+        "annie"
+      ],
+      "siblings": [
+        "clyde-jr"
+      ]
+    }
+  },
+  {
+    "id": "annie",
+    "data": {
+      "first_name": "Annie",
+      "last_name": "Anderson",
+      "preferred_name": "Annie",
+      "gender": "F",
+      "birthday": "1976-12-05",
+      "birth_place": "Dallas, TX",
+      "bio": "Annie is Clyde's ex-wife and the mother of his two children, Clyde Jr. and Cynthia. She works as a nurse and maintains a cooperative relationship with Clyde for the sake of their children. Annie values the relationships she has with her children and supports their relationships with their father and stepfamily.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Registered Nurse",
+      "employer": "Dallas Medical Center",
+      "email": "annie.anderson@email.com",
+      "phone": "(214) 555-1305",
+      "address": "4567 Medical Way, Dallas, TX 75201",
+      "work_entries": [
+        {
+          "title": "Registered Nurse",
+          "organization": "Dallas Medical Center",
+          "from_year": 2000,
+          "to_year": null,
+          "description": "Provide patient care, administer medications, and support families during medical treatment."
+        }
+      ],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "clyde"
+      ],
+      "children": [
+        "clyde-jr",
+        "cynthia"
+      ]
+    }
+  },
+  {
+    "id": "mary-child1",
+    "data": {
+      "first_name": "Unknown",
+      "last_name": "Anderson",
+      "preferred_name": "Child",
+      "gender": "M",
+      "birthday": "2005-04-12",
+      "birth_place": "Dallas, TX",
+      "bio": "One of Mary's two children whose father is unknown. This child is part of the blended family and maintains relationships with Mary, Clyde, and all the siblings.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Student",
+      "employer": null,
+      "email": null,
+      "phone": null,
+      "address": "1234 Family Way, Dallas, TX 75201",
+      "work_entries": [],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "mary"
+      ],
+      "siblings": [
+        "mary-child2",
+        "liam",
+        "roland"
+      ]
+    }
+  },
+  {
+    "id": "mary-child2",
+    "data": {
+      "first_name": "Unknown",
+      "last_name": "Anderson",
+      "preferred_name": "Child",
+      "gender": "F",
+      "birthday": "2007-09-25",
+      "birth_place": "Dallas, TX",
+      "bio": "One of Mary's two children whose father is unknown. This child is part of the blended family and maintains relationships with Mary, Clyde, and all the siblings.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Student",
+      "employer": null,
+      "email": null,
+      "phone": null,
+      "address": "1234 Family Way, Dallas, TX 75201",
+      "work_entries": [],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "mary"
+      ],
+      "siblings": [
+        "mary-child1",
+        "liam",
+        "roland"
+      ]
+    }
+  }
+]

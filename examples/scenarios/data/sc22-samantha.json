@@ -1,0 +1,108 @@
+[
+  {
+    "id": "samantha",
+    "main": true,
+    "data": {
+      "first_name": "Samantha",
+      "last_name": "Gonzalez",
+      "preferred_name": "Samantha",
+      "gender": "F",
+      "birthday": "1988-05-15",
+      "birth_place": "Los Angeles, CA",
+      "bio": "Samantha Gonzalez is a dedicated mother to her daughter Sylvia Stevens. She works as a marketing professional and balances her career with raising her daughter. Samantha values the relationship she has with Sylvia and works hard to provide for her. She enjoys spending time with her daughter and supporting her interests and activities.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Marketing Manager",
+      "employer": "Los Angeles Marketing Agency",
+      "email": "samantha.gonzalez@email.com",
+      "phone": "(310) 555-2201",
+      "address": "1234 Family Way, Los Angeles, CA 90028",
+      "work_entries": [
+        {
+          "title": "Marketing Manager",
+          "organization": "Los Angeles Marketing Agency",
+          "from_year": 2015,
+          "to_year": null,
+          "description": "Lead marketing campaigns, manage client relationships, and develop brand strategies."
+        },
+        {
+          "title": "Marketing Coordinator",
+          "organization": "Creative Marketing Solutions",
+          "from_year": 2012,
+          "to_year": 2015,
+          "description": "Supported marketing team, created content, and managed marketing campaigns."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Bachelor of Arts in Marketing",
+          "institution": "University of California, Los Angeles",
+          "from_year": 2006,
+          "to_year": 2010,
+          "description": "Graduated with focus on marketing and advertising."
+        }
+      ],
+      "social_media": [
+        {
+          "platform": "LinkedIn",
+          "url": "https://linkedin.com/in/samanthagonzalez"
+        },
+        {
+          "platform": "Instagram",
+          "url": "https://instagram.com/samanthagonzalez"
+        }
+      ]
+    },
+    "rels": {
+      "children": [
+        "sylvia-stevens"
+      ]
+    }
+  },
+  {
+    "id": "sylvia-stevens",
+    "data": {
+      "first_name": "Sylvia",
+      "last_name": "Stevens",
+      "preferred_name": "Sylvia",
+      "gender": "F",
+      "birthday": "2010-09-22",
+      "birth_place": "Los Angeles, CA",
+      "bio": "Sylvia Stevens is Samantha's daughter, a bright and energetic teenager who enjoys school, sports, and spending time with her mother. She has a close relationship with her mother and values the support and love she receives. Sylvia is a good student who enjoys learning and exploring new interests.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Student",
+      "employer": null,
+      "email": null,
+      "phone": null,
+      "address": "1234 Family Way, Los Angeles, CA 90028",
+      "work_entries": [],
+      "education_entries": [
+        {
+          "title": "9th Grade",
+          "institution": "Los Angeles High School",
+          "from_year": 2024,
+          "to_year": 2025,
+          "description": "Currently in 9th grade, enjoying learning and participating in school activities."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "samantha"
+      ],
+      "siblings": []
+    }
+  }
+]

@@ -14,6 +14,9 @@ export interface ViewProps {
   cardHtmlDiv?: HTMLElement
   tree_position?: 'fit' | 'main_to_middle' | 'inherit'
   scale?: number
+  // Card position offsets for fine-tuning alignment with link lines
+  cardOffsetX?: number  // Horizontal offset in pixels (positive = right, negative = left)
+  cardOffsetY?: number  // Vertical offset in pixels (positive = down, negative = up)
 }
 
 export default function(tree: Tree, svg: SVGElement, Card: any, props: ViewProps = {}) {

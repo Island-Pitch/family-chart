@@ -1,0 +1,318 @@
+[
+  {
+    "id": "geraldo",
+    "main": true,
+    "data": {
+      "first_name": "Geraldo",
+      "last_name": "Dominguez",
+      "preferred_name": "Gerry",
+      "nicknames": "Gerry",
+      "gender": "M",
+      "birthday": "1995-09-20",
+      "birth_place": "Los Angeles, CA",
+      "bio": "Geraldo, who goes by Gerry, is a resilient young man who has never met his biological father but has built a strong family with his mother Antoinnette, stepfather Dominic, and stepbrother Dommie. Despite not knowing his biological father, Geraldo has found love and support in his blended family. He works as a social media manager for a marketing agency, where he combines his creativity with his understanding of digital culture. Geraldo is proud of his Mexican heritage, which comes from his Nana Josie and Abuelito Jose, and he enjoys learning about his family's traditions and history. He loves playing soccer, listening to music, and spending time with his family.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Social Media Manager",
+      "employer": "Digital Marketing Agency",
+      "email": "geraldo.dominguez@email.com",
+      "phone": "(310) 555-0701",
+      "address": "1234 Digital Way, Los Angeles, CA 90028",
+      "work_entries": [
+        {
+          "title": "Social Media Manager",
+          "organization": "Digital Marketing Agency",
+          "from_year": 2018,
+          "to_year": null,
+          "description": "Manage social media accounts, create content, develop social media strategies, and analyze engagement metrics."
+        },
+        {
+          "title": "Social Media Coordinator",
+          "organization": "Creative Marketing Solutions",
+          "from_year": 2016,
+          "to_year": 2018,
+          "description": "Supported social media team, created content, and managed social media calendars."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Bachelor of Arts in Communications",
+          "institution": "California State University, Los Angeles",
+          "from_year": 2012,
+          "to_year": 2016,
+          "description": "Graduated with focus on digital media and marketing communications."
+        }
+      ],
+      "social_media": [
+        {
+          "platform": "Instagram",
+          "url": "https://instagram.com/gerrydominguez"
+        },
+        {
+          "platform": "Twitter",
+          "url": "https://twitter.com/gerrydominguez"
+        },
+        {
+          "platform": "LinkedIn",
+          "url": "https://linkedin.com/in/geraldodominguez"
+        }
+      ]
+    },
+    "rels": {
+      "parents": [
+        "antoinnette"
+      ],
+      "siblings": [
+        "dommie"
+      ]
+    }
+  },
+  {
+    "id": "antoinnette",
+    "data": {
+      "first_name": "Antoinnette",
+      "last_name": "Salazar Dominguez",
+      "preferred_name": "Antoinnette",
+      "gender": "F",
+      "birthday": "1975-06-15",
+      "birth_place": "Los Angeles, CA",
+      "bio": "Antoinnette is a strong and independent woman who raised Geraldo as a single mother before marrying Dominic. She works as a nurse and is passionate about helping others. Antoinnette is proud of her Mexican heritage and has instilled those values in her children. She enjoys cooking traditional Mexican dishes, spending time with her family, and volunteering at her local church. Antoinnette is known for her warm personality and her ability to make everyone feel welcome.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Registered Nurse",
+      "employer": "Los Angeles Medical Center",
+      "email": "antoinnette.dominguez@email.com",
+      "phone": "(310) 555-0702",
+      "address": "2345 Family Ave, Los Angeles, CA 90028",
+      "work_entries": [
+        {
+          "title": "Registered Nurse",
+          "organization": "Los Angeles Medical Center",
+          "from_year": 2000,
+          "to_year": null,
+          "description": "Provide patient care, administer medications, and support families during medical treatment."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Associate Degree in Nursing",
+          "institution": "Los Angeles Community College",
+          "from_year": 1996,
+          "to_year": 1998,
+          "description": "Completed nursing program with clinical rotations."
+        }
+      ],
+      "social_media": [
+        {
+          "platform": "Facebook",
+          "url": "https://facebook.com/antoinnettedominguez"
+        }
+      ]
+    },
+    "rels": {
+      "spouses": [
+        "dominic"
+      ],
+      "children": [
+        "geraldo",
+        "dommie"
+      ],
+      "parents": [
+        "josie",
+        "jose"
+      ]
+    }
+  },
+  {
+    "id": "dominic",
+    "data": {
+      "first_name": "Dominic",
+      "last_name": "Dominguez",
+      "preferred_name": "Dominic",
+      "gender": "M",
+      "birthday": "1972-11-08",
+      "birth_place": "Los Angeles, CA",
+      "bio": "Dominic is Geraldo's stepfather who has been a loving and supportive father figure since marrying Antoinnette. He works as a construction supervisor and takes pride in providing for his blended family. Dominic treats Geraldo as his own son and has helped create a strong family bond. He enjoys working on home improvement projects, watching sports, and spending time with his family.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Construction Supervisor",
+      "employer": "Los Angeles Construction Co.",
+      "email": "dominic.dominguez@email.com",
+      "phone": "(310) 555-0703",
+      "address": "2345 Family Ave, Los Angeles, CA 90028",
+      "work_entries": [
+        {
+          "title": "Construction Supervisor",
+          "organization": "Los Angeles Construction Co.",
+          "from_year": 1995,
+          "to_year": null,
+          "description": "Supervise construction projects, manage crews, ensure safety compliance, and coordinate with clients."
+        }
+      ],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "antoinnette"
+      ],
+      "children": [
+        "dommie",
+        "geraldo"
+      ]
+    }
+  },
+  {
+    "id": "dommie",
+    "data": {
+      "first_name": "Dominic",
+      "last_name": "Dominguez",
+      "preferred_name": "Dommie",
+      "nicknames": "Dommie",
+      "gender": "M",
+      "birthday": "2000-03-12",
+      "birth_place": "Los Angeles, CA",
+      "bio": "Dommie is Geraldo's stepbrother, the biological son of Dominic and Antoinnette. Despite being stepbrothers, Geraldo and Dommie have a close relationship and consider each other true brothers. Dommie is currently studying computer science at a local university and works part-time as a web developer. He enjoys playing video games, coding, and spending time with his family.",
+      "nationality": "American",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "occupation": "Student / Web Developer",
+      "employer": "Tech Solutions Inc.",
+      "email": "dommie.dominguez@email.com",
+      "phone": "(310) 555-0704",
+      "address": "2345 Family Ave, Los Angeles, CA 90028",
+      "work_entries": [
+        {
+          "title": "Web Developer (Part-time)",
+          "organization": "Tech Solutions Inc.",
+          "from_year": 2022,
+          "to_year": null,
+          "description": "Develop web applications, write code, and collaborate with development teams. Part-time position while attending school."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Bachelor of Science in Computer Science",
+          "institution": "California State University, Los Angeles",
+          "from_year": 2018,
+          "to_year": 2024,
+          "description": "Currently pursuing degree in computer science. Expected graduation 2024."
+        }
+      ],
+      "social_media": [
+        {
+          "platform": "GitHub",
+          "url": "https://github.com/dommiedominguez"
+        }
+      ]
+    },
+    "rels": {
+      "parents": [
+        "dominic",
+        "antoinnette"
+      ],
+      "siblings": [
+        "geraldo"
+      ]
+    }
+  },
+  {
+    "id": "josie",
+    "data": {
+      "first_name": "Josie",
+      "last_name": "Salazar",
+      "preferred_name": "Nana Josie",
+      "nicknames": "Nana Josie",
+      "gender": "F",
+      "birthday": "1945-04-20",
+      "birth_place": "Guadalajara, Mexico",
+      "bio": "Nana Josie is Geraldo's grandmother, originally from Mexico. She is a warm and loving grandmother who has passed down Mexican traditions and values to her family. Nana Josie is known for her delicious cooking, her stories about Mexico, and her unconditional love for her family. She enjoys spending time with her grandchildren and teaching them about their heritage.",
+      "nationality": "Mexican",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "Spanish",
+        "English"
+      ],
+      "occupation": "Homemaker (Retired)",
+      "employer": null,
+      "email": null,
+      "phone": null,
+      "address": "3456 Heritage Way, Los Angeles, CA 90028",
+      "work_entries": [],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "jose"
+      ],
+      "children": [
+        "antoinnette"
+      ]
+    }
+  },
+  {
+    "id": "jose",
+    "data": {
+      "first_name": "Jose",
+      "last_name": "Salazar",
+      "preferred_name": "Abuelito Jose",
+      "nicknames": "Abuelito Jose",
+      "gender": "M",
+      "birthday": "1942-09-15",
+      "birth_place": "Guadalajara, Mexico",
+      "bio": "Abuelito Jose is Geraldo's grandfather, originally from Mexico. He is a hardworking man who immigrated to the United States to provide better opportunities for his family. Abuelito Jose worked as a factory worker for many years before retiring. He is known for his strong work ethic, his love of family, and his stories about Mexico. He enjoys gardening, watching soccer, and spending time with his grandchildren.",
+      "nationality": "Mexican",
+      "ethnicity": "Hispanic",
+      "religion": "Catholic",
+      "languages": [
+        "Spanish",
+        "English"
+      ],
+      "occupation": "Factory Worker (Retired)",
+      "employer": "Los Angeles Manufacturing",
+      "email": null,
+      "phone": null,
+      "address": "3456 Heritage Way, Los Angeles, CA 90028",
+      "work_entries": [
+        {
+          "title": "Factory Worker",
+          "organization": "Los Angeles Manufacturing",
+          "from_year": 1970,
+          "to_year": 2010,
+          "description": "Worked in manufacturing, operated machinery, and maintained production lines."
+        }
+      ],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "josie"
+      ],
+      "children": [
+        "antoinnette"
+      ]
+    }
+  }
+]

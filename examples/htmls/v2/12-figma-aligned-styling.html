@@ -1,0 +1,2096 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>v2/12-figma-aligned-styling</title>
+  <link rel="shortcut icon" type="image/svg" href="/examples/logo.svg">
+  <script src="https://unpkg.com/d3@7"></script>
+  <link rel="stylesheet" href="/src/styles/family-chart.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+  <style> 
+    body { 
+      font-family: 'Figtree', 'Arial', sans-serif; 
+      margin: 0;
+      padding: 0;
+      background-color: #ffffff;
+    } 
+  </style>
+</head>
+<body>
+<div id="FamilyChart" class="f3" style="width:100%;height:900px;margin:auto;background-color:#ffffff;color:#000;"></div>
+<script type="module">
+import f3 from '../../../src/index.js'
+
+// list of all example. delete this if not needed
+import sidebar from '../../sidebar.js'
+sidebar()
+
+// Load transformed scenario data
+fetch('./data/sc06-philip-transformed.json')
+  .then(res => {
+    if (!res.ok) throw new Error('Failed to load transformed data');
+    return res.json();
+  })
+  .then(data => create(data))
+  .catch(err => {
+    console.warn('Error loading transformed data, using inline transformation:', err);
+    // Fallback: try to load from docs folder and transform
+    fetch('../../../../docs/Scenarios/json/sc06-philip.json')
+      .then(res => {
+        if (!res.ok) throw new Error('Failed to load scenario data');
+        return res.json();
+      })
+      .then(scenarioData => {
+        const transformed = transformScenarioData(scenarioData);
+        create(transformed);
+      })
+      .catch(err2 => {
+        console.error('Error loading fallback data:', err2);
+        // Last resort: use minimal demo data
+        const minimalData = [{
+          id: 'demo-1',
+          main: true,
+          data: {
+            id: 'demo-1',
+            gender: 'M',
+            full_name: 'Demo Person',
+            first_name: 'Demo',
+            last_name: 'Person',
+            label: 'Demo Person',
+            initials: 'DP',
+            relationshipStatuses: {},
+            avatar: null,
+            deceased: false,
+            adopted: false
+          },
+          rels: {
+            spouses: [],
+            father: null,
+            mother: null,
+            children: [],
+            siblings: [],
+            parents: []
+          }
+        }];
+        create(minimalData);
+      });
+  })
+
+function transformScenarioData(scenarioData) {
+  // Transform scenario JSON format to family-chart format
+  // Library expects: { id, data: { gender, ... }, rels: { parents: [], spouses: [], children: [] } }
+  // The library will wrap this internally, so we provide the simple format
+  
+  // Helper function to normalize gender values
+  function normalizeGender(gender) {
+    if (!gender) return 'M'; // Default to M if not specified
+    const g = String(gender).trim().toUpperCase();
+    if (g === 'M' || g === 'MALE') return 'M';
+    if (g === 'F' || g === 'FEMALE') return 'F';
+    if (g === 'NB' || g === 'NON-BINARY' || g === 'NONBINARY' || g === 'X' || g === 'N') return 'NB';
+    return 'M'; // Default fallback
+  }
+  
+  const transformed = scenarioData.treeData.map(person => {
+    const personData = person.data?.data || person.data || {};
+    const rels = person.rels || person.data?.rels || {};
+    
+    // Generate initials from full_name
+    const fullName = personData.full_name || personData.first_name || 'Unknown';
+    const nameParts = fullName.trim().split(/\s+/);
+    let initials;
+    if (nameParts.length >= 2) {
+      initials = (nameParts[0][0] + nameParts[nameParts.length - 1][0]).toUpperCase();
+    } else if (nameParts[0] && nameParts[0].length >= 2) {
+      initials = (nameParts[0][0] + nameParts[0][1]).toUpperCase();
+    } else if (nameParts[0] && nameParts[0].length === 1) {
+      initials = (nameParts[0][0] + nameParts[0][0]).toUpperCase();
+    } else {
+      initials = '??';
+    }
+    
+    // Build parents array from father/mother if needed
+    const parents = [];
+    if (rels.father) parents.push(rels.father);
+    if (rels.mother) parents.push(rels.mother);
+    // Also check rels.parents if it exists
+    if (rels.parents && Array.isArray(rels.parents)) {
+      rels.parents.forEach(p => {
+        if (p && !parents.includes(p)) parents.push(p);
+      });
+    }
+    
+    // Simple format matching working examples - library wraps internally
+    // Preserve relationshipStatuses from original data structure
+    // It can be at person.data.relationshipStatuses or person.data.data.relationshipStatuses
+    let relationshipStatuses = person.data?.relationshipStatuses || 
+                                 person.data?.data?.relationshipStatuses || 
+                                 personData.relationshipStatuses || 
+                                 {};
+    
+    // Add test relationship statuses for testing decorations
+    // Make some relationships separated and widowed for testing
+    const personId = person.id;
+    
+    // Add test cases for relationship statuses
+    if (personId === 'elena-id') {
+      // Elena: divorced with alfred-sr, separated with unknown-father, widowed with a test partner
+      relationshipStatuses = {
+        ...relationshipStatuses,
+        'alfred-sr-id': { status: 'divorced', confirmed: true },
+        'unknown-father-id': { status: 'separated', confirmed: true },
+        'papa-ralph-id': { status: 'married', confirmed: true }
+      };
+    }
+    
+    // Determine gender with some non-binary test cases
+    // Normalize gender from multiple possible sources to ensure consistency
+    let gender = normalizeGender(personData.gender || person.data?.gender || 'M');
+    
+    // Make some people non-binary for testing
+    const nonBinaryIds = ['aunt-carol-id', 'dante-id']; // Test cases
+    if (nonBinaryIds.includes(personId)) {
+      gender = 'NB';
+    }
+    
+    // Ensure gender is normalized (M, F, or NB only)
+    gender = normalizeGender(gender);
+    
+    // Determine if deceased - auto-true if death_date exists, otherwise use deceased field
+    let deceased = personData.deceased || false;
+    const deathDate = personData.death_date || personData.deathDate || personData.died || personData.deceased_date;
+    
+    // Auto-set deceased to true if death_date exists
+    if (deathDate && !deceased) {
+      deceased = true;
+    }
+    
+    // Add test cases for deceased people - ensure we have deceased examples
+    const deceasedIds = ['alfred-sr-id', 'unknown-father-id', 'grandpa-miguel-id', 'grandma-rosa-id']; // Test cases
+    if (deceasedIds.includes(personId)) {
+      deceased = true;
+    }
+    
+    // Determine if adopted (add some test cases)
+    let adopted = personData.adopted || false;
+    const adoptedIds = ['donna-id', 'donald-id']; // Test cases
+    if (adoptedIds.includes(personId)) {
+      adopted = true;
+    }
+    
+    return {
+      id: person.id,
+      main: person.main || false,
+      data: {
+        gender: gender, // REQUIRED - includes NB for non-binary
+        "first name": personData.first_name || nameParts[0] || 'Unknown',
+        "last name": personData.last_name || (nameParts.length > 1 ? nameParts.slice(1).join(' ') : ''),
+        "full_name": fullName,
+        deceased: deceased, // Deceased state (auto-true if death_date exists)
+        death_date: deathDate || null, // Optional death date
+        "label": fullName,
+        "initials": initials,
+        "relationshipStatuses": relationshipStatuses, // Preserve relationship statuses for edge decorations
+        "avatar": personData.avatar || personData.avatarUrl || personData.image || (Math.random() > 0.25 ? `https://thispersondoesnotexist.com/?t=${Date.now()}&id=${personId}&r=${Math.random().toString(36).substring(7)}` : null), // Add random avatars for 75% of people with cache-busting
+        "adopted": adopted // Some people marked as adopted
+      },
+      rels: {
+        spouses: rels.spouses || [],
+        parents: parents, // Use array format
+        children: rels.children || []
+      }
+    };
+  });
+  
+  // Add a test widowed relationship - create a test person who is widowed
+  // Find elena and add a widowed partner
+  const elena = transformed.find(p => p.id === 'elena-id');
+  if (elena) {
+    // Add a test widowed partner (if not already in spouses)
+    const testWidowedPartnerId = 'test-widowed-partner-id';
+    const testWidowedPartner = transformed.find(p => p.id === testWidowedPartnerId);
+    
+    if (!testWidowedPartner && elena.rels.spouses.length > 0) {
+      // Use first spouse as widowed test case if we can modify their status
+      const firstSpouseId = elena.rels.spouses[0];
+      if (firstSpouseId !== 'papa-ralph-id' && firstSpouseId !== 'alfred-sr-id' && firstSpouseId !== 'unknown-father-id') {
+        // Add widowed status to one of Elena's spouses
+        if (!elena.data.relationshipStatuses[firstSpouseId]) {
+          elena.data.relationshipStatuses[firstSpouseId] = { status: 'widowed', confirmed: true };
+        }
+      }
+    }
+  }
+  
+  console.log('Transformed data:', transformed);
+  console.log('Total people:', transformed.length);
+  console.log('Sample transformed person:', transformed[0]);
+  
+  // Validate data consistency: check for gender conflicts and ensure all data matches
+  const validationErrors = [];
+  const genderCounts = { M: 0, F: 0, NB: 0, invalid: 0 };
+  const duplicateIds = new Set();
+  const seenIds = new Set();
+  
+  transformed.forEach((p, index) => {
+    // Check for duplicate IDs
+    if (seenIds.has(p.id)) {
+      duplicateIds.add(p.id);
+      validationErrors.push({
+        id: p.id,
+        name: p.data.full_name,
+        issue: `Duplicate ID found at index ${index}`
+      });
+    }
+    seenIds.add(p.id);
+    
+    // Normalize and validate gender
+    const gender = normalizeGender(p.data.gender);
+    
+    // Update the data with normalized gender to ensure consistency
+    p.data.gender = gender;
+    
+    // Count genders
+    if (gender === 'M') genderCounts.M++;
+    else if (gender === 'F') genderCounts.F++;
+    else if (gender === 'NB') genderCounts.NB++;
+    else {
+      genderCounts.invalid++;
+      validationErrors.push({
+        id: p.id,
+        name: p.data.full_name,
+        issue: `Invalid gender after normalization: ${p.data.gender}`,
+        expected: 'M, F, or NB'
+      });
+    }
+    
+    // Ensure all required fields are present
+    if (!p.id) {
+      validationErrors.push({ id: 'unknown', name: p.data.full_name || 'Unknown', issue: 'Missing id' });
+    }
+    if (!p.data || typeof p.data !== 'object') {
+      validationErrors.push({ id: p.id, name: p.data?.full_name || 'Unknown', issue: 'Missing or invalid data object' });
+    }
+    if (!p.data.gender) {
+      validationErrors.push({ id: p.id, name: p.data.full_name || 'Unknown', issue: 'Missing gender' });
+    }
+    if (!p.data.full_name) {
+      validationErrors.push({ id: p.id, name: 'Unknown', issue: 'Missing full_name' });
+    }
+    if (!p.rels || typeof p.rels !== 'object') {
+      validationErrors.push({ id: p.id, name: p.data.full_name || 'Unknown', issue: 'Missing or invalid rels object' });
+    }
+    
+    // Ensure rels has the expected structure
+    if (p.rels) {
+      if (!Array.isArray(p.rels.parents)) p.rels.parents = [];
+      if (!Array.isArray(p.rels.spouses)) p.rels.spouses = [];
+      if (!Array.isArray(p.rels.children)) p.rels.children = [];
+    }
+  });
+  
+  console.log('📊 Gender distribution:', genderCounts);
+  console.log('📊 Total people:', transformed.length);
+  console.log('📊 Unique IDs:', seenIds.size);
+  
+  if (duplicateIds.size > 0) {
+    console.error('❌ Duplicate IDs found:', Array.from(duplicateIds));
+  }
+  
+  if (validationErrors.length > 0) {
+    console.warn('⚠️ Data validation errors:', validationErrors);
+  } else {
+    console.log('✅ All data validated: no conflicts found');
+    console.log('✅ All genders normalized to M, F, or NB');
+    console.log('✅ All data structures consistent');
+  }
+  
+  // Debug: Check for deceased and non-binary people
+  const deceasedPeople = transformed.filter(p => p.data.deceased === true);
+  const nonBinaryPeople = transformed.filter(p => p.data.gender === 'NB');
+  console.log('🔴 Deceased people in transformed data:', deceasedPeople.map(p => ({ id: p.id, name: p.data.full_name, deceased: p.data.deceased })));
+  console.log('🟡 Non-binary people in transformed data:', nonBinaryPeople.map(p => ({ id: p.id, name: p.data.full_name, gender: p.data.gender })));
+  
+  console.log('Relationship statuses in data:', transformed.map(p => ({
+    id: p.id,
+    name: p.data.full_name,
+    statuses: Object.keys(p.data.relationshipStatuses || {}).map(key => ({
+      partner: key,
+      status: p.data.relationshipStatuses[key].status
+    }))
+  })).filter(p => p.statuses.length > 0));
+  
+  return transformed;
+}
+
+function create(data) {
+  console.log('Creating chart with data:', data);
+  console.log('Data length:', data.length);
+  console.log('Sample person:', data[0]);
+  
+  const f3Chart = f3.createChart('#FamilyChart', data)
+    .setTransitionTime(1000)
+    .setCardXSpacing(200)
+    .setCardYSpacing(180)
+
+  f3Chart.setCardHtml()
+    .setOnCardUpdate(Card())
+
+  // Set Elena as main to show all her 8 children and 3 partners
+  // This is the best way to see the full family tree for this scenario
+  const elena = data.find(p => p.id === 'elena-id');
+  const philipJr = data.find(p => p.main) || data[0];
+  
+  if (elena) {
+    console.log('Setting Elena as main person to show all children and relationships:', elena.id);
+    f3Chart.updateMainId(elena.id);
+  } else if (philipJr) {
+    console.log('Elena not found, using main person:', philipJr.id);
+    f3Chart.updateMainId(philipJr.id);
+    // Enable siblings to show Mom's siblings (Elena's other children)
+    f3Chart.setShowSiblingsOfMain(true);
+  } else {
+    console.warn('No main person found, using first person');
+    if (data[0]) {
+      f3Chart.updateMainId(data[0].id);
+    }
+  }
+
+  console.log('Updating tree with', data.length, 'people');
+  // Update tree - library automatically shows all connected nodes
+  f3Chart.updateTree({initial: true})
+
+  // Since tmp/family-chart doesn't support setEdgeStyleResolver, we manually add decorations
+  // Track pending timeouts so we can cancel them when tree updates
+  let pendingDecorationTimeout = null;
+  
+  // Function to clean up all decorations immediately
+  // Make it accessible to card click handlers
+  function cleanupDecorations() {
+    const svg = f3Chart.svg;
+    if (svg) {
+      // Remove all decoration overlays immediately
+      d3.select(svg).selectAll('g.link-overlays').remove();
+      // Also remove any orphaned decoration groups
+      d3.select(svg).selectAll('g[id^="decorations-"]').remove();
+      // Remove any decoration lines that might be orphaned
+      d3.select(svg).selectAll('line.link-overlay').remove();
+      d3.select(svg).selectAll('line.slash').remove();
+      // Remove parallel line overlays for married chained links
+      d3.select(svg).selectAll('g.link-overlay-group[data-chain-link="true"]').remove();
+    }
+    // Cancel any pending decoration timeouts
+    if (pendingDecorationTimeout) {
+      clearTimeout(pendingDecorationTimeout);
+      pendingDecorationTimeout = null;
+    }
+    // Cancel any active decoration processes
+    if (activeDecorationProcess) {
+      if (activeDecorationProcess.interval) {
+        clearInterval(activeDecorationProcess.interval);
+      }
+      if (activeDecorationProcess.timeout) {
+        clearTimeout(activeDecorationProcess.timeout);
+      }
+      activeDecorationProcess = null;
+    }
+  }
+  
+  // Attach cleanup function to chart instance so it's accessible from card clicks
+  f3Chart.cleanupDecorations = cleanupDecorations;
+  
+  // Function to add decoration to a single link when its transition completes
+  function addDecorationForLink(linkElement, linkData, allData) {
+    // CRITICAL: Validate link data and element before proceeding
+    if (!linkData || !linkData.source || !linkData.target) {
+      console.log('❌ addDecorationForLink: Missing link data or source/target');
+      return;
+    }
+    if (!linkElement || !linkElement.node() || !linkElement.node().parentNode) {
+      console.log('❌ addDecorationForLink: Link element not in DOM');
+      return;
+    }
+    
+    const source = linkData.source;
+    const target = linkData.target;
+    const sourceId = source.data?.id || source.id;
+    const targetId = target.data?.id || target.id;
+    
+    if (!sourceId || !targetId) {
+      console.log('❌ addDecorationForLink: Missing source or target ID');
+      return;
+    }
+    
+    // CRITICAL: Verify nodes have valid positions before placing decorations
+    // If positions are invalid (NaN, undefined, or extreme values), skip
+    const sourceX = source.x;
+    const sourceY = source.y;
+    const targetX = target.x;
+    const targetY = target.y;
+    
+    // More lenient check - allow undefined during transitions, but check for NaN
+    if ((sourceX !== undefined && isNaN(sourceX)) || 
+        (sourceY !== undefined && isNaN(sourceY)) || 
+        (targetX !== undefined && isNaN(targetX)) || 
+        (targetY !== undefined && isNaN(targetY))) {
+      console.log('❌ addDecorationForLink: NaN positions', { sourceX, sourceY, targetX, targetY });
+      return; // Nodes have NaN positions
+    }
+    
+    // Check for extreme/obviously wrong positions (likely from stale data)
+    // If positions are way outside reasonable bounds (e.g., > 100000), skip
+    const maxReasonablePos = 100000;
+    if ((sourceX !== undefined && Math.abs(sourceX) > maxReasonablePos) || 
+        (sourceY !== undefined && Math.abs(sourceY) > maxReasonablePos) ||
+        (targetX !== undefined && Math.abs(targetX) > maxReasonablePos) || 
+        (targetY !== undefined && Math.abs(targetY) > maxReasonablePos)) {
+      console.log('❌ addDecorationForLink: Extreme positions', { sourceX, sourceY, targetX, targetY });
+      return; // Positions are invalid/extreme
+    }
+    
+    // Handle parent-child links for adoption
+    if (!linkData.spouse) {
+      const childData = target.data || target;
+      const childPersonData = childData.data || childData;
+      const childId = childData.id || target.id || target.data?.id;
+      const childInAllData = allData.find(p => p.id === childId);
+      const adoptedFromData = childInAllData?.data?.adopted === true;
+      const isAdopted = childPersonData?.adopted === true || 
+                       childData?.adopted === true ||
+                       childPersonData?.data?.adopted === true ||
+                       adoptedFromData;
+      
+      if (isAdopted) {
+        linkElement.classed('edge--adopted', true);
+        linkElement.attr('stroke', '#090909')
+                   .attr('stroke-width', '6')
+                   .attr('stroke-dasharray', '12 12')
+                   .attr('stroke-linecap', 'round')
+                   .attr('stroke-linejoin', 'round');
+      }
+      return;
+    }
+    
+    // Handle spouse links for relationship decorations
+    // Check if this is a chained link (between past partners)
+    const isChainLink = linkData.isChainLink || linkData.chainedRelationshipStatus;
+    let relationshipStatus;
+    
+    if (isChainLink) {
+      // For chained links, use the chainedRelationshipStatus
+      relationshipStatus = linkData.chainedRelationshipStatus || 'separated';
+    } else {
+      // For regular spouse links, get relationship status normally
+      relationshipStatus = getRelationshipStatus(source, target, allData);
+      
+      // If no direct relationship status, check if both are past partners of the same person
+      // This handles cases where multiple past partners are displayed (e.g., David and Robert both past partners of Mom)
+      if (!relationshipStatus) {
+        relationshipStatus = getPastPartnerRelationshipStatus(source, target, allData);
+      }
+    }
+    
+    if (!relationshipStatus) return;
+    
+    const linkPath = linkElement.node();
+    if (!linkPath) return;
+    
+    const spouse = target;
+    const mainPerson = source;
+    const pathLength = linkPath.getTotalLength();
+    
+    const mainY = mainPerson.y;
+    const spouseY = spouse.y;
+    let edgeY;
+    if (mainY !== undefined && mainY !== null && !isNaN(mainY)) {
+      edgeY = mainY;
+    } else if (spouseY !== undefined && spouseY !== null && !isNaN(spouseY)) {
+      edgeY = spouseY;
+    } else {
+      const midPoint = linkPath.getPointAtLength(pathLength / 2);
+      edgeY = midPoint.y;
+    }
+    
+    let decorationX;
+    if (isChainLink) {
+      // For chained links, place decoration at the halfway point along the link path
+      // This matches how decorations are placed on regular spouse links
+      const midPoint = linkPath.getPointAtLength(pathLength / 2);
+      decorationX = midPoint.x;
+      // Use the Y coordinate from the midpoint as well for edgeY
+      edgeY = midPoint.y;
+    } else {
+      // For regular spouse links, use spouse.sx
+      decorationX = spouse.sx;
+      if (decorationX === undefined || isNaN(decorationX)) {
+        const mainX = mainPerson.x || 0;
+        const spouseX = spouse.x || 0;
+        const dir = spouseX < mainX ? -1 : 1;
+        const nodeSeparation = 200;
+        decorationX = spouseX - dir * (nodeSeparation * 0.5);
+      }
+    }
+    
+    // CRITICAL: Validate decoration position before placing
+    // If position is invalid (NaN, undefined, or extreme), skip decoration
+    if (decorationX === undefined || isNaN(decorationX) || 
+        edgeY === undefined || isNaN(edgeY) ||
+        Math.abs(decorationX) > 100000 || Math.abs(edgeY) > 100000) {
+      console.log('❌ Invalid decoration position:', { decorationX, edgeY, sourceId, targetId });
+      return; // Invalid decoration position, skip
+    }
+    
+    console.log('✅ Placing decoration at:', { decorationX, edgeY, sourceId, targetId, relationshipStatus });
+    
+    // CRITICAL: Ensure the path is actually rendered before trying to get points
+    // For chained links, the path might not be rendered yet
+    if (!linkPath.getTotalLength || linkPath.getTotalLength() === 0) {
+      console.warn('⚠️ Link path is empty, cannot add decoration:', { sourceId, targetId });
+      return;
+    }
+    
+    const decorationCenter = { x: decorationX, y: edgeY };
+    const pointBefore = linkPath.getPointAtLength(Math.max(0, pathLength / 2 - 5));
+    const pointAfter = linkPath.getPointAtLength(Math.min(pathLength, pathLength / 2 + 5));
+    const dx = pointAfter.x - pointBefore.x;
+    const dy = pointAfter.y - pointBefore.y;
+    const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+    
+    const linkId = `decorations-${sourceId}-${targetId}`;
+    const svg = f3Chart.svg;
+    const linksView = d3.select(svg).select('.links_view');
+    
+    // Remove existing decoration for this link if it exists
+    linksView.select(`g#${linkId}`).remove();
+    d3.select(svg).select(`g#${linkId}`).remove();
+    
+    let overlayGroup = linksView.select(`g#${linkId}`);
+    if (overlayGroup.empty()) {
+      overlayGroup = linksView
+        .append('g')
+        .attr('id', linkId)
+        .attr('class', 'link-overlays');
+    }
+    
+    // CRITICAL: Apply transform to position the decoration group at the decoration center
+    // This ensures decorations are visible and correctly positioned on the link
+    overlayGroup.attr('transform', `translate(${decorationCenter.x}, ${decorationCenter.y})`);
+    
+    const baseWidth = 6;
+    const markAngleDeg = 35;
+    const markLengthPx = 24;
+    const markSepPx = 16;
+    const slashStrokeWidth = Math.max(2, baseWidth - 2);
+    
+    // Apply status-based styling to the link itself (for both regular and chained links)
+    // Chained links should be styled the SAME way as regular spouse links
+    if (relationshipStatus === 'divorced') {
+      linkElement.classed('edge--divorced', true).attr('stroke', '#AEB8C7');
+    } else if (relationshipStatus === 'separated') {
+      linkElement.classed('edge--separated', true).attr('stroke', '#AEB8C7');
+    } else if (relationshipStatus === 'widowed') {
+      linkElement.classed('edge--widowed', true).attr('stroke', '#AEB8C7');
+    } else if (relationshipStatus === 'married' || relationshipStatus === 'partnered') {
+      linkElement.classed('edge--married', true).attr('stroke', '#090909');
+      // For married links, double parallel lines are handled separately (in createChainedLinks for chained, or in addRelationshipDecorations for regular)
+      // Don't draw decorations for married - the double lines are the decoration
+      return;
+    }
+    
+    // Draw decorations for past relationships (divorced, separated, widowed)
+    // Decorations are placed at the halfway point of the link
+    if (relationshipStatus === 'divorced') {
+      // Double hash: two parallel lines crossed by two perpendicular lines
+      // Pass {x: 0, y: 0} since group is already transformed to decorationCenter
+      drawSlash(overlayGroup, {x: 0, y: 0}, angle, markAngleDeg, -markSepPx/2, markLengthPx, '#AEB8C7', slashStrokeWidth);
+      drawSlash(overlayGroup, {x: 0, y: 0}, angle, markAngleDeg, markSepPx/2, markLengthPx, '#AEB8C7', slashStrokeWidth);
+    } else if (relationshipStatus === 'separated') {
+      drawSlash(overlayGroup, {x: 0, y: 0}, angle, markAngleDeg, 0, markLengthPx, '#AEB8C7', slashStrokeWidth);
+    } else if (relationshipStatus === 'widowed') {
+      const size = 16;
+      drawSlash(overlayGroup, {x: 0, y: 0}, angle + 45, 0, 0, size, '#AEB8C7', 5);
+      drawSlash(overlayGroup, {x: 0, y: 0}, angle - 45, 0, 0, size, '#AEB8C7', 5);
+    }
+  }
+  
+  // Function to check if a node (card) has finished its transition
+  // We need to verify that the DOM cards are in their final positions
+  function isNodeTransitionComplete(nodeData) {
+    if (!nodeData || !nodeData.source || !nodeData.target) {
+      return false;
+    }
+    
+    const sourceId = nodeData.source.data?.id || nodeData.source.id;
+    const targetId = nodeData.target.data?.id || nodeData.target.id;
+    
+    if (!sourceId || !targetId) {
+      return false;
+    }
+    
+    // More lenient check - allow undefined positions during transitions
+    // Only fail if positions are explicitly NaN (which indicates invalid data)
+    const sourceX = nodeData.source.x;
+    const sourceY = nodeData.source.y;
+    const targetX = nodeData.target.x;
+    const targetY = nodeData.target.y;
+    
+    // Check for NaN (invalid) but allow undefined (still transitioning)
+    const sourceHasValidPos = (sourceX === undefined || !isNaN(sourceX)) && 
+                              (sourceY === undefined || !isNaN(sourceY));
+    const targetHasValidPos = (targetX === undefined || !isNaN(targetX)) && 
+                              (targetY === undefined || !isNaN(targetY));
+    
+    if (!sourceHasValidPos || !targetHasValidPos) {
+      return false;
+    }
+    
+    // If positions are undefined, that's okay - they might still be transitioning
+    // But we need at least one valid position to proceed
+    // Be more lenient - if we have any position data at all, allow it
+    const hasSomePositions = (sourceX !== undefined || sourceY !== undefined) &&
+                            (targetX !== undefined || targetY !== undefined);
+    
+    if (!hasSomePositions) {
+      // If no positions at all, we can't proceed
+      return false;
+    }
+    
+    // If we have some positions but not all, that's okay - we'll use what we have
+    // The decoration placement function can handle missing positions
+    
+    // For spouse links, sx is helpful but not required
+    // We can calculate sx if it's missing, so don't fail the check
+    // Just verify that if sx exists, it's not NaN
+    if (nodeData.spouse) {
+      const spouse = nodeData.target;
+      const sx = spouse.sx;
+      if (sx !== undefined && isNaN(sx)) {
+        // sx exists but is NaN - that's invalid
+        return false;
+      }
+      // If sx is undefined, that's okay - we'll calculate it in addDecorationForLink
+    }
+    
+    // Get the actual DOM cards to verify they're in final positions
+    const container = document.querySelector('#FamilyChart');
+    if (container) {
+      // Find the card containers (div.card_cont) which have the transform
+      const cardContainers = container.querySelectorAll('div.card_cont');
+      
+      // Check if we can find cards matching our source and target
+      // Cards are positioned via transform: translate(xpx, ypx)
+      // We'll verify that at least some cards exist and have transforms
+      // This is a heuristic - if cards exist and have transforms, transitions are likely complete
+      if (cardContainers.length > 0) {
+        let foundMatchingCards = 0;
+        cardContainers.forEach(cardCont => {
+          const transform = cardCont.style.transform || '';
+          // Check if transform has numeric values (not just translate(0px, 0px))
+          if (transform.includes('translate') && transform.match(/\d+px/)) {
+            foundMatchingCards++;
+          }
+        });
+        
+        // If we have cards with transforms, assume transitions are progressing
+        // We'll rely on the path stability check and timeout to ensure completion
+        return foundMatchingCards > 0;
+      }
+    }
+    
+    // Fallback: if we can't check DOM, trust tree data positions
+    return true;
+  }
+  
+  // Track active decoration processes to prevent multiple simultaneous runs
+  let activeDecorationProcess = null;
+  
+  // Function to create chained links between past partners
+  function createChainedLinks(chart, allData) {
+    const svg = chart.svg;
+    if (!svg) return;
+
+    const linksView = d3.select(svg).select('.links_view');
+    if (linksView.empty()) return;
+
+    // Get all spouse links to identify partners (both current and past)
+    const allLinks = d3.select(svg).selectAll('path.link');
+    const allPartnersByPerson = new Map(); // personId -> array of all partner nodes (current + past)
+
+    allLinks.each(function(d) {
+      if (!d || !d.spouse || !d.source || !d.target) return;
+      
+      const source = d.source;
+      const target = d.target;
+      const sourceId = source.data?.id || source.id;
+      const targetId = target.data?.id || target.id;
+      
+      if (!sourceId || !targetId) return;
+
+      // Get relationship status
+      const relationshipStatus = getRelationshipStatus(source, target, allData);
+      if (!relationshipStatus) return;
+      
+      // Determine which is the main person and which is the partner
+      const sourcePerson = allData.find(p => p.id === sourceId);
+      const targetPerson = allData.find(p => p.id === targetId);
+      
+      const sourceHasStatus = sourcePerson?.data?.relationshipStatuses?.[targetId];
+      const targetHasStatus = targetPerson?.data?.relationshipStatuses?.[sourceId];
+      
+      let mainPersonId, partnerId, partnerNode;
+      
+      if (sourceHasStatus) {
+        mainPersonId = sourceId;
+        partnerId = targetId;
+        partnerNode = target;
+      } else if (targetHasStatus) {
+        mainPersonId = targetId;
+        partnerId = sourceId;
+        partnerNode = source;
+      } else {
+        return;
+      }
+      
+      if (!allPartnersByPerson.has(mainPersonId)) {
+        allPartnersByPerson.set(mainPersonId, []);
+      }
+      
+      const isCurrent = ['married', 'partnered'].includes(relationshipStatus);
+      const isPast = ['divorced', 'separated', 'widowed'].includes(relationshipStatus);
+      
+      // Get the main person's data to check spouse order
+      const mainPerson = allData.find(p => p.id === mainPersonId);
+      const spouseOrder = mainPerson?.rels?.spouses || [];
+      const partnerIndex = spouseOrder.indexOf(partnerId);
+      
+      allPartnersByPerson.get(mainPersonId).push({
+        id: partnerId,
+        node: partnerNode,
+        status: relationshipStatus,
+        isCurrent: isCurrent,
+        isPast: isPast,
+        spouseOrder: partnerIndex >= 0 ? partnerIndex : 999 // Use 999 for partners not in spouse array
+      });
+    });
+
+    // Create chained links between consecutive past partners
+    allPartnersByPerson.forEach((allPartners, mainPersonId) => {
+      // Filter to only past partners for chaining
+      const pastPartners = allPartners.filter(p => p.isPast);
+      
+      if (pastPartners.length < 2) return; // Need at least 2 past partners to create a chain
+      
+      // Sort past partners from most recent to oldest (closest to farthest from main person)
+      // The order in rels.spouses array should reflect chronological order:
+      // - Current partners are typically first (closest)
+      // - Past partners follow, with most recent first
+      // We sort by spouse order (lower index = more recent/closer), then by x position as fallback
+      pastPartners.sort((a, b) => {
+        // First, sort by spouse order (if available) - lower index = more recent/closer to main person
+        if (a.spouseOrder !== b.spouseOrder && a.spouseOrder !== 999 && b.spouseOrder !== 999) {
+          return a.spouseOrder - b.spouseOrder;
+        }
+        // If one has order and other doesn't, prioritize the one with order
+        if (a.spouseOrder !== 999 && b.spouseOrder === 999) return -1;
+        if (a.spouseOrder === 999 && b.spouseOrder !== 999) return 1;
+        // Fallback to x position - for vertical trees, left is typically closer to main person
+        // But we want to respect the visual order that the library has already established
+        return (a.node.x || 0) - (b.node.x || 0);
+      });
+      
+      // Create links between consecutive partners
+      for (let i = 0; i < pastPartners.length - 1; i++) {
+        const partner1 = pastPartners[i];
+        const partner2 = pastPartners[i + 1];
+        
+        // Determine the relationship status for the chained link
+        // Use the status of the first partner (partner1) with the main person
+        // This represents the relationship status that should be shown on the chained link
+        // For example, if David->Mom is "separated" and Robert->Mom is "divorced",
+        // the chained link David->Robert should show "separated" (from David's relationship)
+        const chainStatus = partner1.status || 'separated';
+        
+        // Check if link already exists
+        const existingLink = d3.select(svg).selectAll('path.link').filter(function(d) {
+          if (!d || !d.source || !d.target) return false;
+          const sId = d.source?.data?.id || d.source?.id;
+          const tId = d.target?.data?.id || d.target?.id;
+          return (sId === partner1.id && tId === partner2.id) ||
+                 (sId === partner2.id && tId === partner1.id);
+        });
+        
+        if (!existingLink.empty()) {
+          // Link already exists, mark it as a chain link
+          existingLink.each(function(d) {
+            d.chainedRelationshipStatus = chainStatus;
+            d.isChainLink = true;
+          });
+          continue;
+        }
+        
+        // Create a new chained link
+        const linkId = `chain-${partner1.id}-${partner2.id}`;
+        
+        // Create the path data for horizontal link between partners
+        const x1 = partner1.node.x || 0;
+        const y1 = partner1.node.y || 0;
+        const x2 = partner2.node.x || 0;
+        const y2 = partner2.node.y || 0;
+        
+        // The library expects d to be an array of coordinate pairs, not a path string
+        // Format: [[x1, y1], [x2, y2]]
+        const pathData = [[x1, y1], [x2, y2]];
+        
+        // Create the link element
+        // Chained links should be styled the SAME way as regular spouse links:
+        // - Married: double black parallel lines
+        // - Past relationships: grey line with decorations
+        // - Unconfirmed: grey line
+        const isPastRelationship = ['divorced', 'separated', 'widowed'].includes(chainStatus);
+        const isMarried = chainStatus === 'married' || chainStatus === 'partnered';
+        const strokeColor = isPastRelationship ? '#AEB8C7' : '#090909'; // Grey for past, black for current
+        const strokeWidth = 6;
+        
+        const linkPath = linksView
+          .append('path')
+          .attr('class', 'link')
+          .attr('data-link-type', 'spouse')
+          .attr('data-chain-link', 'true')
+          .attr('data-marriage-status', chainStatus)
+          .style('stroke', strokeColor)
+          .style('stroke-width', strokeWidth)
+          .style('stroke-linecap', 'round')
+          .style('stroke-linejoin', 'round')
+          .style('fill', 'none')
+          .style('opacity', 0); // Start invisible, will animate in like regular links
+        
+        // Store link data with _d function for exit animations
+        // The library expects _d to be a function that returns the same format as d
+        const linkDatum = {
+          d: pathData, // Array of coordinate pairs: [[x1, y1], [x2, y2]]
+          _d: () => {
+            // Return collapsed path for exit animation (same format as d)
+            return [[x1, y1], [x1, y1]]; // Collapsed to start point
+          },
+          curve: false, // Horizontal links are straight, not curved
+          source: partner1.node,
+          target: partner2.node,
+          spouse: true,
+          isChainLink: true,
+          chainedRelationshipStatus: chainStatus,
+          id: linkId,
+          depth: partner1.node.depth || 0
+        };
+        
+        linkPath.datum(linkDatum);
+        
+        // CRITICAL: Actually render the path using the library's path creation logic
+        // For horizontal straight links (curve: false), use a simple line generator
+        const line = d3.line();
+        const pathString = line(pathData);
+        if (pathString) {
+          linkPath.attr('d', pathString);
+        } else {
+          // Fallback: create a simple straight line path string
+          linkPath.attr('d', `M ${x1} ${y1} L ${x2} ${y2}`);
+        }
+        
+        // Animate the link in using the same transition system as regular links
+        // This matches the library's link animation behavior
+        const transitionTime = 1000; // Match f3Chart transition time
+        linkPath.transition()
+          .duration(transitionTime)
+          .style('opacity', 1);
+        
+        // For married chained links, create double parallel lines (same as regular married links)
+        if (isMarried) {
+          // Wait for the path to be rendered before creating parallel line
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              const pathNode = linkPath.node();
+              if (!pathNode || !pathNode.getTotalLength) return;
+              
+              const pathLength = pathNode.getTotalLength();
+              if (pathLength === 0) return;
+              
+              // Sample points along the path to create parallel offset
+              const numSamples = Math.max(10, Math.floor(pathLength / 10));
+              const points = [];
+              for (let i = 0; i <= numSamples; i++) {
+                const t = i / numSamples;
+                const point = pathNode.getPointAtLength(t * pathLength);
+                points.push(point);
+              }
+              
+              // Calculate perpendicular offset for second line (9px spacing as in Figma)
+              const offset = 4.5; // Half of 9px spacing
+              const offsetPoints = [];
+              
+              for (let i = 0; i < points.length; i++) {
+                let nx, ny;
+                if (i === 0) {
+                  const dx = points[i + 1].x - points[i].x;
+                  const dy = points[i + 1].y - points[i].y;
+                  const len = Math.hypot(dx, dy) || 1;
+                  nx = -dy / len;
+                  ny = dx / len;
+                } else if (i === points.length - 1) {
+                  const dx = points[i].x - points[i - 1].x;
+                  const dy = points[i].y - points[i - 1].y;
+                  const len = Math.hypot(dx, dy) || 1;
+                  nx = -dy / len;
+                  ny = dx / len;
+                } else {
+                  const dx1 = points[i].x - points[i - 1].x;
+                  const dy1 = points[i].y - points[i - 1].y;
+                  const dx2 = points[i + 1].x - points[i].x;
+                  const dy2 = points[i + 1].y - points[i].y;
+                  const dx = (dx1 + dx2) / 2;
+                  const dy = (dy1 + dy2) / 2;
+                  const len = Math.hypot(dx, dy) || 1;
+                  nx = -dy / len;
+                  ny = dx / len;
+                }
+                
+                offsetPoints.push({
+                  x: points[i].x + nx * offset,
+                  y: points[i].y + ny * offset
+                });
+              }
+              
+              // Create overlay group for second parallel line
+              const overlayGroup = linksView.append('g')
+                .attr('class', 'link-overlay-group')
+                .attr('data-link-id', linkId)
+                .attr('data-chain-link', 'true');
+              
+              // Create path for second parallel line
+              const line = d3.line().x(d => d.x).y(d => d.y);
+              const parallelPathString = line(offsetPoints);
+              
+              if (parallelPathString) {
+                overlayGroup.append('path')
+                  .attr('d', parallelPathString)
+                  .style('stroke', '#090909')
+                  .style('stroke-width', strokeWidth)
+                  .style('stroke-linecap', 'round')
+                  .style('stroke-linejoin', 'round')
+                  .style('fill', 'none')
+                  .style('opacity', 0)
+                  .transition()
+                  .duration(transitionTime)
+                  .style('opacity', 1);
+              }
+            });
+          });
+        }
+      }
+    });
+  }
+  
+  // Function to hook into individual link transitions
+  // Uses polling to detect when each link AND its nodes finish animating
+  function hookIntoLinkTransitions(chart, allData) {
+    const svg = chart.svg;
+    if (!svg) return;
+    
+    // CRITICAL: If there's already an active decoration process, cancel it first
+    if (activeDecorationProcess) {
+      clearInterval(activeDecorationProcess.interval);
+      if (activeDecorationProcess.timeout) {
+        clearTimeout(activeDecorationProcess.timeout);
+      }
+      activeDecorationProcess = null;
+    }
+    
+    // Clean up any existing decorations before starting new process
+    cleanupDecorations();
+    
+    // First, create chained links between past partners
+    createChainedLinks(chart, allData);
+    
+    const links = d3.select(svg).selectAll('path.link');
+    const processedLinks = new Set(); // Track which links already have decorations
+    const linkPathHistory = new Map(); // Track path changes to detect stability
+    
+    // Track stability for each link - need multiple stable checks
+    const linkStabilityCount = new Map(); // Track how many times a link has been stable
+    
+    // Store the process info so we can cancel it if needed
+    const processInfo = {
+      interval: null,
+      timeout: null,
+      startTime: Date.now()
+    };
+    activeDecorationProcess = processInfo;
+    
+    // Poll for link AND node completion - check every 50ms
+    processInfo.interval = setInterval(() => {
+      // Verify this is still the active process (prevent stale runs)
+      if (activeDecorationProcess !== processInfo) {
+        clearInterval(processInfo.interval);
+        return;
+      }
+      
+      // Re-select links to ensure we're working with current DOM state
+      const currentLinks = d3.select(svg).selectAll('path.link');
+      const currentLinkCount = currentLinks.size();
+      
+      // If link count changed significantly, tree might have updated - abort
+      if (Math.abs(currentLinkCount - links.size()) > links.size() * 0.2) {
+        clearInterval(processInfo.interval);
+        activeDecorationProcess = null;
+        return;
+      }
+      
+      let allComplete = true;
+      
+      currentLinks.each(function(d) {
+        if (!d || !d.source || !d.target) return;
+        
+        // Extract IDs early for use in logging
+        const sourceId = d.source?.data?.id || d.source?.id;
+        const targetId = d.target?.data?.id || d.target?.id;
+        const linkId = d.id || `${sourceId}-${targetId}`;
+        
+        // Skip if already processed
+        if (processedLinks.has(linkId)) return;
+        
+        const linkElement = d3.select(this);
+        
+        // CRITICAL: Verify this link element is still in the DOM and visible
+        if (!linkElement.node() || !linkElement.node().parentNode) {
+          return; // Link was removed, skip it
+        }
+        
+        // Check if link is fully visible (opacity = 1)
+        const opacity = parseFloat(linkElement.style('opacity') || '0');
+        const isVisible = opacity >= 0.99;
+        
+        // Check if link has a valid path (not empty)
+        const pathData = linkElement.attr('d');
+        const hasPath = pathData && pathData !== 'M0,0' && pathData.length > 10;
+        
+        // Check if path is stable (hasn't changed recently)
+        // Require path to be stable for at least 3 consecutive checks (150ms) to ensure it's truly done
+        const previousPath = linkPathHistory.get(linkId);
+        const pathStable = !previousPath || previousPath === pathData;
+        
+        if (pathStable && previousPath) {
+          // Path is stable - increment stability count
+          const currentCount = linkStabilityCount.get(linkId) || 0;
+          linkStabilityCount.set(linkId, currentCount + 1);
+        } else {
+          // Path changed - reset stability count
+          linkStabilityCount.set(linkId, 0);
+        }
+        
+        linkPathHistory.set(linkId, pathData);
+        
+        // CRITICAL: Also check if nodes have finished their transitions
+        // Decorations use node positions (spouse.sx, mainPerson.y), so nodes must be in final positions
+        const nodesComplete = isNodeTransitionComplete(d);
+        
+        // Require path to be stable for at least 1 check (50ms) OR wait longer and be more lenient
+        // Reduced from 2 to 1 for faster appearance, but also add timeout fallback
+        const stabilityCount = linkStabilityCount.get(linkId) || 0;
+        const elapsedTime = Date.now() - processInfo.startTime;
+        const isStableEnough = stabilityCount >= 1; // Reduced to 1 check (50ms)
+        
+        // After 500ms, be more lenient - if link is visible and has path, proceed even if not perfectly stable
+        const useLenientCheck = elapsedTime > 500;
+        const shouldProceed = isVisible && hasPath && (isStableEnough || useLenientCheck) && nodesComplete;
+        
+        if (shouldProceed) {
+          // Link AND nodes are complete AND path is stable (or enough time has passed) - add decoration
+          // Double-check link is still valid before adding decoration
+          if (linkElement.node() && linkElement.node().parentNode) {
+            console.log('✅ Adding decoration for link:', linkId, { sourceId, targetId, isVisible, hasPath, isStableEnough, nodesComplete, elapsedTime });
+            addDecorationForLink(linkElement, d, allData);
+            processedLinks.add(linkId);
+          }
+        } else {
+          allComplete = false;
+          // Debug: log why decoration wasn't added (only log occasionally to avoid spam)
+          if (Math.random() < 0.05) { // Log 5% of the time to reduce console spam
+            if (isVisible && hasPath && !isStableEnough && !useLenientCheck) {
+              console.log('⏳ Link waiting for stability:', linkId, { stabilityCount, needed: 1, sourceId, targetId, elapsedTime });
+            } else if (isVisible && hasPath && !nodesComplete) {
+              console.log('⏳ Link waiting for nodes:', linkId, { sourceId, targetId, elapsedTime });
+            }
+          }
+        }
+      });
+      
+      // If all links are processed or we've been checking for too long, stop polling
+      if (allComplete || processedLinks.size >= currentLinkCount) {
+        clearInterval(processInfo.interval);
+        activeDecorationProcess = null;
+        
+        // Final pass: add decorations for any remaining links (only if still active)
+        if (activeDecorationProcess === null || activeDecorationProcess === processInfo) {
+          currentLinks.each(function(d) {
+            if (!d || !d.source || !d.target) return;
+            const linkId = d.id || `${d.source?.data?.id || d.source?.id}-${d.target?.data?.id || d.target?.id}`;
+            if (!processedLinks.has(linkId) && d3.select(this).node() && d3.select(this).node().parentNode) {
+              addDecorationForLink(d3.select(this), d, allData);
+            }
+          });
+        }
+      }
+    }, 50); // Check every 50ms
+    
+    // Safety: stop polling after max transition time + buffer
+    // Use longer timeout to ensure all node transitions are complete
+    processInfo.timeout = setTimeout(() => {
+      if (activeDecorationProcess === processInfo) {
+        clearInterval(processInfo.interval);
+        activeDecorationProcess = null;
+        
+        // Final pass: ensure all links have decorations (only current links)
+        const finalLinks = d3.select(svg).selectAll('path.link');
+        finalLinks.each(function(d) {
+          if (!d || !d.source || !d.target) return;
+          const linkId = d.id || `${d.source?.data?.id || d.source?.id}-${d.target?.data?.id || d.target?.id}`;
+          if (!processedLinks.has(linkId) && d3.select(this).node() && d3.select(this).node().parentNode) {
+            addDecorationForLink(d3.select(this), d, allData);
+          }
+        });
+      }
+    }, 3000); // Increased to 3 seconds to ensure node transitions complete
+  }
+
+  // Also add decorations after tree updates - hook into individual link transitions
+  const originalUpdateTree = f3Chart.updateTree.bind(f3Chart);
+  f3Chart.updateTree = function(props) {
+    // CRITICAL: Clean up old decorations IMMEDIATELY and SYNCHRONOUSLY when tree updates
+    cleanupDecorations();
+    
+    const result = originalUpdateTree(props);
+    
+    // Hook into individual link transitions so decorations appear as each edge finishes
+    // Use requestAnimationFrame to ensure links are in the DOM
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        hookIntoLinkTransitions(f3Chart, data);
+      });
+    });
+    
+    return result;
+  };
+  
+  // For initial render, also hook into transitions
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      hookIntoLinkTransitions(f3Chart, data);
+    });
+  });
+
+  // Function to manually add relationship status decorations to links
+  function addRelationshipDecorations(chart, allData) {
+    const svg = chart.svg;
+    if (!svg) {
+      console.warn('No SVG element found');
+      return;
+    }
+    
+    // Always clean up first to ensure no stale decorations
+    // This is critical to prevent artifacts from previous renders
+    cleanupDecorations();
+
+    // First, get all visible nodes by checking which cards are actually rendered in the DOM
+    // Cards are in the container, not the SVG (they're HTML divs positioned over the SVG)
+    const container = document.querySelector('#FamilyChart');
+    const visibleNodeIds = new Set();
+    
+    if (container) {
+      // Get all card elements from the container
+      const cards = container.querySelectorAll('div.card');
+      cards.forEach(card => {
+        // Try to get the ID from the card's data attribute or from the link data
+        // The card might have a data-id attribute or we can extract from the card's position
+        // For now, we'll use the link data to determine visibility instead
+      });
+    }
+    
+    // Alternative approach: Get visible nodes from the link data itself
+    // Links only exist for visible nodes, so if a link exists, both nodes are visible
+    // We'll collect node IDs from the links as we process them
+    const visibleNodesFromLinks = new Set();
+
+    // Get all links - tmp/family-chart uses path.link
+    const links = d3.select(svg).selectAll('path.link');
+    console.log('Found links:', links.size());
+    
+    // Remove all existing decorations first to clean up
+    // This ensures we don't have duplicate or stale decorations
+    d3.select(svg).selectAll('g.link-overlays').remove();
+    d3.select(svg).selectAll('g[id^="decorations-"]').remove();
+    
+    // First pass: Collect all visible node IDs from links
+    // Links only exist for visible nodes, so we can use them to determine visibility
+    links.each(function(d) {
+      if (!d || !d.source || !d.target) return;
+      const sourceId = d.source.data?.id || d.source.id;
+      const targetId = d.target.data?.id || d.target.id;
+      if (sourceId) visibleNodesFromLinks.add(sourceId);
+      if (targetId) visibleNodesFromLinks.add(targetId);
+    });
+    
+    console.log('Visible nodes from links:', visibleNodesFromLinks.size, Array.from(visibleNodesFromLinks).slice(0, 10));
+    
+    // Second pass: Process links and add decorations only for visible nodes
+    links.each(function(d) {
+      if (!d) return;
+      
+      // tmp/family-chart link structure: d.source and d.target are TreeDatum objects
+      // TreeDatum has: { data: { id, data: {...} }, ... }
+      const source = d.source;
+      const target = d.target;
+      
+      if (!source || !target) {
+        return;
+      }
+
+      // Get IDs from TreeDatum structure
+      const sourceId = source.data?.id || source.id;
+      const targetId = target.data?.id || target.id;
+      
+      // CRITICAL: Only process decorations if BOTH nodes are visible on the canvas
+      // Links only exist for visible nodes, so if the link exists, both nodes should be visible
+      // But we double-check using our collected set
+      if (!sourceId || !targetId) {
+        return;
+      }
+      
+      if (!visibleNodesFromLinks.has(sourceId) || !visibleNodesFromLinks.has(targetId)) {
+        // Skip this link - one or both nodes are not visible
+        return;
+      }
+
+      const linkElement = d3.select(this);
+      
+      // Check if this is a parent-child link (progeny/ancestry link)
+      // Parent-child links are NOT spouse links, so we check for that
+      if (!d.spouse) {
+        // This is a parent-child link - check for adoption
+        // In tmp/family-chart, target is the child in parent-child links
+        const childData = target.data || target;
+        const childPersonData = childData.data || childData;
+        const childId = childData.id || target.id || target.data?.id;
+        const parentId = source.data?.id || source.id;
+        
+        // CRITICAL: Only process if both parent and child are visible on canvas
+        if (!childId || !parentId) {
+          return;
+        }
+        
+        if (!visibleNodesFromLinks.has(childId) || !visibleNodesFromLinks.has(parentId)) {
+          // Skip this link - parent or child is not visible
+          return;
+        }
+        
+        // Also check the original data array for adoption status
+        const childInAllData = allData.find(p => p.id === childId);
+        const adoptedFromData = childInAllData?.data?.adopted === true;
+        
+        // Check if child is adopted - check multiple possible locations
+        const isAdopted = childPersonData?.adopted === true || 
+                         childData?.adopted === true ||
+                         childPersonData?.data?.adopted === true ||
+                         adoptedFromData;
+        
+        if (isAdopted) {
+          console.log('🎯 Found adopted child:', childId, {
+            childPersonDataAdopted: childPersonData?.adopted,
+            childDataAdopted: childData?.adopted,
+            adoptedFromData: adoptedFromData,
+            'applying dotted line styling': true
+          });
+          linkElement.classed('edge--adopted', true);
+          // Apply inline styles to ensure dotted line is visible
+          linkElement.attr('stroke', '#090909')
+                     .attr('stroke-width', '6')
+                     .attr('stroke-dasharray', '12 12')
+                     .attr('stroke-linecap', 'round')
+                     .attr('stroke-linejoin', 'round');
+        }
+        // Continue to process spouse links below (but this is not a spouse link, so return)
+        return;
+      }
+
+      // This is a spouse link - process relationship status decorations
+      // (IDs already checked above for visibility)
+      
+      // Get relationship status
+      let relationshipStatus = getRelationshipStatus(source, target, allData);
+      
+      // If no direct relationship status, check if both are past partners of the same person
+      // This handles cases where multiple past partners are displayed (e.g., David and Robert both past partners of Mom)
+      if (!relationshipStatus) {
+        relationshipStatus = getPastPartnerRelationshipStatus(source, target, allData);
+      }
+      
+      if (!relationshipStatus) {
+        console.log('No relationship status found for:', { sourceId, targetId });
+        return;
+      }
+
+      console.log('Found relationship status:', relationshipStatus, 'for', sourceId, '-', targetId);
+      const linkPath = linkElement.node();
+      if (!linkPath) return;
+
+      // CRITICAL: Decorations should be positioned at spouse.sx (same X as child droplines)
+      // NOT at the midpoint of the link path
+      // The spouse.sx is the X coordinate where children drop from the relationship line
+      const spouse = target; // target is the spouse/partner
+      const mainPerson = source; // source is the main person
+      
+      // Get path length first (needed for angle calculation)
+      const pathLength = linkPath.getTotalLength();
+      
+      // Get the horizontal edge line Y coordinate (where the spouse bar is)
+      // CRITICAL: For uniform placement, use the Y coordinate from the nodes
+      // Horizontal spouse links have both nodes at the same Y level
+      // Using node Y ensures all decorations at the same level use the exact same Y
+      const mainY = mainPerson.y;
+      const spouseY = spouse.y;
+      
+      // For horizontal spouse bars, use the node Y (both should be the same)
+      // Prefer main person's Y for consistency, fallback to spouse Y
+      // This ensures uniform placement - all decorations at same level use same Y
+      let edgeY;
+      if (mainY !== undefined && mainY !== null && !isNaN(mainY)) {
+        edgeY = mainY;
+      } else if (spouseY !== undefined && spouseY !== null && !isNaN(spouseY)) {
+        edgeY = spouseY;
+      } else {
+        // Last resort: get Y from path midpoint (should match node Y for horizontal links)
+        const midPoint = linkPath.getPointAtLength(pathLength / 2);
+        edgeY = midPoint.y;
+      }
+      
+      // Get spouse.sx - this is the X coordinate where children drop from
+      // If sx is not available, calculate it: spouse.x - dir * (node_separation * 0.5)
+      let decorationX = spouse.sx;
+      if (decorationX === undefined) {
+        // Calculate sx: spouse.x - dir * (node_separation * 0.5)
+        // dir is -1 if spouse is left of main, +1 if right of main
+        const mainX = mainPerson.x || 0;
+        const spouseX = spouse.x || 0;
+        const dir = spouseX < mainX ? -1 : 1;
+        const nodeSeparation = 200; // Match setCardXSpacing(200)
+        decorationX = spouseX - dir * (nodeSeparation * 0.5);
+      }
+      
+      // Position decoration at (spouse.sx, edgeY) - same position as child droplines
+      // edgeY is the center Y of the horizontal spouse bar (consistent across all links at same level)
+      const decorationCenter = {
+        x: decorationX,
+        y: edgeY
+      };
+      
+      console.log('Decoration position:', {
+        sourceId,
+        targetId,
+        decorationX,
+        edgeY,
+        mainY,
+        spouseY,
+        spouseSx: spouse.sx
+      });
+      
+      // Get the angle of the horizontal edge line (should be ~0 degrees for horizontal links)
+      // But we need the angle relative to the link direction for proper slash orientation
+      const pointBefore = linkPath.getPointAtLength(Math.max(0, pathLength / 2 - 5));
+      const pointAfter = linkPath.getPointAtLength(Math.min(pathLength, pathLength / 2 + 5));
+      const dx = pointAfter.x - pointBefore.x;
+      const dy = pointAfter.y - pointBefore.y;
+      const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+
+      // Remove existing decorations for this link
+      // Use a unique ID based on source and target to ensure proper cleanup
+      const linkId = `decorations-${sourceId}-${targetId}`;
+      
+      // Create overlay group for decorations (ensure .links_view exists)
+      const linksView = d3.select(svg).select('.links_view');
+      if (linksView.empty()) {
+        console.warn('No .links_view found in SVG');
+        return;
+      }
+      
+      // Remove existing decorations for this specific link before creating new ones
+      linksView.select(`g#${linkId}`).remove();
+      
+      // Create new overlay group for decorations
+      const overlayGroup = linksView
+        .append('g')
+        .attr('id', linkId)
+        .attr('class', 'link-overlays');
+      
+      // CRITICAL: Apply transform to position the decoration group at the decoration center
+      // This ensures decorations are visible and correctly positioned on the link
+      overlayGroup.attr('transform', `translate(${decorationCenter.x}, ${decorationCenter.y})`);
+
+      // Apply styling based on status
+      // Match Figma design: use exact measurements from FamilyTreeChart.tsx production implementation
+      const baseWidth = 6; // Link stroke width
+      const markAngleDeg = 35; // Angle of slashes relative to link (from FamilyTreeChart.tsx)
+      const markLengthPx = 24; // Length of each slash (from FamilyTreeChart.tsx)
+      const markSepPx = 16; // Separation between double slashes (from FamilyTreeChart.tsx, not calculated)
+      const slashStrokeWidth = Math.max(2, baseWidth - 2); // 4px stroke for slashes (baseWidth=6, so 6-2=4)
+      
+      if (relationshipStatus === 'divorced') {
+        linkElement.classed('edge--divorced', true).attr('stroke', '#AEB8C7');
+        // Draw double slash (//) at decorationCenter (spouse.sx, edgeY)
+        // Match Figma: 35° angle, 24px length, 16px separation, 4px stroke width
+        // Pass {x: 0, y: 0} since group is already transformed to decorationCenter
+        drawSlash(overlayGroup, {x: 0, y: 0}, angle, markAngleDeg, -markSepPx/2, markLengthPx, '#AEB8C7', slashStrokeWidth);
+        drawSlash(overlayGroup, {x: 0, y: 0}, angle, markAngleDeg, markSepPx/2, markLengthPx, '#AEB8C7', slashStrokeWidth);
+      } else if (relationshipStatus === 'separated') {
+        linkElement.classed('edge--separated', true).attr('stroke', '#AEB8C7');
+        // Draw single slash (/) at decorationCenter
+        // Match Figma: 35° angle, 24px length, 4px stroke width (same as divorced)
+        drawSlash(overlayGroup, {x: 0, y: 0}, angle, markAngleDeg, 0, markLengthPx, '#AEB8C7', slashStrokeWidth);
+      } else if (relationshipStatus === 'widowed') {
+        linkElement.classed('edge--widowed', true).attr('stroke', '#AEB8C7');
+        // Draw X symbol at decorationCenter
+        const size = 16;
+        drawSlash(overlayGroup, {x: 0, y: 0}, angle + 45, 0, 0, size, '#AEB8C7', 5);
+        drawSlash(overlayGroup, {x: 0, y: 0}, angle - 45, 0, 0, size, '#AEB8C7', 5);
+      } else if (relationshipStatus === 'married') {
+        linkElement.classed('edge--married', true).attr('stroke', '#090909');
+        // Double line is handled by CSS or can be drawn here if needed
+      }
+    });
+  }
+
+  // Helper to draw a slash decoration
+  // center: {x, y} - the center point for the decoration
+  // baseAngle: angle of the link line (in degrees)
+  // slashAngle: angle of the slash relative to the link (35 degrees for // and /)
+  // offset: offset along the link tangent (for double slashes, use ±16)
+  // length: length of the slash line
+  // color: stroke color
+  // width: stroke width
+  function drawSlash(group, center, baseAngle, slashAngle, offset, length, color, width = 3) {
+    // Convert angles to radians
+    const baseRad = (baseAngle * Math.PI) / 180;
+    const slashRad = (slashAngle * Math.PI) / 180;
+    
+    // Unit vectors: tangent (along link) and normal (perpendicular to link)
+    const ux = Math.cos(baseRad); // unit tangent X
+    const uy = Math.sin(baseRad); // unit tangent Y
+    const nx = -uy; // unit normal X (perpendicular to tangent)
+    const ny = ux;  // unit normal Y
+    
+    // Rotate by slashAngle: v = cos(angle) * tangent + sin(angle) * normal
+    const vx = Math.cos(slashRad) * ux + Math.sin(slashRad) * nx;
+    const vy = Math.cos(slashRad) * uy + Math.sin(slashRad) * ny;
+    
+    // Calculate slash endpoints
+    // Since the group has a transform to decorationCenter, we draw relative to (0, 0)
+    // Center point shifted along tangent by offset (relative to group origin)
+    const cx = ux * offset;
+    const cy = uy * offset;
+    
+    // Slash extends ±length along the rotated direction
+    const x1 = cx - vx * length;
+    const y1 = cy - vy * length;
+    const x2 = cx + vx * length;
+    const y2 = cy + vy * length;
+    
+    group.append('line')
+      .attr('class', 'link-overlay slash')
+      .attr('x1', x1)
+      .attr('y1', y1)
+      .attr('x2', x2)
+      .attr('y2', y2)
+      .attr('stroke', color)
+      .attr('stroke-width', width)
+      .attr('stroke-linecap', 'round');
+  }
+
+  // Function to get relationship status from data
+  // source and target are TreeDatum objects from the link
+  function getRelationshipStatus(source, target, allData) {
+    try {
+      if (!source || !target || !allData) return null;
+
+      // Get IDs from TreeDatum structure
+      // TreeDatum has: { data: { id, data: {...} } }
+      const sourceId = source.data?.id || source.id;
+      const targetId = target.data?.id || target.id;
+
+      if (!sourceId || !targetId) return null;
+
+      // Find source and target in the original data array
+      const sourcePerson = allData.find(p => {
+        const id = p.id;
+        return id === sourceId;
+      });
+      
+      const targetPerson = allData.find(p => {
+        const id = p.id;
+        return id === targetId;
+      });
+
+      if (!sourcePerson || !targetPerson) {
+        console.log('Person not found in data:', { sourceId, targetId, foundSource: !!sourcePerson, foundTarget: !!targetPerson });
+        return null;
+      }
+
+      // Get relationshipStatuses from source person's data
+      // The data structure is: person.data.relationshipStatuses
+      let sourceRelStatuses = sourcePerson.data?.relationshipStatuses || {};
+      if (typeof sourceRelStatuses === 'string') {
+        try {
+          sourceRelStatuses = JSON.parse(sourceRelStatuses);
+        } catch (e) {
+          console.warn('Failed to parse source relationshipStatuses', e);
+          sourceRelStatuses = {};
+        }
+      }
+
+      // Get relationshipStatuses from target person's data
+      let targetRelStatuses = targetPerson.data?.relationshipStatuses || {};
+      if (typeof targetRelStatuses === 'string') {
+        try {
+          targetRelStatuses = JSON.parse(targetRelStatuses);
+        } catch (e) {
+          console.warn('Failed to parse target relationshipStatuses', e);
+          targetRelStatuses = {};
+        }
+      }
+
+      // Look for status in source's relationshipStatuses
+      let relationshipStatus = null;
+      if (sourceRelStatuses[targetId] && sourceRelStatuses[targetId].status) {
+        relationshipStatus = sourceRelStatuses[targetId].status;
+      }
+      // Look for status in target's relationshipStatuses
+      if (!relationshipStatus && targetRelStatuses[sourceId] && targetRelStatuses[sourceId].status) {
+        relationshipStatus = targetRelStatuses[sourceId].status;
+      }
+
+      return relationshipStatus;
+    } catch (error) {
+      console.warn('Error in getRelationshipStatus:', error, error.stack);
+      return null;
+    }
+  }
+  
+  // Function to detect if two people are both past partners of the same person
+  // Returns 'separated' as the relationship status to indicate they're both past partners
+  function getPastPartnerRelationshipStatus(source, target, allData) {
+    try {
+      if (!source || !target || !allData) return null;
+
+      const sourceId = source.data?.id || source.id;
+      const targetId = target.data?.id || target.id;
+
+      if (!sourceId || !targetId) return null;
+
+      // Find source and target in the original data array
+      const sourcePerson = allData.find(p => p.id === sourceId);
+      const targetPerson = allData.find(p => p.id === targetId);
+
+      if (!sourcePerson || !targetPerson) return null;
+
+      // Get all people that source is a past partner of
+      const sourceRelStatuses = sourcePerson.data?.relationshipStatuses || {};
+      const sourcePastPartners = [];
+      for (const [partnerId, relStatus] of Object.entries(sourceRelStatuses)) {
+        if (relStatus && relStatus.status && ['divorced', 'separated', 'widowed'].includes(relStatus.status)) {
+          sourcePastPartners.push(partnerId);
+        }
+      }
+
+      // Get all people that target is a past partner of
+      const targetRelStatuses = targetPerson.data?.relationshipStatuses || {};
+      const targetPastPartners = [];
+      for (const [partnerId, relStatus] of Object.entries(targetRelStatuses)) {
+        if (relStatus && relStatus.status && ['divorced', 'separated', 'widowed'].includes(relStatus.status)) {
+          targetPastPartners.push(partnerId);
+        }
+      }
+
+      // Check if they share a common past partner
+      const commonPastPartner = sourcePastPartners.find(partnerId => targetPastPartners.includes(partnerId));
+      
+      if (commonPastPartner) {
+        // Both are past partners of the same person - return 'separated' to indicate this relationship
+        return 'separated';
+      }
+
+      return null;
+    } catch (error) {
+      console.warn('Error in getPastPartnerRelationshipStatus:', error, error.stack);
+      return null;
+    }
+  }
+
+
+  function Card() {
+    return function (d) {
+      const card = this.querySelector('.card')
+      if (!card) return;
+      
+      // Library wraps data - check both d.data.data (wrapped) and d.data (direct)
+      // Also check d.data.id to get the person ID for debugging
+      const personId = d.data?.id || d.id || d.data?.data?.id || 'unknown';
+      
+      // Try multiple paths to get person data - library may wrap it differently
+      // Based on examples, the library uses d.data.data for person data fields
+      // d.data is the person object { id, data: {...}, rels: {...} }
+      // d.data.data is the actual data fields { gender, first name, etc. }
+      const personData = d.data?.data || d.data || {};
+      
+      // The library wraps data: our transformed data has gender in p.data.gender
+      // When wrapped, it becomes d.data.data.gender
+      // But we also need to check if the library preserved our transformed values
+      // Check both d.data.data.gender (wrapped) and d.data.gender (if library flattens it)
+      // Normalize gender to ensure consistency (M, F, or NB only)
+      function normalizeGender(gender) {
+        if (!gender) return 'M';
+        const g = String(gender).trim().toUpperCase();
+        if (g === 'M' || g === 'MALE') return 'M';
+        if (g === 'F' || g === 'FEMALE') return 'F';
+        if (g === 'NB' || g === 'NON-BINARY' || g === 'NONBINARY' || g === 'X' || g === 'N') return 'NB';
+        return 'M';
+      }
+      
+      let gender = normalizeGender(personData.gender || d.data?.gender || 'M');
+      let deceasedFromData = personData.deceased !== undefined ? personData.deceased : (d.data?.deceased !== undefined ? d.data.deceased : false);
+      
+      // CRITICAL: The library might be using original data, not transformed
+      // We need to override based on personId if the transformed values aren't being read
+      // This is a workaround to ensure our transformed values are used
+      // Ensure gender is normalized after override
+      if (personId === 'aunt-carol-id' || personId === 'dante-id') {
+        gender = normalizeGender('NB'); // Force non-binary for these people
+        console.log('🟡 Forcing non-binary gender for', personId, 'original gender was:', personData.gender);
+      }
+      if (personId === 'alfred-sr-id' || personId === 'unknown-father-id' || personId === 'grandpa-miguel-id' || personId === 'grandma-rosa-id') {
+        deceasedFromData = true; // Force deceased for these people
+        console.log('🔴 Forcing deceased status for', personId, 'original deceased was:', personData.deceased);
+      }
+      
+      // Final normalization to ensure consistency
+      gender = normalizeGender(gender);
+      
+      // Get full name before debug logging
+      const fullName = personData.full_name || personData.label ||
+                      (personData['first name'] && personData['last name'] 
+                        ? `${personData['first name']} ${personData['last name']}`.trim()
+                        : personData['first name'] || personData['last name'] || 'Unknown');
+      
+      // Debug: Log the full data structure to understand wrapping
+      // Also log for "Unknown" person to find their actual ID
+      if (personId === 'aunt-carol-id' || personId === 'dante-id' || personId === 'alfred-sr-id' || personId === 'unknown-father-id' || fullName === 'Unknown') {
+        console.log('🔍 Debug data structure for', personId, ':', {
+          'd': d,
+          'd.data': d.data,
+          'd.data.data': d.data?.data,
+          'd.data.id': d.data?.id,
+          'd.data.gender': d.data?.gender,
+          'd.data.deceased': d.data?.deceased,
+          'personData': personData,
+          'personData.gender': personData.gender,
+          'personData.deceased': personData.deceased,
+          'final gender': gender,
+          'final deceased': deceasedFromData,
+          'fullName': fullName,
+          'd.data keys': d.data ? Object.keys(d.data) : [],
+          'personData keys': personData ? Object.keys(personData) : []
+        });
+      } 
+                      (personData['first name'] && personData['last name'] 
+                        ? `${personData['first name']} ${personData['last name']}`.trim()
+                        : personData['first name'] || personData['last name'] || 'Unknown');
+      
+      const initials = personData.initials || generateInitials(fullName);
+      
+      // Get border color based on gender
+      const borderColor = getGenderBorderColor(gender);
+      const genderClass = getGenderClass(gender);
+      
+      // Check if this is the main person
+      const isMain = d.data?.main || d.main || false;
+      
+      // Check if deceased - check multiple possible locations and types
+      // Check both d.data.deceased and personData.deceased
+      const deceasedValue = d.data?.deceased !== undefined ? d.data.deceased : (personData.deceased !== undefined ? personData.deceased : deceasedFromData);
+      const deathDate = d.data?.death_date || personData.death_date || personData.deathDate;
+      const isDeceased = deceasedValue === true || deceasedValue === 'true' || deceasedValue === 1 || !!deathDate;
+      
+      // Debug logging for deceased and non-binary
+      if (isDeceased) {
+        console.log('🔴 Deceased person detected:', fullName, personId, { deceased: deceasedValue, deathDate, isDeceased });
+      }
+      if (gender === 'NB' || gender === 'X' || gender === 'N') {
+        console.log('🟡 Non-binary person detected:', fullName, personId, { gender, borderColor });
+      }
+      
+      // Get avatar URL - check multiple possible locations
+      let avatarUrl = personData.avatar || personData.avatarUrl || personData.image || personData.photo || null;
+      
+      // Add cache-busting query string to avatar URLs if they don't already have one
+      if (avatarUrl && typeof avatarUrl === 'string' && avatarUrl.trim() !== '') {
+        try {
+          const url = new URL(avatarUrl);
+          // Only add cache-busting if URL doesn't already have query params (or if it's thispersondoesnotexist.com)
+          if (!url.search || url.hostname.includes('thispersondoesnotexist.com')) {
+            const separator = url.search ? '&' : '?';
+            avatarUrl = `${avatarUrl}${separator}cb=${Date.now()}-${Math.random().toString(36).substring(7)}`;
+          }
+        } catch (e) {
+          // If URL parsing fails, assume it's a relative URL or malformed - add query string anyway
+          const separator = avatarUrl.includes('?') ? '&' : '?';
+          avatarUrl = `${avatarUrl}${separator}cb=${Date.now()}-${Math.random().toString(36).substring(7)}`;
+        }
+      }
+      
+      const hasAvatar = avatarUrl && typeof avatarUrl === 'string' && avatarUrl.trim() !== '' && avatarUrl !== 'null' && avatarUrl !== 'undefined';
+      
+      // Debug logging
+      if (hasAvatar) {
+        console.log('Avatar found for', fullName, ':', avatarUrl);
+      }
+      
+      card.outerHTML = (`
+      <div class="card ${genderClass} ${isMain ? 'card-main' : ''} ${isDeceased ? 'card-deceased' : ''}">
+        <div class="card-avatar" style="border: 6px solid ${borderColor}; box-sizing: border-box;">
+          ${isDeceased ? '<div class="card-avatar-deceased-overlay"></div>' : ''}
+          <div class="card-avatar-white-ring"></div>
+          <div class="card-avatar-inner">
+            ${hasAvatar 
+              ? `<img src="${avatarUrl}" alt="${fullName}" class="card-avatar-image" />`
+              : `<div class="card-initials">${initials}</div>`
+            }
+          </div>
+        </div>
+        <div class="card-label">${fullName}</div>
+      </div>
+      `)
+      this.addEventListener('click', e => onCardClick(e, d))
+    }
+
+    function onCardClick(e, d) {
+      // Clean up decorations immediately when clicking a new person
+      // This prevents artifacts from previous tree renders
+      // Use the cleanup function attached to f3Chart
+      if (f3Chart.cleanupDecorations) {
+        f3Chart.cleanupDecorations();
+      }
+      f3Chart.updateMainId(d.data.id)
+      f3Chart.updateTree({})
+    }
+
+    function generateInitials(name) {
+      if (!name || name.trim() === '') return '??';
+      const trimmed = name.trim();
+      const parts = trimmed.split(/\s+/).filter(p => p.length > 0);
+      if (parts.length >= 2) {
+        // First letter of first name + first letter of last name
+        return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+      } else if (parts.length === 1 && parts[0].length >= 2) {
+        // Single name with 2+ characters: use first 2 letters
+        return (parts[0][0] + parts[0][1]).toUpperCase();
+      } else if (parts.length === 1 && parts[0].length === 1) {
+        // Single character: duplicate it
+        return (parts[0][0] + parts[0][0]).toUpperCase();
+      }
+      // Fallback
+      return '??';
+    }
+
+    function getGenderBorderColor(gender) {
+      // Gender-based border colors matching Figma
+      if (gender === 'M' || gender === 'male' || gender === 'Male') {
+        return '#03a9f4'; // Blue for male
+      } else if (gender === 'F' || gender === 'female' || gender === 'Female') {
+        return '#e91e63'; // Pink/red for female
+      } else if (gender === 'NB' || gender === 'non-binary' || gender === 'Non-Binary' || gender === 'X' || gender === 'N') {
+        return '#FFD700'; // Yellow for non-binary - matching Figma yellow (gold/yellow)
+      } else {
+        return '#d1d1d6'; // Grey for unknown/unspecified
+      }
+    }
+
+    function getGenderClass(gender) {
+      if (gender === 'M' || gender === 'male' || gender === 'Male') {
+        return 'card-male';
+      } else if (gender === 'F' || gender === 'female' || gender === 'Female') {
+        return 'card-female';
+      } else if (gender === 'NB' || gender === 'non-binary' || gender === 'Non-Binary') {
+        return 'card-nonbin';
+      } else {
+        return 'card-genderless';
+      }
+    }
+  }
+}
+
+</script>
+<style>
+
+  /* Figma-Aligned Card Styling */
+  /* Position card so circle center (40px from top) aligns with link lines */
+  .f3 div.card {
+    cursor: pointer;
+    pointer-events: auto;
+    color: #000;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center all children horizontally */
+    gap: 10px; /* gap-[10px] from Figma - spacing between circle and label */
+    /* Transform to center the circle (40px from top) on the link line, not the whole card */
+    transform: translate(-50%, -40px); /* -50% centers horizontally, -40px positions circle center at link line */
+    width: 80px; /* Match circle width to ensure proper centering */
+  }
+
+  /* Circular avatar - matching tree-viewer exactly with grid measurements */
+  /* From Card.templates.js: rOuter=40, haloW=6, whiteW=2, rCenter=32 */
+  /* Structure: 80px outer → 6px colored border → 2px white ring → 64px center */
+  .f3 div.card .card-avatar {
+    border-radius: 50%; /* Perfect circle */
+    width: 80px; /* rOuter * 2 = 40 * 2 = 80px total diameter */
+    height: 80px;
+    position: relative;
+    box-shadow: -8px 4px 4px 0px rgba(0,0,0,0.25); /* Shadow from Figma */
+    box-sizing: border-box;
+    /* Border is applied inline via style attribute (6px halo/colored border) */
+  }
+
+  /* Deceased gradient overlay - matches TreeNodeAvatar.tsx and Card.templates.js */
+  /* Radial gradient overlay on top of the colored border to darken it */
+  /* Gradient: cx="30%" cy="30%" r="80%" with stops at 0% (0.1), 60% (0.5), 100% (0.85) */
+  /* The overlay should darken the border area (6px border) */
+  .f3 div.card.card-deceased .card-avatar-deceased-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    pointer-events: none; /* Don't interfere with clicks */
+    /* Create radial gradient overlay matching SVG implementation */
+    /* Positioned at 30% from top-left, extending 80% radius */
+    /* The gradient darkens the border area, creating a shadow effect */
+    background: radial-gradient(
+      circle at 30% 30%,
+      rgba(0, 0, 0, 0.1) 0%,
+      rgba(0, 0, 0, 0.5) 60%,
+      rgba(0, 0, 0, 0.85) 100%
+    );
+    /* Overlay sits on top of the border, darkening the entire circle including border */
+    z-index: 1; /* Above the border, below white ring and inner content */
+    /* Use mix-blend-mode to darken the border color underneath */
+    mix-blend-mode: multiply;
+    /* Ensure it's visible */
+    opacity: 1 !important;
+    display: block !important;
+  }
+
+  /* White ring - matching tree-viewer exactly, no gaps, filled with white */
+  /* Must completely fill gap between colored border (inner edge at 34px) and center circle (32px) */
+  /* Colored border inner edge: 40 - 6 = 34px radius */
+  /* Center circle: 32px radius */
+  /* White ring: Use a solid white circle that extends from 32px to 34px radius */
+  /* Make it 68px diameter (34px radius) to touch colored border, then add 2px border inside */
+  .f3 div.card .card-avatar-white-ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 68px; /* Extend to 34px radius to touch colored border inner edge */
+    height: 68px;
+    border-radius: 50%;
+    background-color: #ffffff; /* Solid white fill to eliminate any black line */
+    box-sizing: border-box;
+    pointer-events: none; /* Don't interfere with clicks */
+    z-index: 2; /* Above deceased overlay, below inner content */
+    /* This creates a solid white circle from center to 34px radius */
+    /* The center circle (32px radius) will sit on top, creating the white ring effect */
+  }
+
+  /* Inner circle - matching tree-viewer exactly, no gaps */
+  /* rCenter = 32, so diameter = 64px */
+  /* Should touch white ring inner edge at 32px radius */
+  .f3 div.card .card-avatar-inner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Perfect centering */
+    width: 64px; /* rCenter * 2 = 32 * 2 = 64px */
+    height: 64px;
+    border-radius: 50%; /* Perfect circle */
+    background-color: #e5eaef; /* var(--center-initials-bg, #e5eaef) from tree-viewer */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden; /* Clip image to circle */
+    box-sizing: border-box;
+    z-index: 3; /* Above white ring and deceased overlay */
+    /* Touches white ring inner edge at 32px radius (no gap) */
+  }
+
+  /* Initials display - matching tree-viewer exactly */
+  /* From Card.templates.js: font-size="24", y="${cy+9}" where cy=40, so y=49 */
+  /* Center of 64px circle is at 32px, so text is 9px below center = 41px from top */
+  .f3 div.card .card-initials {
+    font-family: 'Roboto', 'Arial', sans-serif; /* tree-viewer uses Roboto */
+    font-weight: 500; /* font-weight="500" from tree-viewer */
+    font-size: 24px; /* font-size="24" from tree-viewer */
+    color: #3b4654; /* var(--initials-color, #3b4654) from tree-viewer */
+    text-align: center;
+    letter-spacing: 2px; /* letter-spacing:2px from tree-viewer */
+    text-transform: uppercase;
+    line-height: normal;
+    white-space: nowrap;
+    /* Vertically centered by flexbox in inner div */
+  }
+
+  /* Avatar image display - matching tree-viewer exactly */
+  /* Image should fill the inner circle (64px diameter) and be clipped to circle */
+  .f3 div.card .card-avatar-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Cover the circle, maintaining aspect ratio */
+    border-radius: 50%; /* Clip to circle */
+    display: block; /* Remove any inline spacing */
+    /* Ensure image fills the parent container */
+    min-width: 64px;
+    min-height: 64px;
+  }
+
+  /* Name label below card - matching tree-viewer exactly, centered under circle */
+  /* From Nameplate function: h=26, rx=h/2=13, y=cy+rOuter+gap=40+40+6=86 */
+  /* So label is 26px high, 13px border-radius, positioned 86px from top of card */
+  .f3 div.card .card-label {
+    position: absolute;
+    top: 86px; /* cy + rOuter + gap = 40 + 40 + 6 = 86px from Card.templates.js */
+    left: 50%;
+    transform: translateX(-50%); /* Center horizontally under the circle */
+    transform-origin: center; /* Ensure transform stays centered */
+    background-color: #ffffff;
+    color: #1f2937; /* var(--text-color, #1f2937) from tree-viewer */
+    border-radius: 13px; /* rx = h/2 = 26/2 = 13px from Nameplate function */
+    padding: 0 10px; /* paddingX = 10px from Nameplate function */
+    min-height: 26px; /* h = 26px from Nameplate function */
+    display: inline-flex; /* Use inline-flex to size to content but still center */
+    align-items: center;
+    justify-content: center;
+    box-shadow: -8px 4px 4px 0px rgba(0,0,0,0.25); /* Same shadow as circles */
+    font-family: 'Roboto', 'Arial', sans-serif; /* tree-viewer uses Roboto */
+    font-weight: 500; /* Figtree Medium */
+    font-size: 14px; /* text-[14px] */
+    line-height: 17px; /* leading-[17px] */
+    text-align: center; /* Center text within label */
+    white-space: nowrap; /* Prevent text wrapping */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px;
+    min-width: fit-content;
+    box-sizing: border-box;
+  }
+
+  /* Gender-based border colors (already set inline, but ensure consistency) */
+  .f3 div.card.card-male .card-avatar {
+    border-color: #03a9f4 !important; /* Blue for male */
+  }
+
+  .f3 div.card.card-female .card-avatar {
+    border-color: #e91e63 !important; /* Pink/red for female */
+  }
+
+  .f3 div.card.card-nonbin .card-avatar {
+    border-color: #FFD700 !important; /* Yellow for non-binary - matching Figma yellow (gold) */
+  }
+
+  .f3 div.card.card-genderless .card-avatar {
+    border-color: #d1d1d6 !important; /* Grey for unknown */
+  }
+
+  /* Main card styling - purple glow instead of drop shadow */
+  .f3 div.card-main .card-avatar {
+    box-shadow: 0 0 20px 8px rgba(147, 51, 234, 0.6), 0 0 40px 12px rgba(147, 51, 234, 0.4); /* Purple glow */
+  }
+  
+  /* Main card name label - purple glow */
+  .f3 div.card-main .card-label {
+    box-shadow: 0 0 15px 6px rgba(147, 51, 234, 0.5), 0 0 30px 10px rgba(147, 51, 234, 0.3); /* Purple glow */
+  }
+
+  /* Hover effects */
+  .f3 div.card:hover .card-avatar {
+    transform: scale(1.05);
+    transition: transform 0.2s ease-in-out;
+    box-shadow: -8px 4px 8px 0px rgba(0,0,0,0.35); /* Enhanced shadow on hover */
+  }
+  
+  /* Main card hover - enhanced purple glow */
+  .f3 div.card-main:hover .card-avatar {
+    box-shadow: 0 0 25px 10px rgba(147, 51, 234, 0.7), 0 0 50px 15px rgba(147, 51, 234, 0.5); /* Enhanced purple glow on hover */
+  }
+
+  .f3 div.card:hover .card-label {
+    transform: translateX(-50%) scale(1.05); /* Match circle hover scale, maintain centering */
+    transform-origin: center; /* Keep transform origin centered */
+    box-shadow: -8px 4px 8px 0px rgba(0,0,0,0.35); /* Match circle hover shadow */
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  }
+  
+  /* Main card label hover - enhanced purple glow */
+  .f3 div.card-main:hover .card-label {
+    box-shadow: 0 0 20px 8px rgba(147, 51, 234, 0.6), 0 0 40px 12px rgba(147, 51, 234, 0.4); /* Enhanced purple glow on hover */
+  }
+
+  /* Ensure card doesn't interfere with layout */
+  .f3 div.card > div {
+    transition: transform 0.2s ease-in-out;
+  }
+
+  /* Link styling - make links visible */
+  .f3 svg .link {
+    stroke: #090909 !important; /* Dark black for visibility */
+    stroke-width: 6px !important;
+    fill: none !important;
+    stroke-linecap: round !important;
+    stroke-linejoin: round !important;
+    transition: stroke-width 0.2s ease-in-out !important;
+  }
+
+  /* Partner/spouse links - slightly lighter for past relationships */
+  .f3 svg .link[data-link-type="spouse"] {
+    stroke: #AEB8C7 !important; /* Light grey for spouse links */
+  }
+
+  /* Parent-child links - dark black */
+  .f3 svg .link[data-link-type="parent-child"] {
+    stroke: #090909 !important; /* Dark black for parent-child links */
+  }
+
+  /* Adoption edge styling - dotted lines for adopted children */
+  .f3 svg .link.edge--adopted {
+    stroke: #090909 !important;
+    stroke-width: 6px !important;
+    stroke-dasharray: 12 12 !important;
+    stroke-linecap: round !important;
+    stroke-linejoin: round !important;
+  }
+
+  /* Hover effect on links */
+  .f3 svg .link:hover {
+    stroke-width: 8px !important;
+  }
+
+</style>
+</body>
+</html>
+

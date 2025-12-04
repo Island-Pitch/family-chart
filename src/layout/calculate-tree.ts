@@ -4,6 +4,7 @@ import { createNewPerson } from "../store/new-person";
 import { isAllRelativeDisplayed } from "../handlers/general";
 import { handleDuplicateSpouseToggle, handleDuplicateHierarchyProgeny } from "../features/duplicates-toggle/duplicates-progeny";
 import { handleDuplicateHierarchyAncestry } from "../features/duplicates-toggle/duplicates-ancestry";
+import { defaultSortPartnersByRecency } from "../utils/family-chart-utils";
 import type { Datum, Data } from "../types/data";
 import type { TreeDatum, TreeData } from "../types/treeData";
 
@@ -72,6 +73,8 @@ export default function calculateTree(data: Data, {
   setupSpouses(tree, node_separation)
   if (show_siblings_of_main && !one_level_rels) setupSiblings({tree, data_stash, node_separation, sortChildrenFunction})
   setupProgenyParentsPos(tree)
+  // resolveChildLinkCollisions is disabled for now - needs refinement
+  // resolveChildLinkCollisions(tree, node_separation)
   nodePositioning(tree)
   tree.forEach(d => d.all_rels_displayed = isAllRelativeDisplayed(d, tree))
   if (private_cards_config) handlePrivateCards({tree, data_stash, private_cards_config})
@@ -105,7 +108,8 @@ export default function calculateTree(data: Data, {
         if (!one_level_rels) {
           if (someSpouses(a,b)) offset+=offsetOnPartners(a,b)
         }
-        if (sameParent(a, b) && !sameBothParents(a,b)) offset+=.125
+        // Removed extra offset for step-siblings - they share a parent and should be close together
+        // Previous: if (sameParent(a, b) && !sameBothParents(a,b)) offset+=.125
       }
       return offset
     }
@@ -155,6 +159,7 @@ export default function calculateTree(data: Data, {
 
     return [...children, ...parents.slice(1)];
   }
+
   function nodePositioning(tree:TreeDatum[]) {
     tree.forEach(d => {
       d.y *= (d.is_ancestry ? -1 : 1)
@@ -172,9 +177,88 @@ export default function calculateTree(data: Data, {
         if (d._ignore_spouses) spouses = spouses.filter(sp_id => !d._ignore_spouses!.includes(sp_id))
         if (spouses.length > 0) {
           if (one_level_rels && d.depth > 0) continue
-          const side = d.data.data.gender === "M" ? -1 : 1;  // female on right
+          
+          // Sort partners so OLDEST relationship is FARTHEST from person
+          // The positioning formula puts index 0 closest to person, so we need:
+          // - Newest relationship at index 0 (closest to person)
+          // - Oldest relationship at highest index (farthest from person)
+          // This aligns with "oldest to youngest, left to right" rule for children
+          const relationshipStatuses = d.data?.relationshipStatuses || d.data?.data?.relationshipStatuses || {};
+          spouses = [...spouses].sort((a, b) => {
+            // Use REGULAR recency: newest relationships come FIRST (index 0 = closest)
+            // Oldest relationships come LAST (highest index = farthest)
+            return defaultSortPartnersByRecency(a, b, relationshipStatuses);
+          });
+          
+          // Determine which side to position spouses
+          let side: number;
+          if (d.depth === 0) {
+            // For main person: use gender-based positioning
+            side = d.data.data.gender === "M" ? -1 : 1;  // female on right
+          } else {
+            // For children: position spouse on the OUTSIDE of sibling group
+            // to avoid splitting siblings and causing link crossings
+            // Find siblings (children of same parent with same biological parents)
+            const siblings = (d.parent?.children || []).filter((sib: TreeDatum) => {
+              if (sib === d) return false
+              // Check if they share the same biological parents
+              const dParents = d.data?.rels?.parents || []
+              const sibParents = sib.data?.rels?.parents || []
+              return dParents.length === sibParents.length && 
+                     dParents.every((p: string) => sibParents.includes(p))
+            })
+            
+            if (siblings.length > 0) {
+              // Find if there are siblings to the left or right
+              const siblingsToLeft = siblings.filter((sib: TreeDatum) => sib.x < d.x)
+              const siblingsToRight = siblings.filter((sib: TreeDatum) => sib.x > d.x)
+              
+              // Position spouse AWAY from siblings
+              if (siblingsToLeft.length > 0 && siblingsToRight.length === 0) {
+                // Siblings are to the left, put spouse on the right
+                side = 1
+              } else if (siblingsToRight.length > 0 && siblingsToLeft.length === 0) {
+                // Siblings are to the right, put spouse on the left
+                side = -1
+              } else {
+                // Siblings on both sides or no siblings - use gender-based
+                side = d.data.data.gender === "M" ? -1 : 1
+              }
+            } else {
+              // No siblings with same parents - use gender-based
+              side = d.data.data.gender === "M" ? -1 : 1
+            }
+          }
           d.x += spouses.length/2*node_separation*side;
           spouses.forEach((sp_id, i) => {
+            // CRITICAL: Check if spouse is already in tree before adding
+            // This prevents duplicates when a spouse is already shown as a parent/ancestor
+            const existingSpouse = tree.find(t => t.data.id === sp_id)
+            if (existingSpouse) {
+              // Check if this spouse is already a parent of the current node or its children
+              const isParentOfCurrentNode = d.data?.rels?.parents?.includes(sp_id)
+              const isParentOfChildren = (d.data?.rels?.children || []).some(childId => {
+                const childNode = tree.find(t => t.data.id === childId)
+                if (!childNode) return false
+                const childParents = childNode.data?.rels?.parents || []
+                return childParents.includes(sp_id)
+              })
+              const isParentInTree = d.parents && d.parents.some(p => p.data.id === sp_id)
+              
+              // If they're already a parent, don't add them as a spouse
+              if (isParentOfCurrentNode || isParentOfChildren || isParentInTree || existingSpouse.is_ancestry) {
+                console.log(`[setupSpouses] Skipping spouse ${sp_id} for ${d.data.id} - already a parent (isParentOfCurrent=${isParentOfCurrentNode}, isParentOfChildren=${isParentOfChildren}, isParentInTree=${isParentInTree}, isAncestry=${existingSpouse.is_ancestry})`)
+                return // Skip - don't add to spouses array
+              }
+              
+              // Spouse already in tree but not a parent - just link them, don't add duplicate
+              if (!d.spouses) d.spouses = []
+              if (!d.spouses.find(s => s.data.id === sp_id)) {
+                d.spouses.push(existingSpouse)
+              }
+              return // Skip adding duplicate
+            }
+            
             const spouse:TreeDatum = {
               data: data_stash.find(d0 => d0.id === sp_id) as Datum,
               added: true,
@@ -230,6 +314,158 @@ export default function calculateTree(data: Data, {
     })
   }
 
+  /**
+   * Resolve collisions where child spouse positioning causes link crossings.
+   * 
+   * The issue: When a child has a spouse, the child+spouse pair can extend into
+   * the space of another parent's children, causing link lines to cross.
+   * 
+   * Solution: For each parent with children, check if any child's spouse extends
+   * into the link space of an adjacent parent. If so, shift the affected nodes
+   * to create clearance.
+   */
+  function resolveChildLinkCollisions(tree: TreeDatum[], node_separation: number) {
+    // Get all nodes at depth 0 (main person and their spouses)
+    const mainLevel = tree.filter(d => d.depth === 0 && !d.is_ancestry)
+    if (mainLevel.length === 0) return
+
+    const mainNode = mainLevel.find(d => !d.added && !d.spouse)
+    if (!mainNode) return
+
+    // Get all spouses of the main person, sorted by x position
+    const allParents = [mainNode, ...(mainNode.spouses || [])].sort((a, b) => a.x - b.x)
+    if (allParents.length < 2) return
+
+    // For each adjacent pair of parents, check for collisions
+    for (let i = 0; i < allParents.length - 1; i++) {
+      const leftParent = allParents[i]
+      const rightParent = allParents[i + 1]
+
+      // Get children of each parent
+      const leftChildren = getChildrenOfParent(tree, mainNode, leftParent)
+      const rightChildren = getChildrenOfParent(tree, mainNode, rightParent)
+
+      if (leftChildren.length === 0 || rightChildren.length === 0) continue
+
+      // Find the rightmost extent of left parent's children (including their spouses)
+      const leftExtent = getChildGroupRightExtent(leftChildren)
+      
+      // Find the leftmost extent of right parent's children (including their spouses)
+      const rightExtent = getChildGroupLeftExtent(rightChildren)
+
+      // The link drop point for each parent
+      const leftLinkX = leftParent.sx ?? leftParent.x
+      const rightLinkX = rightParent.sx ?? rightParent.x
+
+      // Check for collision: if left children extend past the midpoint between parents,
+      // or if right children extend past the midpoint, we have a collision
+      const midpoint = (leftLinkX + rightLinkX) / 2
+
+      // Collision detection: children shouldn't cross the link line of the other parent
+      // Left children shouldn't extend past the right parent's link point
+      // Right children shouldn't extend past the left parent's link point
+      const leftCollision = leftExtent > rightLinkX - node_separation / 2
+      const rightCollision = rightExtent < leftLinkX + node_separation / 2
+
+      if (leftCollision || rightCollision) {
+        // Calculate how much to shift
+        const overlap = leftCollision 
+          ? leftExtent - (rightLinkX - node_separation / 2)
+          : (leftLinkX + node_separation / 2) - rightExtent
+
+        const shiftAmount = Math.ceil(overlap / node_separation) * node_separation + node_separation / 2
+
+        if (leftCollision) {
+          // Shift right parent and their children to the right
+          shiftParentAndChildren(rightParent, mainNode, tree, shiftAmount)
+          // Also shift all parents to the right of this one
+          for (let j = i + 2; j < allParents.length; j++) {
+            shiftParentAndChildren(allParents[j], mainNode, tree, shiftAmount)
+          }
+        } else {
+          // Shift left parent and their children to the left
+          shiftParentAndChildren(leftParent, mainNode, tree, -shiftAmount)
+          // Also shift all parents to the left of this one
+          for (let j = i - 1; j >= 0; j--) {
+            shiftParentAndChildren(allParents[j], mainNode, tree, -shiftAmount)
+          }
+        }
+      }
+    }
+  }
+
+  function getChildrenOfParent(tree: TreeDatum[], mainNode: TreeDatum, otherParent: TreeDatum): TreeDatum[] {
+    // Get children that have otherParent as their biological parent
+    const mainChildren = mainNode.children || []
+    return mainChildren.filter(child => {
+      const childParents = child.data?.rels?.parents || []
+      return childParents.includes(otherParent.data?.id)
+    })
+  }
+
+  function getChildGroupRightExtent(children: TreeDatum[]): number {
+    let maxX = -Infinity
+    children.forEach(child => {
+      // Check child's x position
+      maxX = Math.max(maxX, child.x)
+      // Check child's spouses
+      if (child.spouses) {
+        child.spouses.forEach(spouse => {
+          maxX = Math.max(maxX, spouse.x)
+        })
+      }
+    })
+    return maxX
+  }
+
+  function getChildGroupLeftExtent(children: TreeDatum[]): number {
+    let minX = Infinity
+    children.forEach(child => {
+      // Check child's x position
+      minX = Math.min(minX, child.x)
+      // Check child's spouses
+      if (child.spouses) {
+        child.spouses.forEach(spouse => {
+          minX = Math.min(minX, spouse.x)
+        })
+      }
+    })
+    return minX
+  }
+
+  function shiftParentAndChildren(parent: TreeDatum, mainNode: TreeDatum, tree: TreeDatum[], shiftAmount: number) {
+    // Shift the parent
+    parent.x += shiftAmount
+    if (parent.sx !== undefined) parent.sx += shiftAmount
+
+    // Shift children of this parent
+    const children = getChildrenOfParent(tree, mainNode, parent)
+    children.forEach(child => {
+      shiftNodeAndDescendants(child, shiftAmount)
+    })
+  }
+
+  function shiftNodeAndDescendants(node: TreeDatum, shiftAmount: number) {
+    node.x += shiftAmount
+    if (node.sx !== undefined) node.sx += shiftAmount
+    if (node.psx !== undefined) node.psx += shiftAmount
+
+    // Shift spouses
+    if (node.spouses) {
+      node.spouses.forEach(spouse => {
+        spouse.x += shiftAmount
+        if (spouse.sx !== undefined) spouse.sx += shiftAmount
+      })
+    }
+
+    // Shift children recursively
+    if (node.children) {
+      node.children.forEach(child => {
+        shiftNodeAndDescendants(child, shiftAmount)
+      })
+    }
+  }
+
   function setupChildrenAndParents(tree:TreeDatum[]) {
     tree.forEach(d0 => {
       delete d0.children
@@ -265,45 +501,11 @@ export default function calculateTree(data: Data, {
   }
 
   function createRelsToAdd(data:Data) {
-    const to_add_spouses:Datum[] = [];
-    for (let i = 0; i < data.length; i++) {
-      const d = data[i];
-      if (d.rels.children && d.rels.children.length > 0) {
-        if (!d.rels.spouses) d.rels.spouses = []
-        let to_add_spouse:Datum | undefined
-
-        d.rels.children.forEach(d0 => {
-          const child = data.find(d1 => d1.id === d0) as Datum
-          if (child.rels.parents.length === 2) return
-          if (!to_add_spouse) {
-            to_add_spouse = findOrCreateToAddSpouse(d)
-          }
-          if (!to_add_spouse.rels.children) to_add_spouse.rels.children = []
-          to_add_spouse.rels.children.push(child.id)
-          if (child.rels.parents.length !== 1) throw new Error('child has more than 1 parent')
-          child.rels.parents.push(to_add_spouse.id)
-        })
-      }
-    }
-    to_add_spouses.forEach(d => data.push(d))
-    return data
-
-    function findOrCreateToAddSpouse(d:Datum) {
-      const spouses = (d.rels.spouses || []).map(sp_id => data.find(d0 => d0.id === sp_id)).filter(d => d !== undefined)
-      return spouses.find(sp => sp.to_add) || createToAddSpouse(d)
-    }
-
-    function createToAddSpouse(d:Datum) {
-      const spouse = createNewPerson({
-        data: {gender: d.data.gender === "M" ? "F" : "M"},
-        rels: {spouses: [d.id]}
-      }) as Datum
-      spouse.to_add = true;
-      to_add_spouses.push(spouse);
-      if (!d.rels.spouses) d.rels.spouses = []
-      d.rels.spouses.push(spouse.id)
-      return spouse
-    }
+    // ✅ TRUST THE JSON - Don't create placeholder spouses for missing parents
+    // This function previously created "Unknown" persons when children had missing parents
+    // Now we trust the JSON data and don't create placeholders
+    console.log('[createRelsToAdd] Trusting JSON data - not creating placeholder spouses');
+    return data;
   }
 
   function trimTree(root:HN, is_ancestry:boolean) {

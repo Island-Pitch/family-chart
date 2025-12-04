@@ -1,0 +1,391 @@
+[
+  {
+    "id": "liz",
+    "main": true,
+    "data": {
+      "first_name": "Liz",
+      "last_name": "Thompson",
+      "preferred_name": "Liz",
+      "gender": "F",
+      "birthday": "1978-07-22",
+      "birth_place": "Seattle, WA",
+      "bio": "Liz is a devoted mother who has built a complex family through multiple relationships. She has three children with her current partner Todd: Albie, Cori, and Vin. Her oldest son Randy is from a previous relationship with Greg. Liz's first husband was Lee Smitts, whom she divorced in 1990, though they didn't have children together. Liz works as a social worker and values the relationships she has with all of her children and partners. She works hard to maintain strong bonds with everyone in her blended family.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Social Worker",
+      "employer": "Seattle Family Services",
+      "email": "liz.thompson@email.com",
+      "phone": "(206) 555-2401",
+      "address": "1234 Family Way, Seattle, WA 98101",
+      "work_entries": [
+        {
+          "title": "Family Social Worker",
+          "organization": "Seattle Family Services",
+          "from_year": 2005,
+          "to_year": null,
+          "description": "Help families navigate complex situations, provide support services, and connect families with resources. Specialized in blended and extended family dynamics."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Master of Social Work",
+          "institution": "University of Washington",
+          "from_year": 2003,
+          "to_year": 2005,
+          "description": "Earned MSW with focus on family services and child welfare."
+        },
+        {
+          "title": "Bachelor of Arts in Psychology",
+          "institution": "University of Washington",
+          "from_year": 1996,
+          "to_year": 2000,
+          "description": "Graduated with focus on psychology and social work."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "todd",
+        "greg",
+        "lee-smitts"
+      ],
+      "children": [
+        "albie",
+        "cori",
+        "vin",
+        "randy"
+      ]
+    }
+  },
+  {
+    "id": "todd",
+    "data": {
+      "first_name": "Todd",
+      "last_name": "Thompson",
+      "preferred_name": "Todd",
+      "gender": "M",
+      "birthday": "1976-11-10",
+      "birth_place": "Seattle, WA",
+      "bio": "Todd is Liz's current partner and the father of their three children together: Albie, Cori, and Vin. He works as an engineer and takes pride in providing for his blended family. Todd values the relationships he has with all of Liz's children, including her son Randy from a previous relationship. He works hard to create a harmonious family environment.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Engineer",
+      "employer": "Seattle Engineering Firm",
+      "email": "todd.thompson@email.com",
+      "phone": "(206) 555-2402",
+      "address": "1234 Family Way, Seattle, WA 98101",
+      "work_entries": [
+        {
+          "title": "Mechanical Engineer",
+          "organization": "Seattle Engineering Firm",
+          "from_year": 2002,
+          "to_year": null,
+          "description": "Design mechanical systems, create engineering drawings, and coordinate with manufacturing teams."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Bachelor of Science in Mechanical Engineering",
+          "institution": "University of Washington",
+          "from_year": 1994,
+          "to_year": 1998,
+          "description": "Graduated with honors. Focused on mechanical engineering and design."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "liz"
+      ],
+      "children": [
+        "albie",
+        "cori",
+        "vin"
+      ]
+    }
+  },
+  {
+    "id": "albie",
+    "data": {
+      "first_name": "Albie",
+      "last_name": "Thompson",
+      "preferred_name": "Albie",
+      "gender": "M",
+      "birthday": "2010-05-15",
+      "birth_place": "Seattle, WA",
+      "bio": "Albie is one of Liz and Todd's three children together. He is a bright and energetic teenager who enjoys sports, especially soccer and basketball. Albie has a close relationship with both of his parents and all of his siblings, including his half-brother Randy. He values the blended family dynamic and the relationships he has with all of his family members.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Student",
+      "employer": null,
+      "email": null,
+      "phone": null,
+      "address": "1234 Family Way, Seattle, WA 98101",
+      "work_entries": [],
+      "education_entries": [
+        {
+          "title": "9th Grade",
+          "institution": "Seattle High School",
+          "from_year": 2024,
+          "to_year": 2025,
+          "description": "Currently in 9th grade, enjoying sports and social studies classes."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "liz",
+        "todd"
+      ],
+      "siblings": [
+        "cori",
+        "vin",
+        "randy"
+      ]
+    }
+  },
+  {
+    "id": "cori",
+    "data": {
+      "first_name": "Cori",
+      "last_name": "Thompson",
+      "preferred_name": "Cori",
+      "gender": "F",
+      "birthday": "2012-09-20",
+      "birth_place": "Seattle, WA",
+      "bio": "Cori is one of Liz and Todd's three children together. She is a creative and artistic teenager who enjoys art, music, and spending time with her family. Cori has a close relationship with both of her parents and all of her siblings, including her half-brother Randy. She values the blended family dynamic and the relationships she has with all of her family members.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Student",
+      "employer": null,
+      "email": null,
+      "phone": null,
+      "address": "1234 Family Way, Seattle, WA 98101",
+      "work_entries": [],
+      "education_entries": [
+        {
+          "title": "7th Grade",
+          "institution": "Seattle Middle School",
+          "from_year": 2024,
+          "to_year": 2025,
+          "description": "Currently in 7th grade, enjoying art and music classes."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "liz",
+        "todd"
+      ],
+      "siblings": [
+        "albie",
+        "vin",
+        "randy"
+      ]
+    }
+  },
+  {
+    "id": "vin",
+    "data": {
+      "first_name": "Vin",
+      "last_name": "Thompson",
+      "preferred_name": "Vin",
+      "gender": "M",
+      "birthday": "2015-12-05",
+      "birth_place": "Seattle, WA",
+      "bio": "Vin is one of Liz and Todd's three children together. He is a happy and playful 9-year-old who enjoys playing with his siblings and spending time with his family. Vin has a close relationship with both of his parents and all of his siblings, including his half-brother Randy. He values the blended family dynamic and the relationships he has with all of his family members.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Student",
+      "employer": null,
+      "email": null,
+      "phone": null,
+      "address": "1234 Family Way, Seattle, WA 98101",
+      "work_entries": [],
+      "education_entries": [
+        {
+          "title": "4th Grade",
+          "institution": "Seattle Elementary School",
+          "from_year": 2024,
+          "to_year": 2025,
+          "description": "Currently in 4th grade, enjoying learning and playing with friends."
+        }
+      ],
+      "social_media": []
+    },
+    "rels": {
+      "parents": [
+        "liz",
+        "todd"
+      ],
+      "siblings": [
+        "albie",
+        "cori",
+        "randy"
+      ]
+    }
+  },
+  {
+    "id": "randy",
+    "data": {
+      "first_name": "Randy",
+      "last_name": "Thompson",
+      "preferred_name": "Randy",
+      "gender": "M",
+      "birthday": "2000-03-18",
+      "birth_place": "Seattle, WA",
+      "bio": "Randy is Liz's oldest son from her previous relationship with Greg. He is a responsible and mature 24-year-old who works as a software developer. Randy has a close relationship with his mother and maintains relationships with his half-siblings Albie, Cori, and Vin. He values the blended family dynamic and the relationships he has with all of his family members, including his stepfather Todd.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Software Developer",
+      "employer": "Seattle Tech Startup",
+      "email": "randy.thompson@email.com",
+      "phone": "(206) 555-2403",
+      "address": "2345 Tech Way, Seattle, WA 98101",
+      "work_entries": [
+        {
+          "title": "Software Developer",
+          "organization": "Seattle Tech Startup",
+          "from_year": 2022,
+          "to_year": null,
+          "description": "Develop web applications, write code, and collaborate with development teams."
+        }
+      ],
+      "education_entries": [
+        {
+          "title": "Bachelor of Science in Computer Science",
+          "institution": "University of Washington",
+          "from_year": 2018,
+          "to_year": 2022,
+          "description": "Graduated with focus on software engineering and web development."
+        }
+      ],
+      "social_media": [
+        {
+          "platform": "GitHub",
+          "url": "https://github.com/randythompson"
+        }
+      ]
+    },
+    "rels": {
+      "parents": [
+        "liz",
+        "greg"
+      ],
+      "siblings": [
+        "albie",
+        "cori",
+        "vin"
+      ]
+    }
+  },
+  {
+    "id": "greg",
+    "data": {
+      "first_name": "Greg",
+      "last_name": "Thompson",
+      "preferred_name": "Greg",
+      "gender": "M",
+      "birthday": "1975-06-25",
+      "birth_place": "Seattle, WA",
+      "bio": "Greg is Randy's father and Liz's ex-partner. He works as a teacher and maintains a cooperative relationship with Liz for the sake of their son. Greg values the relationships he has with his son and supports Randy's relationships with his mother and stepfamily. He is known for his dedication to education and his love of family.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Teacher",
+      "employer": "Seattle High School",
+      "email": "greg.thompson@email.com",
+      "phone": "(206) 555-2404",
+      "address": "3456 School St, Seattle, WA 98101",
+      "work_entries": [
+        {
+          "title": "High School Teacher",
+          "organization": "Seattle High School",
+          "from_year": 2000,
+          "to_year": null,
+          "description": "Teach high school students, develop lesson plans, and support student learning."
+        }
+      ],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "liz"
+      ],
+      "children": [
+        "randy"
+      ]
+    }
+  },
+  {
+    "id": "lee-smitts",
+    "data": {
+      "first_name": "Lee",
+      "last_name": "Smitts",
+      "preferred_name": "Lee",
+      "gender": "M",
+      "birthday": "1973-10-12",
+      "birth_place": "Seattle, WA",
+      "bio": "Lee Smitts was Liz's first husband, whom she divorced in 1990. They didn't have children together, but Lee was an important part of Liz's life during their marriage. He works as a business owner and maintains a friendly relationship with Liz. Lee values the relationships he has with his extended family and friends.",
+      "nationality": "American",
+      "ethnicity": "Caucasian",
+      "religion": "Protestant",
+      "languages": [
+        "English"
+      ],
+      "occupation": "Business Owner",
+      "employer": "Smitts Enterprises",
+      "email": "lee.smitts@email.com",
+      "phone": "(206) 555-2405",
+      "address": "4567 Business Way, Seattle, WA 98101",
+      "work_entries": [
+        {
+          "title": "Business Owner",
+          "organization": "Smitts Enterprises",
+          "from_year": 1995,
+          "to_year": null,
+          "description": "Own and operate business, manage operations, and provide services to clients."
+        }
+      ],
+      "education_entries": [],
+      "social_media": []
+    },
+    "rels": {
+      "spouses": [
+        "liz"
+      ]
+    }
+  }
+]
